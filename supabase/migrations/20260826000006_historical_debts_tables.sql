@@ -1,5 +1,5 @@
 -- Migration 006: Historical Debts Tables (2 tables)
--- UBMS — Unified Business Management System
+-- Inventory Management System
 -- Date: 2026-08-26
 
 -- ============================================================

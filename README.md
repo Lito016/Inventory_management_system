@@ -1,4 +1,4 @@
-# UBMS — Unified Business Management System
+# Inventory Management System
 
 A web-based business management system combining B2B Fabric Trading and B2C Printing operations with Finance as the main priority.
 

@@ -65,8 +65,8 @@ export function LoginPage() {
     <div className="w-full max-w-sm">
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-800">UBMS</h1>
-          <p className="text-sm text-gray-500 mt-1">Unified Business Management System</p>
+          <h1 className="text-2xl font-semibold text-gray-800">IMS</h1>
+          <p className="text-sm text-gray-500 mt-1">Inventory Management System</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

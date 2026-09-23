@@ -1,5 +1,5 @@
 -- Migration 010: Row Level Security (RLS) Policies
--- UBMS — Unified Business Management System
+-- Inventory Management System
 -- Date: 2026-08-26
 
 -- ============================================================

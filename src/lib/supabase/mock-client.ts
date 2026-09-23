@@ -39,7 +39,7 @@ let currentSession: { user: { id: string; email: string } | null; access_token: 
 const authListeners: Array<(event: string, session: typeof currentSession) => void> = [];
 
 // Auto-login as admin on init
-currentUser = { id: seed.IDS.profiles[0], email: 'admin@ubms.local' };
+currentUser = { id: seed.IDS.profiles[0], email: 'admin@ims.local' };
 currentSession = { user: currentUser, access_token: 'mock-token' };
 
 // ── Helpers ──────────────────────────────────────────────────

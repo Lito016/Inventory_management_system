@@ -33,8 +33,8 @@ export const IDS = {
 
 // ── Profiles ─────────────────────────────────────────────────
 export const profiles = [
-  { id: IDS.profiles[0], email: 'admin@ubms.local', full_name: 'Maria Santos', role: 'admin' as const, is_active: true, last_login_at: daysAgo(1), created_at: daysAgo(90), updated_at: NOW },
-  { id: IDS.profiles[1], email: 'staff@ubms.local', full_name: 'Juan Cruz', role: 'staff' as const, is_active: true, last_login_at: daysAgo(3), created_at: daysAgo(60), updated_at: NOW },
+  { id: IDS.profiles[0], email: 'admin@ims.local', full_name: 'Maria Santos', role: 'admin' as const, is_active: true, last_login_at: daysAgo(1), created_at: daysAgo(90), updated_at: NOW },
+  { id: IDS.profiles[1], email: 'staff@ims.local', full_name: 'Juan Cruz', role: 'staff' as const, is_active: true, last_login_at: daysAgo(3), created_at: daysAgo(60), updated_at: NOW },
 ];
 
 // ── Customers ────────────────────────────────────────────────

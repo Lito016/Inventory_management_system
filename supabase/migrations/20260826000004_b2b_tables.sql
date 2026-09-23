@@ -1,5 +1,5 @@
 -- Migration 004: B2B Tables (8 tables)
--- UBMS — Unified Business Management System
+-- Inventory Management System
 -- Date: 2026-08-26
 
 -- ============================================================

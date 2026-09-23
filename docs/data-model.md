@@ -1,4 +1,4 @@
-# Data Model — UBMS
+# Data Model — Inventory Management System
 
 > **Version:** 1.0 | **Date:** 2026-08-26 | **Status:** Approved for Build
 > **Currency:** Philippine Peso (₱) — `NUMERIC(15,2)` throughout

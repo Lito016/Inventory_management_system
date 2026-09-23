@@ -18,5 +18,5 @@ export const supabase = isPlaceholder
     });
 
 if (isPlaceholder) {
-  console.info('[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend.');
+  console.info('[IMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend.');
 }

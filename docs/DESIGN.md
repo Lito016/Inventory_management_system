@@ -1,5 +1,5 @@
-# Design Specification — UBMS
-## Unified Business Management System
+# Design Specification — Inventory Management System
+## Inventory Management System
 
 > **Version:** 1.0 | **Date:** 2026-08-26 | **Status:** Approved for Build
 > **Theme:** Light only (office/business environment)
@@ -211,7 +211,7 @@ Inter is chosen for its excellent readability at small sizes, professional tone,
 **Sidebar Structure:**
 ```
 ┌─────────────────────┐
-│ [Logo] UBMS         │  ← 48px height, white text, font-semibold
+│ [Logo] Inventory Management System         │  ← 48px height, white text, font-semibold
 │                     │
 │ ── MAIN ──          │  ← Section label: text-xs, gray-500, uppercase
 │ ○ Dashboard         │  ← Icon + label, gray-400 text
@@ -901,7 +901,7 @@ See Section 10: Print Layout for full specification.
 │                                                              │
 │              ┌──────────────────────────┐                    │
 │              │                          │                    │
-│              │  UBMS                    │  ← text-xl font-bold│
+│              │  Inventory Management System                    │  ← text-xl font-bold│
 │              │  Business Management     │  ← text-sm gray-500│
 │              │                          │                    │
 │              │  Email                   │                    │
@@ -923,7 +923,7 @@ See Section 10: Print Layout for full specification.
 |---|---|
 | Page background | `gray-50` |
 | Card | `white`, `shadow-md`, `radius-lg`, width 400px, centered vertically and horizontally |
-| Logo area | No image — text-based: "UBMS" in `text-xl font-bold text-gray-900` |
+| Logo area | No image — text-based: "Inventory Management System" in `text-xl font-bold text-gray-900` |
 | Error display | Inline alert above form: `error-50` bg, `error-600` text, `AlertCircle` icon |
 | Account locked | Same inline alert: "Account locked. Try again in 15 minutes." |
 | Input height | 40px (slightly larger for login — primary entry point) |
@@ -1346,7 +1346,7 @@ A "Skip to main content" link is provided as the first focusable element, hidden
 
 ```
 ┌─────────────────────────────────────────────┐
-│  UBMS — Unified Business Management System  │  ← text-xs, gray-500
+│  Inventory Management System  │  ← text-xs, gray-500
 │  ─────────────────────────────────────────── │
 │                                              │
 │  DOCUMENT TYPE                    Document # │  ← text-lg font-bold

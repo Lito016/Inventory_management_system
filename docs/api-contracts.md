@@ -1,4 +1,4 @@
-# API Contracts — UBMS
+# API Contracts — Inventory Management System
 
 > **Version:** 1.0 | **Date:** 2026-08-26 | **Status:** Approved for Build
 > **API Style:** Supabase Auto-generated REST (PostgREST) + RPC Functions + Edge Functions

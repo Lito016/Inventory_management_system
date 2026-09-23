@@ -1,4 +1,4 @@
-# Requirements Specification — UBMS
+# Requirements Specification — Inventory Management System
 
 > **Version:** 1.0 | **Date:** 2026-08-26 | **Status:** Draft for Review
 > **Currency:** Philippine Peso (₱) throughout all modules

@@ -1,5 +1,5 @@
 -- Migration 003: Finance Tables (receivables, payables, payments)
--- UBMS — Unified Business Management System
+-- Inventory Management System
 -- Date: 2026-08-26
 
 -- ============================================================

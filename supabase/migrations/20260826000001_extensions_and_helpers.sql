@@ -1,5 +1,5 @@
 -- Migration 001: Extensions & Helper Functions
--- UBMS — Unified Business Management System
+-- Inventory Management System
 -- Date: 2026-08-26
 
 -- Enable required extensions

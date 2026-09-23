@@ -47,12 +47,12 @@ export function Sidebar() {
       <div className="flex items-center h-14 px-4 border-b border-slate-700/50 shrink-0">
         <div className="flex items-center gap-2.5 overflow-hidden">
           <div className="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-sm">U</span>
+            <span className="text-white font-bold text-sm">I</span>
           </div>
           {!collapsed && (
             <div className="flex flex-col">
-              <span className="text-white font-semibold text-sm leading-tight tracking-tight">UBMS</span>
-              <span className="text-slate-400 text-[10px] leading-tight">Business Management</span>
+              <span className="text-white font-semibold text-sm leading-tight tracking-tight">IMS</span>
+              <span className="text-slate-400 text-[10px] leading-tight">Inventory Management System</span>
             </div>
           )}
         </div>

@@ -1,4 +1,4 @@
-# Project Reference Prompt (PRP) — UBMS
+# Project Reference Prompt (PRP) — Inventory Management System
 
 > **Version:** 1.0 | **Date:** 2026-08-26 | **Status:** Ready for Implementation
 > **Currency:** Philippine Peso (₱) — `NUMERIC(15,2)` throughout

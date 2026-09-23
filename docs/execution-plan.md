@@ -1,4 +1,4 @@
-# Execution Plan — UBMS
+# Execution Plan — Inventory Management System
 
 > **Version:** 1.0 | **Date:** 2026-08-26 | **Status:** Ready for Build
 > **Total Tasks:** 30 | **Sprints:** 7 | **Requirements Covered:** 55 (all FR-xxx)

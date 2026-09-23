@@ -1,5 +1,5 @@
 -- Migration 005: B2C Tables (2 tables)
--- UBMS — Unified Business Management System
+-- Inventory Management System
 -- Date: 2026-08-26
 
 -- ============================================================

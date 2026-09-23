@@ -1,5 +1,5 @@
 -- Migration 007: Inventory Table
--- UBMS — Unified Business Management System
+-- Inventory Management System
 -- Date: 2026-08-26
 
 -- ============================================================

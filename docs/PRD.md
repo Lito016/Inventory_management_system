@@ -1,5 +1,5 @@
-# Product Requirements Document — UBMS
-# Unified Business Management System
+# Product Requirements Document — Inventory Management System
+# Inventory Management System
 
 > **Version:** 1.0 | **Date:** 2026-08-26 | **Status:** Draft for Review
 > **Prepared by:** PRIME Requirements Agent
@@ -9,7 +9,7 @@
 
 ## 1. Executive Summary
 
-UBMS (Unified Business Management System) is a web-based application that consolidates two business lines — B2B Fabric Trading and B2C Printing — into a single platform with Finance as the central, highest-priority module. The system replaces manual processes (paper receipts, hand-calculated balances, scattered spreadsheets) with a structured digital workflow that automates financial calculations, tracks orders end-to-end, and provides searchable transaction records.
+Inventory Management System is a web-based application that consolidates two business lines — B2B Fabric Trading and B2C Printing — into a single platform with Finance as the central, highest-priority module. The system replaces manual processes (paper receipts, hand-calculated balances, scattered spreadsheets) with a structured digital workflow that automates financial calculations, tracks orders end-to-end, and provides searchable transaction records.
 
 **Key outcomes:**
 - Eliminate manual balance calculations and their associated errors

@@ -1,4 +1,4 @@
-# Architecture Design — UBMS
+# Architecture Design — Inventory Management System
 
 > **Version:** 1.0 | **Date:** 2026-08-26 | **Status:** Approved for Build
 > **Architecture Pattern:** Serverless SPA + BaaS (Backend-as-a-Service)
