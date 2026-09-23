@@ -1,0 +1,126 @@
+{
+  "tool": "playwright",
+  "timestamp": "2026-09-23T10:46:43Z",
+  "url": "http://localhost:5173",
+  "viewports": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "pages_assessed": [
+    "products",
+    "summary",
+    "adjustments"
+  ],
+  "screenshots": [
+    {
+      "path": "prime/evidence/browser/products-desktop.png"
+    },
+    {
+      "path": "prime/evidence/browser/products-tablet.png"
+    },
+    {
+      "path": "prime/evidence/browser/products-mobile.png"
+    },
+    {
+      "path": "prime/evidence/browser/summary-desktop.png"
+    },
+    {
+      "path": "prime/evidence/browser/summary-tablet.png"
+    },
+    {
+      "path": "prime/evidence/browser/summary-mobile.png"
+    },
+    {
+      "path": "prime/evidence/browser/adjustments-desktop.png"
+    },
+    {
+      "path": "prime/evidence/browser/adjustments-tablet.png"
+    },
+    {
+      "path": "prime/evidence/browser/adjustments-mobile.png"
+    },
+    {
+      "path": "prime/evidence/browser/journey-summary-search.png"
+    },
+    {
+      "path": "prime/evidence/browser/journey-adjustment-validation.png"
+    },
+    {
+      "path": "prime/evidence/browser/journey-adjustment-negstock-confirm.png"
+    },
+    {
+      "path": "prime/evidence/browser/journey-products-modal.png"
+    },
+    {
+      "path": "prime/evidence/browser/journey-adjustment-filter.png"
+    }
+  ],
+  "dimensions": {
+    "design_tokens": {
+      "score": 95,
+      "findings": "Computed primary button background rgb(37, 99, 235) matches design token #2563EB on products and adjustments pages; border-radius 4px matches rounded-sm; table cell typography 12px/text-gray-500 consistent with docs/DESIGN.canvas.tsx. Summary page toolbar has no primary button (expected).",
+      "evidence": [
+        "prime/evidence/browser/products-desktop.png",
+        "prime/evidence/browser/products-tablet.png",
+        "prime/evidence/browser/products-mobile.png"
+      ]
+    },
+    "accessibility": {
+      "score": 78,
+      "findings": "axe-core runs: independent review caught 6 in-scope color-contrast nodes (text-green-600/red-600 table spans on summary) which were fixed to 700-shade tokens and confirmed by post-fix re-run. Remaining findings are pre-existing shared app chrome (icon-only Header search/bell buttons without names, slate-500-on-slate-900 sidebar headers at 3.75:1, duplicate nav landmarks) present identically on every app page. One accepted-convention minor: empty actions-column header per finance/payables.tsx convention; row buttons are self-labeled. All in-table controls keyboard reachable with visible focus rings (focus-hover-states journey).",
+      "evidence": [
+        "prime/evidence/browser/products-axe.json",
+        "prime/evidence/browser/summary-axe.json",
+        "prime/evidence/browser/adjustments-axe.json"
+      ]
+    },
+    "responsive_layout": {
+      "score": 90,
+      "findings": "At 390px the filter select expands to full width (w-full sm:w-44), tables scroll horizontally without clipping page chrome, PageTabs remain usable, and no horizontal overflow of container content was observed in mobile screenshots. Modal fits mobile viewport.",
+      "evidence": [
+        "prime/evidence/browser/products-mobile.png",
+        "prime/evidence/browser/summary-mobile.png",
+        "prime/evidence/browser/adjustments-mobile.png"
+      ]
+    },
+    "visual_consistency": {
+      "score": 92,
+      "findings": "All three inventory pages share PageTabs + PageContainer header pattern, identical Table styling, badge color language (green/gray for Active/Inactive; stock status colors single-sourced from stockStatus()), and consistent button variants.",
+      "evidence": [
+        "prime/evidence/browser/products-desktop.png",
+        "prime/evidence/browser/products-tablet.png",
+        "prime/evidence/browser/products-mobile.png",
+        "prime/evidence/browser/summary-desktop.png",
+        "prime/evidence/browser/summary-tablet.png",
+        "prime/evidence/browser/summary-mobile.png"
+      ]
+    },
+    "component_quality": {
+      "score": 90,
+      "findings": "Reusable Table/Badge/Modal/Input/Select/Pagination components used without duplication; loading skeleton, empty message, and error banner states wired; pagination hidden when rows (10) < PAGE_SIZE (20) which is correct conditional behavior confirmed at all viewports.",
+      "evidence": [
+        "prime/evidence/browser/adjustments-desktop.png",
+        "prime/evidence/browser/products-desktop.png",
+        "prime/evidence/browser/journey-products-modal.png"
+      ]
+    }
+  },
+  "analysis": {
+    "verdict": "pass",
+    "overall_score": 86,
+    "notes": "Score is desktop/tablet/mobile screenshot review + computed-style token probes + axe output. Pre-existing app-chrome accessibility debt tracked separately from this increment."
+  }
+}

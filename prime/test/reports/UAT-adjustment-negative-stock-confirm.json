@@ -1,0 +1,27 @@
+{
+  "scenario": "adjustment-negative-stock-confirm",
+  "tool": "playwright",
+  "timestamp": "2026-09-23T10:46:43Z",
+  "status": "passed",
+  "url": "http://localhost:5173",
+  "checks": [
+    {
+      "action": "open New Adjustment modal"
+    },
+    {
+      "action": "submit empty -> required errors shown",
+      "error_fields": 1
+    },
+    {
+      "action": "submit negative beyond stock -> confirm dialog",
+      "confirm_dialog": true,
+      "adjust_anyway_btn": true
+    }
+  ],
+  "screenshots": [
+    "prime/evidence/browser/journey-adjustment-validation.png",
+    "prime/evidence/browser/journey-adjustment-negstock-confirm.png"
+  ],
+  "console_errors": 0,
+  "error": null
+}

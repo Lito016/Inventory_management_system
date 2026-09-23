@@ -1,0 +1,56 @@
+{
+  "timestamp": "2026-09-23T10:46:43Z",
+  "trace_level": "TRACE_REQUIRED",
+  "requirement_traces": [
+    {
+      "requirement": "T-021 product CRUD + deactivate",
+      "implementation": [
+        "src/routes/_protected/inventory/products.tsx",
+        "src/hooks/use-b2b.ts"
+      ],
+      "tests": [
+        "tests/inventory-logic.test.ts"
+      ],
+      "ui_verification": "prime/evidence/screenshots/products-desktop.png + journey-products-modal.png",
+      "persistence_verified": "mock-executed insert/refetch + static migration-RLS audit (see data_integrity.persistence_note)"
+    },
+    {
+      "requirement": "T-022 summary via v_inventory_summary",
+      "implementation": [
+        "src/routes/_protected/inventory/summary.tsx",
+        "src/lib/inventory.ts"
+      ],
+      "tests": [
+        "tests/inventory-view-contract.test.ts"
+      ],
+      "ui_verification": "prime/evidence/screenshots/summary-desktop.png + journey-summary-search.png",
+      "persistence_verified": "mock-executed insert/refetch + static migration-RLS audit (see data_integrity.persistence_note)"
+    },
+    {
+      "requirement": "T-022 adjustments with mandatory reason + negative-stock warning",
+      "implementation": [
+        "src/routes/_protected/inventory/adjustments.tsx"
+      ],
+      "tests": [
+        "tests/inventory-logic.test.ts (parseAdjustmentQuantity 6 cases)"
+      ],
+      "ui_verification": "prime/evidence/screenshots/journey-adjustment-validation.png + journey-adjustment-negstock-confirm.png",
+      "persistence_verified": "mock-executed insert/refetch + static migration-RLS audit (see data_integrity.persistence_note)"
+    }
+  ],
+  "cross_layer_evidence": {
+    "adjustment create": {
+      "frontend": "Modal form -> handleSubmit -> saveAdjustment (adjustments.tsx)",
+      "backend": "useCreateInventoryAdjustment -> supabase-js insert",
+      "persistence": "inventory_movements row with movement_type='adjustment', signed quantity, reason, created_by (RLS: INSERT allowed, DELETE denied, migration 20260826000010)",
+      "ui_result": "Success closes modal, list refetches; journey adjustment-negative-stock-confirm passed 6/6"
+    }
+  },
+  "data_integrity": {
+    "view_contract": "v_inventory_summary columns and signed-adjustment semantics pinned by tests/inventory-view-contract.test.ts against 20260826000008_views.sql:40-52",
+    "derived_field": "current_quantity = total_received - total_released + total_adjustments validated in view contract test",
+    "status_consistency": "stockStatus() thresholds tested (out-of-stock <=0/non-finite fail-closed, low < threshold)",
+    "seed_alignment": "Prototype flows validated live against seed-data.ts (10 products, 10 movements; observed states In Stock and Out of Stock — Low Stock range is unit-tested only, no seed row falls in it)",
+    "persistence_note": "E2E exercised the insert->refetch flow against the in-memory prototype mock; live Postgres/RLS enforcement was audited statically from migration SQL (no real Supabase instance in this environment)."
+  }
+}

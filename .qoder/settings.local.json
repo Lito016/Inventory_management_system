@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"C:\\\\Projects\\\\inventory_management\\\\prime\" -type f | head -50 && echo \"---\" && wc -l src/routes/_protected/inventory/*.tsx src/hooks/use-b2b.ts supabase/migrations/20260826000007_inventory_table.sql src/lib/supabase/seed-data.ts 2>/dev/null)",
+      "mcp__plugin_qoder-sites_qoder-sites__get_local_context",
+      "mcp__plugin_qoder-sites_qoder-sites__*",
+      "Bash(curl -sI https://ubms-inventory-zldavxr5o3u.qoder.website --max-time 15 | head -20)",
+      "Bash(git status 2>&1 | head -20; echo \"---\"; ls -a)",
+      "Bash(git add -A && git status --short | head -60; echo \"...\"; git status --short | wc -l)"
+    ]
+  }
+}

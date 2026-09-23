@@ -1,0 +1,19 @@
+{
+  "scenario": "adjustment-type-filter",
+  "tool": "playwright",
+  "timestamp": "2026-09-23T10:46:43Z",
+  "status": "passed",
+  "url": "http://localhost:5173",
+  "checks": [
+    {
+      "action": "filter movement type = Adjustment",
+      "all_rows": 10,
+      "filtered_rows": 2
+    }
+  ],
+  "screenshots": [
+    "prime/evidence/browser/journey-adjustment-filter.png"
+  ],
+  "console_errors": 0,
+  "error": null
+}

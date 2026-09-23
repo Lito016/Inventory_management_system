@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-09-23T10:46:43Z",
+  "risk_class": "medium",
+  "verdict": "pass",
+  "controls": {
+    "testing": {
+      "status": "pass",
+      "evidence": [
+        "prime/reports/phase-5-test-results.json",
+        "tests/inventory-logic.test.ts",
+        "tests/inventory-view-contract.test.ts",
+        "prime/reports/phase-6-e2e-results.json"
+      ]
+    },
+    "security": {
+      "status": "pass",
+      "evidence": [
+        "prime/reports/phase-6-security-scan.json",
+        "prime/reports/phase-5-security-testing.md"
+      ]
+    },
+    "performance": {
+      "status": "pass",
+      "evidence": [
+        "prime/reports/phase-6-ui-quality.json",
+        "prime/reports/phase-6-browser-console.json"
+      ]
+    },
+    "observability": {
+      "status": "pass",
+      "evidence": [
+        "prime/reports/phase-6-runtime-errors.json",
+        "prime/reports/phase-6-browser-console.json"
+      ]
+    },
+    "deployment": {
+      "status": "pass",
+      "evidence": [
+        "supabase/migrations/20260826000007_inventory_table.sql",
+        "package.json"
+      ]
+    },
+    "rollback": {
+      "status": "pass",
+      "evidence": [
+        "prime/reports/phase-4-plan.md",
+        "supabase/migrations"
+      ]
+    }
+  },
+  "notes": "Deploy = apply pending supabase migrations + ship static build; rollback = revert to previous release and drop incremental migration changes via down-migration or restore point. Migrations are additive only (no destructive column drops in this increment)."
+}

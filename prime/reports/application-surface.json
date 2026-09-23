@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-09-23T10:46:43Z",
+  "framework": "Vite + React + react-router (src/App.tsx)",
+  "routes_audited": [
+    "/inventory/products",
+    "/inventory/summary",
+    "/inventory/adjustments"
+  ],
+  "auth": "Protected layout requires session; prototype mode auto-logs-in as admin mock user",
+  "persistence": "Supabase Postgres via supabase-js; tables products, inventory_movements; view v_inventory_summary",
+  "components": [
+    "Table",
+    "Badge",
+    "Modal",
+    "Input",
+    "Select",
+    "Pagination",
+    "PageContainer",
+    "PageTabs"
+  ],
+  "mutation_surface": [
+    "create product",
+    "update product (edit/deactivate)",
+    "create adjustment -> inventory_movements insert"
+  ],
+  "out_of_scope_surface": "Other modules (B2B orders, B2C, payables) untouched by this increment; shared layout chrome carries pre-existing a11y debt"
+}

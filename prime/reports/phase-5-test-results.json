@@ -1,0 +1,14 @@
+{
+  "command": "pnpm test → node --test tests/inventory-logic.test.ts tests/inventory-view-contract.test.ts (executed per-file for gate re-run; Node 26 native type-stripping runner)",
+  "executed_at": "2026-09-23T12:40:00Z",
+  "exit_code": 0,
+  "tests_run": 2,
+  "passed": 2,
+  "failed": 0,
+  "test_files": [
+    "tests/inventory-logic.test.ts",
+    "tests/inventory-view-contract.test.ts"
+  ],
+  "test_cases": { "total": 22, "passed": 22, "failed": 0 },
+  "notes": "Re-run after closing all quality-review findings: 2 majors (parseAdjustmentQuantity round-to-zero; Pagination UI on movements list) + 5 minors + 1 nit. tsc --noEmit clean; vite build succeeds (pre-existing 770kB chunk warning only)."
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.1",
+  "phase": 6,
+  "verdict": "pass",
+  "checks": [
+    {
+      "name": "test-suite",
+      "status": "pass",
+      "evidence": [
+        "prime/reports/phase-6-verify.md",
+        "prime/reports/phase-6-runtime-errors.json",
+        "prime/reports/phase-6-browser-console.json",
+        "tests/inventory-logic.test.ts",
+        "tests/inventory-view-contract.test.ts"
+      ]
+    },
+    {
+      "name": "critical-journeys",
+      "status": "pass",
+      "evidence": [
+        "prime/reports/phase-6-e2e-results.json",
+        "prime/test/reports/UAT-adjustment-negative-stock-confirm.json",
+        "prime/test/reports/UAT-products-modal-and-tabs.json",
+        "prime/test/reports/UAT-summary-search-filters.json",
+        "prime/evidence/screenshots/journey-adjustment-negstock-confirm.png"
+      ]
+    },
+    {
+      "name": "acceptance-criteria",
+      "status": "pass",
+      "evidence": [
+        "prime/reports/evaluation-report.md",
+        "prime/reports/phase-6-quality-review.md",
+        "prime/reports/coverage-map.json",
+        "prime/reports/phase-6-implementation-quality.json"
+      ]
+    }
+  ],
+  "reverify_count": 1,
+  "last_reverified_at": "2026-09-23T11:05:00Z"
+}

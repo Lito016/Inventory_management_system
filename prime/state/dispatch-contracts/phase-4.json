@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.1",
+  "phase": 4,
+  "name": "Plan",
+  "agent": "prime-instruct",
+  "procedure": [
+    "prime-instruct-spec"
+  ],
+  "mandatory_skills": [
+    "quality-review",
+    "caveman"
+  ],
+  "core_skills": [
+    "quality-review",
+    "caveman"
+  ],
+  "skills_by_shape": {
+    "product_increment": []
+  },
+  "recommended_skills": [
+    "testing",
+    "software-architecture",
+    "devops",
+    "git-workflow",
+    "session-continuity"
+  ],
+  "required_artifacts": [
+    "docs/PRP.md",
+    "prime/reports/phase-4-plan.md",
+    "prime/reports/phase-4-checkpoint-review.md",
+    "prime/reports/phase-4-quality-review.md",
+    "prime/reports/threat-model.md"
+  ],
+  "required_checks": [
+    "plan-review"
+  ],
+  "gates_by_shape": {
+    "product_increment": [
+      {
+        "id": "G1"
+      },
+      {
+        "id": "G2"
+      },
+      {
+        "id": "G3"
+      },
+      {
+        "id": "G4"
+      },
+      {
+        "id": "G5"
+      },
+      {
+        "id": "G6"
+      },
+      {
+        "id": "G9"
+      },
+      {
+        "id": "G11"
+      }
+    ],
+    "full": [
+      {
+        "id": "G1"
+      },
+      {
+        "id": "G2"
+      },
+      {
+        "id": "G3"
+      },
+      {
+        "id": "G4"
+      },
+      {
+        "id": "G5"
+      },
+      {
+        "id": "G6"
+      },
+      {
+        "id": "G7"
+      },
+      {
+        "id": "G8"
+      },
+      {
+        "id": "G9"
+      },
+      {
+        "id": "G10"
+      },
+      {
+        "id": "G11"
+      },
+      {
+        "id": "G12"
+      },
+      {
+        "id": "G13"
+      },
+      {
+        "id": "G14"
+      }
+    ]
+  },
+  "gate_contracts": [
+    {
+      "id": "G1",
+      "outcome": "implementation plan identifies risks, dependencies, and constraints",
+      "check": "node scripts/gate-check.mjs pattern docs/PRP.md \"risk|dependency|constraint|assumption|prerequisite\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G2",
+      "outcome": "plan report records specification decisions",
+      "check": "node scripts/gate-check.mjs size prime/reports/phase-4-plan.md 200",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G3",
+      "outcome": "implementation plan contains ordered steps or milestones",
+      "check": "node scripts/gate-check.mjs pattern docs/PRP.md \"step|phase|milestone|task|stage|order\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G4",
+      "outcome": "quality audit verdict is recorded for phase artifacts",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-4-quality-review.md \"verdict:\\s*(pass|block|request changes)\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G5",
+      "outcome": "plan contains effort estimates or time projections",
+      "check": "node scripts/gate-check.mjs pattern docs/PRP.md \"estimate|hour|day|week|PERT|effort|duration|timeline\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G6",
+      "outcome": "plan contains verification points or acceptance criteria per milestone",
+      "check": "node scripts/gate-check.mjs pattern docs/PRP.md \"verif|accept|criteria|done|complete|check|test|deliverable\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G9",
+      "outcome": "plan traces implementation tasks to requirements and design decisions",
+      "check": "node scripts/gate-check.mjs pattern docs/PRP.md \"PRD|DESIGN|REQ-[0-9]+|design decision|acceptance criterion\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G11",
+      "outcome": "mid-phase checkpoint evidence demonstrates plan defects were corrected before execution",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-4-checkpoint-review.md \"artifact snapshot|finding|correction|blocker|verdict\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    }
+  ]
+}

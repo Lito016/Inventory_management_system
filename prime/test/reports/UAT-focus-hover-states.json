@@ -1,0 +1,19 @@
+{
+  "scenario": "focus-hover-states",
+  "tool": "playwright",
+  "timestamp": "2026-09-23T10:46:43Z",
+  "status": "passed",
+  "url": "http://localhost:5173",
+  "checks": [
+    {
+      "action": "hover + focus",
+      "bg_before": "rgb(37, 99, 235)",
+      "bg_after_hover": "rgb(29, 78, 216)",
+      "changed_on_hover": true,
+      "focus": "solid|rgb(255, 255, 255) 0px 0px 0px 0px, rgb(219, 234, 254) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+    }
+  ],
+  "screenshots": [],
+  "console_errors": 0,
+  "error": null
+}

@@ -1,0 +1,8 @@
+{
+  "schema_version": "2.0",
+  "run_id": "ubms-inventory-t021-t022-mudx7lbm-8uts6d",
+  "started_at": "2026-09-23T09:48:42.034Z",
+  "lifecycle_shape": "product_increment",
+  "quality_mode": "autopilot",
+  "input_fingerprint": "3ee6b0c2609fd8495c638c6c5fb37f2519832b7e78d7af609777d87e039cfb37"
+}

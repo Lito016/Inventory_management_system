@@ -1,0 +1,36 @@
+{
+  "schema_version": "2.0",
+  "run_id": "ubms-inventory-t021-t022-mudx7lbm-8uts6d",
+  "recall": {
+    "provider": "local",
+    "timestamp": "2026-09-23T09:49:15Z",
+    "input_fingerprint": "3ee6b0c2609fd8495c638c6c5fb37f2519832b7e78d7af609777d87e039cfb37",
+    "search_queries": [
+      "grep v_inventory_summary across src/ and supabase/migrations (ground truth: 20260826000008_views.sql:40-52 columns product_id,name,unit,category,is_active,total_received,total_released,total_adjustments,current_quantity)",
+      "grep useInventoryMovements|useCreateInventoryAdjustment in src/hooks (use-b2c.ts:91-117)",
+      "grep FR-INV-00[1-6] in docs/requirements-spec.md §6 and docs/PRD.md (T-021/T-022 completion criteria in docs/execution-plan.md:535-566)",
+      "grep inventory_movements RLS in 20260826000010_rls_policies.sql:141-143 (SELECT/INSERT/UPDATE authenticated, no DELETE)",
+      "grep auto-movement triggers in 20260826000009_triggers.sql:157-183 (received/released positive quantities from receiving/fulfillment)",
+      "route wiring App.tsx:90-92 + Sidebar.tsx:19; existing defects summary.tsx:11-18/37-38 and reports/index.tsx:46 (stale product_name/current_stock columns)"
+    ],
+    "summary": "Local repository recall established full ground truth: view contract, hooks, requirements, RLS posture, and the exact stale-column defects. No local-unknown required web fallback."
+  },
+  "research": {
+    "timestamp": "2026-09-23T09:49:15Z",
+    "search_queries": [
+      "Supabase PostgREST or filter ilike special characters comma escaping javascript client",
+      "TanStack Query v5 placeholderData keepPreviousData debounced search input best practice"
+    ],
+    "sources_consulted": [
+      "https://github.com/orgs/supabase/discussions/19651",
+      "https://stackoverflow.com/questions/76065534/how-to-escape-string-characters-in-supabase-js-or-query",
+      "https://supabase.com/docs/reference/javascript/using-filters",
+      "https://github.com/TanStack/query/discussions/6460",
+      "https://tanstack.com/query/latest/docs/framework/react/guides/placeholder-query-data"
+    ],
+    "findings": [
+      "Supabase or()/filter strings cannot carry unescaped commas or parentheses — user terms containing them produce syntax errors (400); accepted workaround is client-side sanitization of reserved characters before interpolation into or().",
+      "TanStack Query v5: keepPreviousData moved to placeholderData: keepPreviousData; pair with debounced input value in the queryKey to avoid table flash and per-keystroke refetch storms."
+    ]
+  }
+}

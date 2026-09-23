@@ -1,0 +1,263 @@
+{
+  "tool": "playwright",
+  "timestamp": "2026-09-23T10:46:43Z",
+  "url": "http://localhost:5173",
+  "pages_checked": [
+    {
+      "page": "products",
+      "url": "http://localhost:5173/inventory/products",
+      "viewports": [
+        "desktop",
+        "tablet",
+        "mobile"
+      ],
+      "load": "networkidle + wait"
+    },
+    {
+      "page": "summary",
+      "url": "http://localhost:5173/inventory/summary",
+      "viewports": [
+        "desktop",
+        "tablet",
+        "mobile"
+      ],
+      "load": "networkidle + wait"
+    },
+    {
+      "page": "adjustments",
+      "url": "http://localhost:5173/inventory/adjustments",
+      "viewports": [
+        "desktop",
+        "tablet",
+        "mobile"
+      ],
+      "load": "networkidle + wait"
+    }
+  ],
+  "console_messages": [
+    {
+      "page": "products",
+      "viewport": "desktop",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "products",
+      "viewport": "desktop",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "page": "products",
+      "viewport": "desktop",
+      "type": "info",
+      "text": "[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend."
+    },
+    {
+      "page": "products",
+      "viewport": "desktop",
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "page": "products",
+      "viewport": "tablet",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "products",
+      "viewport": "tablet",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "page": "products",
+      "viewport": "tablet",
+      "type": "info",
+      "text": "[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend."
+    },
+    {
+      "page": "products",
+      "viewport": "tablet",
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "page": "products",
+      "viewport": "mobile",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "products",
+      "viewport": "mobile",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "page": "products",
+      "viewport": "mobile",
+      "type": "info",
+      "text": "[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend."
+    },
+    {
+      "page": "products",
+      "viewport": "mobile",
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "page": "summary",
+      "viewport": "desktop",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "summary",
+      "viewport": "desktop",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "page": "summary",
+      "viewport": "desktop",
+      "type": "info",
+      "text": "[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend."
+    },
+    {
+      "page": "summary",
+      "viewport": "desktop",
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "page": "summary",
+      "viewport": "tablet",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "summary",
+      "viewport": "tablet",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "page": "summary",
+      "viewport": "tablet",
+      "type": "info",
+      "text": "[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend."
+    },
+    {
+      "page": "summary",
+      "viewport": "tablet",
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "page": "summary",
+      "viewport": "mobile",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "summary",
+      "viewport": "mobile",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "page": "summary",
+      "viewport": "mobile",
+      "type": "info",
+      "text": "[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend."
+    },
+    {
+      "page": "summary",
+      "viewport": "mobile",
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "page": "adjustments",
+      "viewport": "desktop",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "adjustments",
+      "viewport": "desktop",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "page": "adjustments",
+      "viewport": "desktop",
+      "type": "info",
+      "text": "[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend."
+    },
+    {
+      "page": "adjustments",
+      "viewport": "desktop",
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "page": "adjustments",
+      "viewport": "tablet",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "adjustments",
+      "viewport": "tablet",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "page": "adjustments",
+      "viewport": "tablet",
+      "type": "info",
+      "text": "[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend."
+    },
+    {
+      "page": "adjustments",
+      "viewport": "tablet",
+      "type": "debug",
+      "text": "[vite] connected."
+    },
+    {
+      "page": "adjustments",
+      "viewport": "mobile",
+      "type": "debug",
+      "text": "[vite] connecting..."
+    },
+    {
+      "page": "adjustments",
+      "viewport": "mobile",
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"
+    },
+    {
+      "page": "adjustments",
+      "viewport": "mobile",
+      "type": "info",
+      "text": "[UBMS] Running in PROTOTYPE mode with mock data. Set Supabase credentials in .env.local for real backend."
+    },
+    {
+      "page": "adjustments",
+      "viewport": "mobile",
+      "type": "debug",
+      "text": "[vite] connected."
+    }
+  ],
+  "network_failures": [],
+  "analysis": {
+    "verdict": "pass",
+    "error_count": 0,
+    "warning_count": 0,
+    "network_failure_count": 0,
+    "notes": "Only vite HMR debug logs, React DevTools info banner, and the prototype-mode mock-data info line were emitted. Zero console errors and zero failed network requests across all 9 page-viewport loads."
+  }
+}

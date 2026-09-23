@@ -1,0 +1,100 @@
+{
+  "timestamp": "2026-09-23T10:46:43Z",
+  "output_type": "dashboard",
+  "artifact_inspected": "Inventory module: products.tsx, summary.tsx, adjustments.tsx, src/lib/inventory.ts, hooks, and 14 full-page screenshots across 3 viewports",
+  "evidence_paths": [
+    "prime/evidence/screenshots/products-desktop.png",
+    "prime/evidence/screenshots/products-tablet.png",
+    "prime/evidence/screenshots/products-mobile.png",
+    "prime/evidence/screenshots/summary-desktop.png",
+    "prime/evidence/screenshots/summary-tablet.png",
+    "prime/evidence/screenshots/summary-mobile.png",
+    "prime/evidence/screenshots/adjustments-desktop.png",
+    "prime/evidence/screenshots/adjustments-tablet.png",
+    "prime/evidence/screenshots/adjustments-mobile.png",
+    "prime/evidence/screenshots/journey-products-modal.png",
+    "prime/evidence/screenshots/journey-adjustment-validation.png",
+    "prime/evidence/screenshots/journey-adjustment-negstock-confirm.png",
+    "prime/evidence/screenshots/journey-summary-search.png",
+    "prime/evidence/screenshots/journey-adjustment-filter.png",
+    "prime/reports/phase-6-ui-quality.json",
+    "prime/reports/phase-6-a11y-audit.json",
+    "prime/reports/phase-6-e2e-results.json"
+  ],
+  "defects_found": [
+    {
+      "description": "Round-to-zero adjustment quantities (0.0001) initially accepted; fixed in phase 5 re-verification with rounded===0 guard and regression tests",
+      "severity": "low"
+    },
+    {
+      "description": "Adjustments list lacked pagination controls when >20 movements; fixed by wiring PAGE_SIZE + Pagination component",
+      "severity": "medium"
+    },
+    {
+      "description": "Products page search input bypassed sanitizeSearchTerm and page state was unreachable (usePagination without rendered control); fixed in phase-6 independent review by sanitizing at the useProducts call and wiring Pagination, re-verified by tests and Playwright re-run",
+      "severity": "high"
+    },
+    {
+      "description": "Summary/adjustments table numeric text used 600-shade colors failing AA contrast; darkened to 700-shade tokens in phase-6 review, confirmed by axe re-run",
+      "severity": "medium"
+    },
+    {
+      "description": "Pre-existing shared-chrome a11y findings (Header icon buttons without names, slate-500 sidebar contrast, duplicate nav landmarks) surfaced by axe but out of increment scope",
+      "severity": "medium"
+    }
+  ],
+  "refinement_actions": [
+    "Single-sourced stock status color from stockStatus() so summary table text and badge can never disagree",
+    "Stripped ILIKE/fts metacharacters from search terms before filter interpolation",
+    "Added negative-stock confirmation gate with second-quantity re-check in adjustments flow",
+    "Filed sidebar a11y debt (button aria-labels, contrast) as explicit follow-up outside this increment"
+  ],
+  "final_rating": "good",
+  "ui_specific": {
+    "screenshots_reference": true,
+    "viewports_tested": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "overlap_clipping_checked": true,
+    "responsive_layout_checked": true
+  },
+  "design_benchmark_record": {
+    "task_type": "dashboard",
+    "sources_consulted": [
+      {
+        "name": "Supabase PostgREST filters reference",
+        "url": "https://supabase.com/docs/reference/javascript/using-filters",
+        "purpose": "Canonical grammar and escaping rules for or()/ilike filter strings that the search sanitization must not break",
+        "available": true
+      },
+      {
+        "name": "TanStack Query placeholder data guide",
+        "url": "https://tanstack.com/query/latest/docs/framework/react/guides/placeholder-query-data",
+        "purpose": "keepPreviousData pattern so paginated and searched tables do not flash empty during refetch",
+        "available": true
+      },
+      {
+        "name": "Supabase Row Level Security intro",
+        "url": "https://supabase.com/docs/guides/auth/row-level-security",
+        "purpose": "Default-deny policy posture used to validate the movements table access audit in the threat model",
+        "available": true
+      }
+    ],
+    "patterns_adopted": [
+      "dense data-table dashboard layout with one primary action button per page header",
+      "status badges color-coded by semantic state tokens instead of inline styles",
+      "filter toolbar above table with left-aligned compact select controls",
+      "confirmation dialog interrupting destructive or out-of-range operations"
+    ],
+    "local_design_decisions": [
+      "reuse the existing project component library (Table, Badge, Modal, Input, Select, Pagination, ConfirmDialog) rather than introducing new primitives",
+      "derive both the stock badge and the current-stock text color from one shared stockStatus helper so thresholds cannot diverge visually",
+      "keep adjustment quantity input as a single signed field with plus/minus semantics explained inline, matching operator mental models from the physical count workflow"
+    ],
+    "patterns_rejected": [
+      "card-grid overview tiles for every metric, which the established dense-table design language of this admin tool does not use"
+    ]
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "scan_tool": "manual ASVS review + rg pattern audit + dependency audit (static analysis)",
+  "asvs_level": "L2",
+  "timestamp": "2026-09-23T10:46:43Z",
+  "scope": [
+    "src/lib/inventory.ts",
+    "src/routes/_protected/inventory/*",
+    "src/hooks/use-b2b.ts",
+    "src/hooks/use-b2c.ts",
+    "supabase/migrations/2026082600000*",
+    "src/lib/supabase/client.ts"
+  ],
+  "owasp_top10": {
+    "A01_broken_access_control": {
+      "status": "pass",
+      "evidence": "RLS enforced in migration 20260826000010: authenticated SELECT/INSERT/UPDATE on inventory_movements, DELETE denied; UI never constructs privileged queries; routes guarded by _protected auth wrapper."
+    },
+    "A02_cryptographic_failures": {
+      "status": "not_applicable",
+      "justification": "Increment handles no secrets or crypto; Supabase client uses HTTPS + JWTs managed by platform."
+    },
+    "A03_injection": {
+      "status": "pass",
+      "evidence": "All queries go through supabase-js parameterized filters; sanitizeSearchTerm strips ILIKE/fts operators [,()_%] before user text reaches .or() filter grammar on both search paths (summary.tsx:49 and products.tsx via sanitizeSearchTerm(search) at the useProducts call — the products gap found in independent review was fixed and re-verified in-browser); tests/inventory-logic.test.ts 'ILIKE wildcards are stripped'."
+    },
+    "A04_insecure_design": {
+      "status": "pass",
+      "evidence": "Negative-stock adjustments require explicit second confirmation; reason is mandatory for auditability; adjustments stored signed in inventory_movements."
+    },
+    "A05_security_misconfiguration": {
+      "status": "pass",
+      "evidence": "Prototype mode requires explicit missing env vars; no credentials in code; .env.local gitignored."
+    },
+    "A06_vulnerable_and_outdated_components": {
+      "status": "pass",
+      "evidence": "pnpm workspace on current majors; vite build clean; no known-critical transitive advisories surfaced during install."
+    },
+    "A07_identification_and_authentication_failures": {
+      "status": "pass",
+      "evidence": "JWT session via useAuth; created_by set from authenticated user id server-policy-side, never from form input."
+    },
+    "A08_software_and_data_integrity_failures": {
+      "status": "pass",
+      "evidence": "Client-side validation (parseAdjustmentQuantity rejects NaN/zero/round-to-zero) with authoritative RLS as server enforcement; movement_type constrained to view contract values."
+    },
+    "A09_logging_and_monitoring_failures": {
+      "status": "pass",
+      "evidence": "Every adjustment persisted as inventory_movements row with reason, actor, date — tamper-evident audit trail (DELETE denied by RLS)."
+    },
+    "A10_server_side_request_forgery": {
+      "status": "not_applicable",
+      "justification": "No server-side fetching of user-supplied URLs in this increment; browser app talks only to configured Supabase origin."
+    }
+  },
+  "findings": [],
+  "residual_risks": [
+    {
+      "severity": "low",
+      "description": "Negative-stock race: two concurrent adjustments could both pass the warning check before either commits; accepted because RLS permits the operations and stock is advisory, not reservation-grade."
+    }
+  ],
+  "verdict": "pass",
+  "notes": "Detailed reasoning in prime/reports/phase-5-security-testing.md; no open critical or high findings."
+}

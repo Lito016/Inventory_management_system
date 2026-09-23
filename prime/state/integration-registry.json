@@ -1,0 +1,17 @@
+{
+  "quality_mode": "polish",
+  "mcp_servers": {
+    "context7": { "tools": ["resolve-library-id", "query-docs"], "phases": [2, 3, 4, 5, 6] },
+    "fetch": { "tools": ["fetch"], "phases": [1, 2, 3] },
+    "playwright": { "tools": ["browser_navigate", "browser_click", "browser_take_screenshot", "browser_snapshot", "browser_resize", "browser_fill_form", "browser_type", "browser_press_key"], "phases": [5, 6] },
+    "genui": { "tools": ["show_widget", "load_guidelines"], "phases": [3] },
+    "filesystem": { "tools": ["read_file", "write_file", "list_directory", "create_directory", "search_files", "move_file", "edit_file"], "phases": [1, 2, 3, 4, 5, 6, 7] },
+    "postgres": { "tools": ["query"], "phases": [5, 6] },
+    "sequential-thinking": { "tools": ["sequentialthinking"], "phases": [2, 3, 4] },
+    "quill": { "tools": ["write_note", "read_note", "search_notes", "create_note", "list_notes", "create_folder"], "phases": [1, 2, 3, 4, 5, 6, 7] },
+    "snapcheck": { "tools": ["verify_design", "check_responsive", "detect_grid", "ocr_check", "visual_regression"], "phases": [5, 6] }
+  },
+  "external_skills": {},
+  "dynamic_skills": {},
+  "plugin_agents": {}
+}

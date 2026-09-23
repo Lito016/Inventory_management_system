@@ -1,0 +1,22 @@
+{
+  "scenario": "products-modal-and-tabs",
+  "tool": "playwright",
+  "timestamp": "2026-09-23T10:46:43Z",
+  "status": "passed",
+  "url": "http://localhost:5173",
+  "checks": [
+    {
+      "action": "inventory tabs present",
+      "tabs": 3
+    },
+    {
+      "action": "open create modal",
+      "dialog_present": true
+    }
+  ],
+  "screenshots": [
+    "prime/evidence/browser/journey-products-modal.png"
+  ],
+  "console_errors": 0,
+  "error": null
+}

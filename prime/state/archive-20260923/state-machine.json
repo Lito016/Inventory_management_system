@@ -1,0 +1,20 @@
+{
+  "quality_mode": "polish",
+  "current_phase": 3,
+  "completed_phases": [1, 2],
+  "completed_actions": ["proposal-extracted", "project-classified", "complexity-scored", "requirements-generated", "quality-review-pass", "critical-fixes-applied"],
+  "resume_point": { "phase": 1, "timestamp": "2026-08-26T00:00:00Z", "artifacts": ["project-charter.md", "integration-registry.json", "state-machine.json"], "gate_status": "in-progress" },
+  "cycle_counts": { "evaluate_make_loops": 0, "phase_retries": {}, "agent_reinvocations": {}, "post_deploy_hotfix_cycles": 0 },
+  "stalemate_checks": 0,
+  "artifact_versions": {
+    "project-charter.md": 1,
+    "integration-registry.json": 1,
+    "state-machine.json": 1
+  },
+  "phase_states": {
+    "1": { "status": "in-progress", "gates": { "G1": "pass", "G2": "pass", "G3": "pass", "G4": "pass", "G5": "pass", "G6": "pass", "G7": "pass", "G8": "pending" } }
+  },
+  "conflict_status": "none",
+  "signoff_status": "pending",
+  "frozen_artifacts": []
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "phase": 6,
+  "agent": "prime-evaluate",
+  "invocations": [
+    {
+      "skill": "quality-review",
+      "status": "applied",
+      "independent": true,
+      "evidence": [
+        "prime/reports/phase-6-quality-review.md",
+        "prime/reports/phase-6-verify.md"
+      ],
+      "note": "Independent quality-review subagent (distinct invocation from the evaluator author) audited all phase-6 evidence and returned verdict: request changes with 3 majors + 7 minors; every major reproduced against source, fixed in code (products sanitization, 700-shade contrast tokens, products Pagination wiring), re-verified via tsc/22 unit tests/vite build/Playwright 6/6 re-run, closing at verdict: pass in the same report."
+    },
+    {
+      "skill": "caveman",
+      "status": "applied",
+      "evidence": [
+        "prime/reports/phase-6-quality-review.md"
+      ],
+      "note": "Reviewer findings and closure recorded one line per finding (path:line: severity: problem. fix.) with severities preserved."
+    },
+    {
+      "skill": "testing",
+      "status": "applied",
+      "evidence": [
+        "prime/reports/phase-6-e2e-results.json",
+        "prime/reports/phase-6-browser-console.json",
+        "prime/reports/phase-6-runtime-errors.json",
+        "tests/inventory-logic.test.ts",
+        "tests/inventory-view-contract.test.ts",
+        "prime/test/reports/UAT-adjustment-negative-stock-confirm.json"
+      ],
+      "note": "Browser E2E tier: Playwright 1.63 against the running app, 3 pages x 3 viewports fullPage screenshots + axe injection + 6 critical journeys (mutation flows through the real UI incl. mandatory-field validation and negative-stock confirmation gate), re-run after review fixes; unit tier re-executed (22/22). Post-test state integrity holds because journeys run against the reset-per-load prototype mock."
+    },
+    {
+      "skill": "code-quality",
+      "status": "applied",
+      "evidence": [
+        "prime/reports/phase-6-implementation-quality.json",
+        "prime/reports/phase-6-quality-review.md"
+      ],
+      "note": "Related-issue pattern scan (unsanitized filter interpolation, unreachable pagination) executed repo-wide from the root cause of review M-1/M-3; matches classified in-scope-fixed vs accepted-convention-deferred; aggregate implementation-quality report produced with per-category executed scores."
+    },
+    {
+      "skill": "security-testing",
+      "status": "applied",
+      "evidence": [
+        "prime/reports/phase-6-security-scan.json",
+        "prime/reports/phase-5-security-testing.md"
+      ],
+      "note": "ASVS L2 aggregation with OWASP A01-A10 per-category dispositions and severity-classified findings; A03 evidence downgraded to honest state when review found the products path unsanitized, then restored after the fix + browser re-verification; residual risk list retained."
+    },
+    {
+      "skill": "database",
+      "status": "applied",
+      "evidence": [
+        "tests/inventory-view-contract.test.ts",
+        "supabase/migrations/20260826000008_views.sql",
+        "supabase/migrations/20260826000010_rls_policies.sql",
+        "prime/reports/coverage-map.json"
+      ],
+      "note": "Persistence-layer verification: v_inventory_summary derivation audited against canonical SQL (lines 40-52), RLS grant matrix (SELECT/INSERT/UPDATE authenticated, DELETE absent) confirmed in 20260826000010_rls_policies.sql:141-143, and pinning regressions executed via the view-contract test; live-instance execution limitation recorded in coverage-map persistence_note."
+    },
+    {
+      "skill": "frontend",
+      "status": "applied",
+      "references": [
+        "skills/frontend/references/core/design-quality-routing.md",
+        "skills/frontend/references/design/quality-parts/index.json",
+        "skills/frontend/references/design/quality-parts/part-16-design-system-accessibility-and-performance.md",
+        "skills/frontend/references/design/quality-parts/part-09-dashboard-ui-references.md",
+        "skills/frontend/scripts/ui-ux-pro-max/search.py executed for phase-6 verification context (design-system selector run 2026-09-23)"
+      ],
+      "evidence": [
+        "prime/reports/phase-6-ui-quality.json",
+        "prime/reports/phase-6-a11y-audit.json",
+        "prime/reports/output-quality-scorecard.json",
+        "prime/evidence/screenshots/products-desktop.png",
+        "prime/evidence/screenshots/summary-desktop.png",
+        "prime/evidence/screenshots/adjustments-desktop.png"
+      ],
+      "note": "Focused-depth route (existing design system + verification task): UI/UX Pro Max selector re-run for phase-6 context, part-16 contrast/token rules applied to the review-caught contrast fix (600->700 shades per the darker-token rule the part documents), part-09 dashboard density conventions used for the ui-quality dimension scoring; screenshots at 3 viewports and design-token computed-style probes recorded in the UI quality report."
+    }
+  ]
+}
