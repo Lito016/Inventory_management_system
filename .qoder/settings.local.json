@@ -6,7 +6,8 @@
       "mcp__plugin_qoder-sites_qoder-sites__*",
       "Bash(curl -sI https://ubms-inventory-zldavxr5o3u.qoder.website --max-time 15 | head -20)",
       "Bash(git status 2>&1 | head -20; echo \"---\"; ls -a)",
-      "Bash(git add -A && git status --short | head -60; echo \"...\"; git status --short | wc -l)"
+      "Bash(git add -A && git status --short | head -60; echo \"...\"; git status --short | wc -l)",
+      "Bash(git diff --cached --name-only | grep -iE '\\\\.env|secret|credential|token|key' ; echo \"---npmrc---\"; cat .npmrc; echo \"---supabase dir---\"; git diff --cached --name-only | grep supabase; echo \"---\"; grep -riE 'eyJ[A-Za-z0-9_-]{20,}|api[_-]?key\\\\s*[:=]\\\\s*[\"'\"'\"'][A-Za-z0-9]{20,}|password\\\\s*[:=]\\\\s*[\"'\"'\"'][^\"'\"]{6,}' --include='*.ts' --include='*.tsx' --include='*.json' --include='*.md' -l src supabase tests .npmrc 2>/dev/null | head)"
     ]
   }
 }
