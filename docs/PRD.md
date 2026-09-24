@@ -650,3 +650,30 @@ Rebuild the three inventory pages onto the canonical `v_inventory_summary` view 
 ### Out of scope (v1.1)
 
 Auto-movement creation triggers in receiving/fulfillment (FR-INV-002/003 automation), per-product deep-link history view, schema migrations, deployment. **FR-INV-006 recorded reduction** (see docs/PRP.md §10): history is delivered as the global movement log (type filter + pagination + signed quantity + reason); reference-document column, acting-user name, and date-range filter are deferred follow-ups.
+
+---
+
+## Increment: UI/UX Enhancement — Responsive, Focus, Density (v1.2, 2026-09-24)
+
+User request "enhance UI and UX", grounded in a Playwright audit of the live demo at 1280/768/375 viewports. Findings UX-1…UX-8 and screenshots: `prime/evidence/ui-audit/`. Design source of truth remains `docs/DESIGN.md` v1.0 (light theme, Inter, dense professional ERP); the ui-ux-pro-max design-system recommendation (`prime/evidence/ui-audit/design-system-recommendation.md`) is adopted for its interaction checklist (visible focus, 150–300ms hover transitions, contrast ≥4.5:1, responsive checkpoints) and rejected for its dark-OLED style and Fira typography, which contradict the approved theme.
+
+### Solution overview
+
+Make the existing SPA usable and polished at every viewport without new modules: a collapsible-to-drawer responsive shell, contained table scrolling, honest header affordances, visible keyboard focus, and dashboard density — all within the established token system.
+
+### Increment requirements & acceptance criteria
+
+| ID | Requirement (shall/must) | Acceptance criterion |
+|---|---|---|
+| U1 | The app shell shall be responsive: below `lg` (1024px) the sidebar becomes an off-canvas drawer opened by a header menu button with overlay and Esc/close-on-nav (UX-1) | GIVEN 375px or 768px viewport, WHEN signed in, THEN content occupies full width, menu button reveals drawer, tapping a nav item closes it and navigates; no horizontal page overflow |
+| U2 | Data tables shall scroll within a contained wrapper at every viewport; the page itself must never overflow horizontally (UX-2) | GIVEN inventory/reports/users list at 768px and 375px, WHEN rendered, THEN `document.documentElement.scrollWidth ≤ innerWidth + 2` and the table is swipeable inside its card |
+| U3 | The collapse control shall keep content offset in sync: collapsing to icon-rail moves the main margin to match (desktop ≥lg only) (UX-3) | GIVEN collapsed sidebar at 1280px, THEN main content starts at the rail edge (no dead gap ≥8px) |
+| U4 | All interactive controls must show a visible focus indicator (≥2px ring, token `primary-500`) on keyboard focus (UX-4) | GIVEN Tab navigation on login and a list page, THEN focused control's computed `box-shadow` or `outline` differs from unfocused state |
+| U5 | Header controls must be honest: the global search button shall open a working record-search popover (at minimum navigates to finance search with the query), and the notification bell shall surface the demo's low-stock/overdue counts or be removed (UX-8) | GIVEN typed query + Enter, WHEN popover submits, THEN user lands on matching records; GIVEN no-op control, THEN it is absent from DOM |
+| U6 | Page titles shall appear once: header breadcrumb shows module context only; the content H1 is the page title (UX-5) | GIVEN any protected page, THEN breadcrumb text ≠ H1 text |
+| U7 | The dashboard shall meet the "dense information display" principle: above-the-fold content includes recent-activity or top-variance lists under the Modules grid; vertical empty space below fold ≤ one card height at 1280×800 (UX-7) | GIVEN 1280×800 dashboard, THEN a populated section exists beneath Modules and screenshot shows no dead zone >200px |
+| U8 | All changes must use existing `docs/DESIGN.md` tokens (gray/primary/semantic layers, Inter); no new colors or fonts may be introduced (UX-6) | GIVEN diff review, THEN no raw hex/new Tailwind palette classes outside the token tables; sidebar keeps dark-surface pattern already in use |
+
+### Out of scope (v1.2)
+
+Dark mode, new fonts, component-library migration, information-architecture changes (routes/nav labels), real notifications backend, print layout changes, new modules.

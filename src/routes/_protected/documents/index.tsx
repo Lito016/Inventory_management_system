@@ -87,7 +87,7 @@ export function DocumentsPage() {
     { key: 'entity_name', header: 'Entity', render: (r) => <span className="font-medium">{r.entity_name}</span> },
     { key: 'amount', header: 'Amount', render: (r) => parseFloat(r.amount) > 0 ? `₱${parseFloat(r.amount).toFixed(2)}` : '—' },
     { key: 'status', header: 'Status', render: (r) => r.status },
-    { key: 'actions', header: '', render: () => <Button variant="ghost" size="sm">View</Button> },
+    { key: 'actions', header: 'Actions', render: () => <Button variant="ghost" size="sm">View</Button> },
   ];
 
   return (

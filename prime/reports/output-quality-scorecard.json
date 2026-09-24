@@ -1,100 +1,132 @@
 {
-  "timestamp": "2026-09-23T10:46:43Z",
-  "output_type": "dashboard",
-  "artifact_inspected": "Inventory module: products.tsx, summary.tsx, adjustments.tsx, src/lib/inventory.ts, hooks, and 14 full-page screenshots across 3 viewports",
-  "evidence_paths": [
-    "prime/evidence/screenshots/products-desktop.png",
-    "prime/evidence/screenshots/products-tablet.png",
-    "prime/evidence/screenshots/products-mobile.png",
-    "prime/evidence/screenshots/summary-desktop.png",
-    "prime/evidence/screenshots/summary-tablet.png",
-    "prime/evidence/screenshots/summary-mobile.png",
-    "prime/evidence/screenshots/adjustments-desktop.png",
-    "prime/evidence/screenshots/adjustments-tablet.png",
-    "prime/evidence/screenshots/adjustments-mobile.png",
-    "prime/evidence/screenshots/journey-products-modal.png",
-    "prime/evidence/screenshots/journey-adjustment-validation.png",
-    "prime/evidence/screenshots/journey-adjustment-negstock-confirm.png",
-    "prime/evidence/screenshots/journey-summary-search.png",
-    "prime/evidence/screenshots/journey-adjustment-filter.png",
-    "prime/reports/phase-6-ui-quality.json",
-    "prime/reports/phase-6-a11y-audit.json",
-    "prime/reports/phase-6-e2e-results.json"
-  ],
-  "defects_found": [
-    {
-      "description": "Round-to-zero adjustment quantities (0.0001) initially accepted; fixed in phase 5 re-verification with rounded===0 guard and regression tests",
-      "severity": "low"
-    },
-    {
-      "description": "Adjustments list lacked pagination controls when >20 movements; fixed by wiring PAGE_SIZE + Pagination component",
-      "severity": "medium"
-    },
-    {
-      "description": "Products page search input bypassed sanitizeSearchTerm and page state was unreachable (usePagination without rendered control); fixed in phase-6 independent review by sanitizing at the useProducts call and wiring Pagination, re-verified by tests and Playwright re-run",
-      "severity": "high"
-    },
-    {
-      "description": "Summary/adjustments table numeric text used 600-shade colors failing AA contrast; darkened to 700-shade tokens in phase-6 review, confirmed by axe re-run",
-      "severity": "medium"
-    },
-    {
-      "description": "Pre-existing shared-chrome a11y findings (Header icon buttons without names, slate-500 sidebar contrast, duplicate nav landmarks) surfaced by axe but out of increment scope",
-      "severity": "medium"
-    }
-  ],
-  "refinement_actions": [
-    "Single-sourced stock status color from stockStatus() so summary table text and badge can never disagree",
-    "Stripped ILIKE/fts metacharacters from search terms before filter interpolation",
-    "Added negative-stock confirmation gate with second-quantity re-check in adjustments flow",
-    "Filed sidebar a11y debt (button aria-labels, contrast) as explicit follow-up outside this increment"
-  ],
-  "final_rating": "good",
-  "ui_specific": {
-    "screenshots_reference": true,
-    "viewports_tested": [
-      "desktop",
-      "tablet",
-      "mobile"
-    ],
-    "overlap_clipping_checked": true,
-    "responsive_layout_checked": true
+ "output_type": "dashboard",
+ "artifact_inspected": "IMS demo build (VITE_DEMO production bundle) after UI/UX enhancement increment T-101..T-107: responsive shell, focus-visible tokens, honest disclosure bell, SPA-link navigation, dashboard density and data-honest movement display",
+ "generated_at": "2026-09-24T08:19:52.116897+00:00",
+ "evidence_paths": [
+  "prime/evidence/screenshots/p6-dashboard-desktop.png",
+  "prime/evidence/screenshots/p6-dashboard-tablet.png",
+  "prime/evidence/screenshots/p6-dashboard-mobile.png",
+  "prime/evidence/screenshots/p6-inventory-products-desktop.png",
+  "prime/evidence/screenshots/p6-inventory-products-tablet.png",
+  "prime/evidence/screenshots/p6-inventory-products-mobile.png",
+  "prime/evidence/screenshots/p6-reports-desktop.png",
+  "prime/evidence/screenshots/p6-reports-tablet.png",
+  "prime/evidence/screenshots/p6-reports-mobile.png",
+  "prime/evidence/ui-audit/p6-evidence.json",
+  "prime/evidence/ui-audit/p6-token-probe.json",
+  "prime/evidence/ui-audit/pnpm-audit-prod.txt",
+  "prime/reports/phase-6-a11y-audit.json",
+  "prime/reports/phase-6-browser-console.json",
+  "prime/reports/phase-6-ui-quality.json",
+  "prime/reports/phase-6-security-scan.json",
+  "prime/reports/phase-6-e2e-results.json",
+  "prime/reports/phase-6-runtime-errors.json"
+ ],
+ "defects_found": [
+  {
+   "description": "New Product modal overlay lacks role=dialog, so screen readers do not announce it as a dialog (works visually and closes on Escape)",
+   "severity": "medium",
+   "status": "open-follow-up",
+   "ref": "prime/evidence/ui-audit/p6-token-probe.json"
   },
-  "design_benchmark_record": {
-    "task_type": "dashboard",
-    "sources_consulted": [
-      {
-        "name": "Supabase PostgREST filters reference",
-        "url": "https://supabase.com/docs/reference/javascript/using-filters",
-        "purpose": "Canonical grammar and escaping rules for or()/ilike filter strings that the search sanitization must not break",
-        "available": true
-      },
-      {
-        "name": "TanStack Query placeholder data guide",
-        "url": "https://tanstack.com/query/latest/docs/framework/react/guides/placeholder-query-data",
-        "purpose": "keepPreviousData pattern so paginated and searched tables do not flash empty during refetch",
-        "available": true
-      },
-      {
-        "name": "Supabase Row Level Security intro",
-        "url": "https://supabase.com/docs/guides/auth/row-level-security",
-        "purpose": "Default-deny policy posture used to validate the movements table access audit in the threat model",
-        "available": true
-      }
-    ],
-    "patterns_adopted": [
-      "dense data-table dashboard layout with one primary action button per page header",
-      "status badges color-coded by semantic state tokens instead of inline styles",
-      "filter toolbar above table with left-aligned compact select controls",
-      "confirmation dialog interrupting destructive or out-of-range operations"
-    ],
-    "local_design_decisions": [
-      "reuse the existing project component library (Table, Badge, Modal, Input, Select, Pagination, ConfirmDialog) rather than introducing new primitives",
-      "derive both the stock badge and the current-stock text color from one shared stockStatus helper so thresholds cannot diverge visually",
-      "keep adjustment quantity input as a single signed field with plus/minus semantics explained inline, matching operator mental models from the physical count workflow"
-    ],
-    "patterns_rejected": [
-      "card-grid overview tiles for every metric, which the established dense-table design language of this admin tool does not use"
-    ]
+  {
+   "description": "Pre-existing jsPDF critical advisories (LFI/path traversal <=3.0.4; HTML injection <=4.2.0) in the reports PDF dependency; not introduced by this increment, browser-only exposure limited",
+   "severity": "critical",
+   "status": "open-preexisting-out-of-scope",
+   "ref": "prime/reports/phase-6-security-scan.json"
+  },
+  {
+   "description": "8 high + 15 moderate + 3 low advisories in the same jspdf/dompurify chain",
+   "severity": "high",
+   "status": "open-preexisting-out-of-scope",
+   "ref": "prime/evidence/ui-audit/pnpm-audit-prod.txt"
+  },
+  {
+   "description": "Vite build warns main chunk >500kB (pre-existing reports bundle size; demo scale unaffected - max DCL 151ms measured)",
+   "severity": "low",
+   "status": "accepted",
+   "ref": "prime/reports/phase-5-build.md"
+  },
+  {
+   "description": "No dedicated unit tests for dashboard card derivation beyond the shared movementQuantityDisplay helper (closed as acceptable in round-2 review)",
+   "severity": "low",
+   "status": "accepted",
+   "ref": "prime/reports/phase-5-quality-review.md"
   }
+ ],
+ "refinement_actions": [
+  "Fixed all axe violations found by the evidence run (5 rule categories: sidebar contrast (slate-400), dashboard heading order (h2), unique nav landmarks, labeled report Select, visible Actions headers on all 12 action tables)",
+  "Replaced sr-only table-header fallback with visible Actions header after discovering the absolute-positioned span escaped the scroller and caused 132-205px page overflow at 375px",
+  "Corrected movement sign rendering to use unit-tested movementQuantityDisplay (released rows now show negative red)",
+  "Converted stat-card anchors to SPA Links so the memory-only demo session survives dashboard navigation",
+  "Applied sanitizeSearchTerm to the URL q parameter before ilike interpolation in finance search",
+  "Follow-ups logged: add role=dialog + focus trap to Modal; upgrade jspdf/dompurify in a dedicated dependency increment",
+  "Follow-up (nit): danger button focus ring is primary-blue via shared focus-visible token; consider variant-aware ring color from semantic tokens",
+  "Follow-up (nit): finance search term that sanitizes to empty falls back to an unfiltered query; consider showing the zero-row state when input was present but fully stripped"
+ ],
+ "final_rating": "good",
+ "rating_rationale": "All increment acceptance criteria verified at the live surface (19/19 browser checks, 0 axe violations, 0 console/network errors, 0 overflow at 3 viewports, token parity #2563EB computed-style match); rating held at good rather than excellent because of the open pre-existing dependency advisories and the modal dialog-semantics gap.",
+ "ui_specific": {
+  "screenshots_reference": true,
+  "viewports_tested": [
+   "desktop",
+   "tablet",
+   "mobile"
+  ],
+  "overlap_clipping_checked": true,
+  "responsive_layout_checked": true
+ },
+ "design_benchmark_record": {
+  "task_type": "dashboard",
+  "sources_consulted": [
+   {
+    "name": "W3C WAI \u2014 Understanding WCAG 2.4.7 Focus Visible (Level AA)",
+    "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html",
+    "purpose": "Authoritative requirements for focus indicators: subject to 1.4.11 Non-text Contrast, sufficient techniques C40 (two-color indicator) and C45 (:focus-visible), and 2.4.13 Focus Appearance as the size/consistency reference",
+    "available": true
+   },
+   {
+    "name": "MDN \u2014 :focus-visible CSS pseudo-class",
+    "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible",
+    "purpose": "Confirmed the UA-heuristic matching semantics that drove the harness fix: programmatic .focus() generally does not trigger :focus-visible, so focus rings must be tested with real keyboard navigation",
+    "available": true
+   },
+   {
+    "name": "W3C ARIA APG \u2014 Disclosure Navigation Menu example",
+    "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/",
+    "purpose": "Keyboard-support and semantics baseline for collapsible navigation surfaces (aria-labelled nav, dismissal keys, focus handling) applied to the drawer and popover behavior",
+    "available": true
+   },
+   {
+    "name": "Tailwind CSS \u2014 box-shadow/ring utilities documentation",
+    "url": "https://tailwindcss.com/docs/box-shadow",
+    "purpose": "Implementation vehicle for the 2px focus ring (ring + ring-offset utilities) used by the focus-visible token treatment on light and dark surfaces",
+    "available": true
+   }
+  ],
+  "local_inputs_not_external_benchmarks": [
+   "UI/UX Pro Max selector dataset run (prime/evidence/ui-audit/design-system-recommendation.md)",
+   "docs/DESIGN.md v1.0 project design artifact (token/type/density authority; outranks generic defaults per frontend skill priority)",
+   "live 3-viewport Playwright audit of the current product (prime/evidence/ui-audit/audit-findings.json)"
+  ],
+  "patterns_adopted": [
+   "off-canvas drawer + scrim with route-change and Escape dismissal, focus returned to the trigger (APG disclosure keyboard baseline)",
+   "horizontal scroll containment for dense data tables (min-w inside overflow-x-auto) rather than compressing columns",
+   "2px primary-500 focus-visible ring with offset on every interactive control, kept \u22653:1 against both light and dark surfaces per WCAG 1.4.11 focus-indicator contrast",
+   "real-data notification badge with capped count ('9+') and honest empty state ('All clear.')",
+   "loading skeleton -> explicit error copy -> data -> empty state for new dashboard bands",
+   "focus verification driven by real Tab key events, mirroring :focus-visible UA heuristics"
+  ],
+  "local_design_decisions": [
+   "sidebar state lifted into ProtectedLayout so drawer/collapse/content-margin share one source of truth (structural root-cause fix for the dead-gap class)",
+   "header search reuses the existing /finance/search page via ?q= deep link \u2014 zero new UI surface for an honest affordance",
+   "bell reuses the cached ['dashboard'] summary query (no extra request); Needs-Attention filters stockStatus client-side because the mock builder lacks .lt()"
+  ],
+  "patterns_rejected": [
+   "selector-suggested Dark-Mode(OLED) style and Fira Code/Fira Sans typography \u2014 contradict the approved light-only Inter theme in docs/DESIGN.md (project artifact outranks generic defaults)",
+   "rewriting tables to card lists on mobile \u2014 rejected in favor of scroll containment to preserve scanning density for operations staff",
+   "gradient avatar treatment \u2014 replaced with flat primary-600 token surface (anti-slop + token fidelity)"
+  ],
+  "unavailable_sources_note": "WebFetch was rate-limited during this phase (platform quota), so external sources were consulted via direct HTTPS retrieval instead; all four sources_consulted entries were actually fetched and informed the focus-ring, drawer-keyboard, and ring-utility decisions. Project-local authority (docs/DESIGN.md) still outranks generic defaults for tokens and typography."
+ }
 }

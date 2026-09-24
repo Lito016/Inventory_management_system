@@ -78,7 +78,7 @@ export function ReportsPage() {
     <PageContainer title="Reports" actions={<Button variant="secondary" onClick={exportCSV} disabled={!reportData?.length}>Export CSV</Button>}>
       <div className="mb-6 flex flex-wrap gap-3">
         <div className="w-full sm:w-48">
-          <Select value={reportType} onChange={(e) => setReportType(e.target.value as ReportType)} options={[
+          <Select aria-label="Report type" value={reportType} onChange={(e) => setReportType(e.target.value as ReportType)} options={[
             { value: 'sales', label: 'Sales Report' },
             { value: 'receivables', label: 'Receivables Report' },
             { value: 'payables', label: 'Payables Report' },

@@ -1,0 +1,32 @@
+{
+ "scenario_id": "UAT-DASHBOARD-INTERACTIONS",
+ "scenario": "SPA stat-card link preserves session; bell click grows receivables links 0->3 with panel 'ALERTS\n\n6 overdue receivables need atten'; search submits to http://localhost:4178/finance/search?q=cotton",
+ "requirement": "U5/U6 dashboard interactions: Link navigation (no session loss), honest disclosure bell, cross-module search",
+ "result": "PASS",
+ "started_at": "2026-09-24T08:20:36.607022+00:00",
+ "finished_at": "2026-09-24T08:20:40.348986+00:00",
+ "project_analysis": {
+  "framework": "React 18 + Vite + TypeScript SPA with react-router and TanStack Query",
+  "start_command": "VITE_DEMO=true npx vite build && npx vite preview --port 4178 --strictPort",
+  "login_route": "/login",
+  "auth_state_expected": "Authenticated dashboard inside ProtectedLayout shell with role marker in header; in-memory demo session (VITE_DEMO)",
+  "credential_source": "Demo mode role-picker (mock session, no real credentials entered)"
+ },
+ "checks": {
+  "login_page_loaded": true,
+  "credentials_entered": true,
+  "sign_in_clicked": true,
+  "dashboard_redirect": true,
+  "welcome_or_identity_visible": true,
+  "session_state_present": true,
+  "no_console_errors": true,
+  "no_failed_requests": true
+ },
+ "screenshots": [
+  "prime/test/screenshots/verify/uat-03-dashboard-1280.png",
+  "prime/test/screenshots/verify/uat-03-bell-popover.png",
+  "prime/test/screenshots/verify/uat-03-search-results.png"
+ ],
+ "console_errors": [],
+ "failed_requests": []
+}

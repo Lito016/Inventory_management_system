@@ -1,0 +1,42 @@
+{
+ "cases": [
+  {
+   "surface": "finance-search via global search",
+   "term_prefix": "%_\"test\"",
+   "url": "http://localhost:4178/finance/search?q=%25_%22test%22",
+   "rendered": true,
+   "console_errors": 0
+  },
+  {
+   "surface": "finance-search via global search",
+   "term_prefix": "AAAAAAAAAAAAAAAAAAAAAAAAA",
+   "url": "http://localhost:4178/finance/search?q=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+   "rendered": true,
+   "console_errors": 0
+  },
+  {
+   "surface": "finance-search via global search",
+   "term_prefix": "''; DROP TABLE --",
+   "url": "http://localhost:4178/finance/search?q=%27%27%3B%20DROP%20TABLE%20--",
+   "rendered": true,
+   "console_errors": 0
+  },
+  {
+   "surface": "finance-search via global search",
+   "term_prefix": "<script>alert(1)</script>",
+   "url": "http://localhost:4178/finance/search?q=%3Cscript%3Ealert(1)%3C%2Fscript%3E",
+   "rendered": true,
+   "console_errors": 0
+  },
+  {
+   "surface": "products local search",
+   "term_prefix": "<script>alert(1)</script>",
+   "rendered": true,
+   "rows_after_xss_term": 0,
+   "dialogs_fired": 0,
+   "console_errors": 0
+  }
+ ],
+ "dialogs_fired": [],
+ "method": "in-app navigation preserving the memory demo session; malformed ilike metachars, 300-char term, SQLi string typed into global search (submits to /finance/search?q=) and XSS payload typed into products search"
+}

@@ -1,126 +1,296 @@
 {
-  "tool": "playwright",
-  "timestamp": "2026-09-23T10:46:43Z",
-  "url": "http://localhost:5173",
-  "viewports": [
-    {
-      "name": "desktop",
-      "width": 1440,
-      "height": 900
-    },
-    {
-      "name": "tablet",
-      "width": 768,
-      "height": 1024
-    },
-    {
-      "name": "mobile",
-      "width": 390,
-      "height": 844
-    }
-  ],
+  "timestamp": "2026-09-24T08:19:20.956418+00:00",
+  "url": "http://localhost:4178",
+  "method": "Playwright Chromium + axe-core 4.10.2 + computed-style probes against the VITE_DEMO production build (vite preview :4178); screenshots reviewed visually at each viewport",
   "pages_assessed": [
-    "products",
-    "summary",
-    "adjustments"
+    {
+      "page": "dashboard",
+      "viewport": "desktop",
+      "screenshot": "prime/evidence/screenshots/p6-dashboard-desktop.png"
+    },
+    {
+      "page": "dashboard",
+      "viewport": "tablet",
+      "screenshot": "prime/evidence/screenshots/p6-dashboard-tablet.png"
+    },
+    {
+      "page": "dashboard",
+      "viewport": "mobile",
+      "screenshot": "prime/evidence/screenshots/p6-dashboard-mobile.png"
+    },
+    {
+      "page": "inventory/products",
+      "viewport": "desktop",
+      "screenshot": "prime/evidence/screenshots/p6-inventory-products-desktop.png"
+    },
+    {
+      "page": "inventory/products",
+      "viewport": "tablet",
+      "screenshot": "prime/evidence/screenshots/p6-inventory-products-tablet.png"
+    },
+    {
+      "page": "inventory/products",
+      "viewport": "mobile",
+      "screenshot": "prime/evidence/screenshots/p6-inventory-products-mobile.png"
+    },
+    {
+      "page": "reports",
+      "viewport": "desktop",
+      "screenshot": "prime/evidence/screenshots/p6-reports-desktop.png"
+    },
+    {
+      "page": "reports",
+      "viewport": "tablet",
+      "screenshot": "prime/evidence/screenshots/p6-reports-tablet.png"
+    },
+    {
+      "page": "reports",
+      "viewport": "mobile",
+      "screenshot": "prime/evidence/screenshots/p6-reports-mobile.png"
+    }
   ],
   "screenshots": [
-    {
-      "path": "prime/evidence/browser/products-desktop.png"
-    },
-    {
-      "path": "prime/evidence/browser/products-tablet.png"
-    },
-    {
-      "path": "prime/evidence/browser/products-mobile.png"
-    },
-    {
-      "path": "prime/evidence/browser/summary-desktop.png"
-    },
-    {
-      "path": "prime/evidence/browser/summary-tablet.png"
-    },
-    {
-      "path": "prime/evidence/browser/summary-mobile.png"
-    },
-    {
-      "path": "prime/evidence/browser/adjustments-desktop.png"
-    },
-    {
-      "path": "prime/evidence/browser/adjustments-tablet.png"
-    },
-    {
-      "path": "prime/evidence/browser/adjustments-mobile.png"
-    },
-    {
-      "path": "prime/evidence/browser/journey-summary-search.png"
-    },
-    {
-      "path": "prime/evidence/browser/journey-adjustment-validation.png"
-    },
-    {
-      "path": "prime/evidence/browser/journey-adjustment-negstock-confirm.png"
-    },
-    {
-      "path": "prime/evidence/browser/journey-products-modal.png"
-    },
-    {
-      "path": "prime/evidence/browser/journey-adjustment-filter.png"
-    }
+    "prime/evidence/screenshots/p6-dashboard-desktop.png",
+    "prime/evidence/screenshots/p6-dashboard-tablet.png",
+    "prime/evidence/screenshots/p6-dashboard-mobile.png",
+    "prime/evidence/screenshots/p6-inventory-products-desktop.png",
+    "prime/evidence/screenshots/p6-inventory-products-tablet.png",
+    "prime/evidence/screenshots/p6-inventory-products-mobile.png",
+    "prime/evidence/screenshots/p6-reports-desktop.png",
+    "prime/evidence/screenshots/p6-reports-tablet.png",
+    "prime/evidence/screenshots/p6-reports-mobile.png"
   ],
   "dimensions": {
     "design_tokens": {
-      "score": 95,
-      "findings": "Computed primary button background rgb(37, 99, 235) matches design token #2563EB on products and adjustments pages; border-radius 4px matches rounded-sm; table cell typography 12px/text-gray-500 consistent with docs/DESIGN.canvas.tsx. Summary page toolbar has no primary button (expected).",
+      "color_palette_match": "pass",
+      "typography_scale_match": "pass",
+      "spacing_consistency": "pass",
+      "border_radius_consistency": "pass",
+      "shadow_consistency": "pass",
+      "findings": "Computed primary button background rgb(37, 99, 235) equals DESIGN.md token #2563EB; input radius 4px = rounded-sm; table header 12px/600 uppercase, body 14px; sidebar rgb(15, 23, 42) = slate-900. Focus rings use ring-primary-500 token (verified live in reaudit U4).",
       "evidence": [
-        "prime/evidence/browser/products-desktop.png",
-        "prime/evidence/browser/products-tablet.png",
-        "prime/evidence/browser/products-mobile.png"
+        "prime/evidence/ui-audit/p6-token-probe.json",
+        "docs/DESIGN.md",
+        "prime/evidence/screenshots/p6-dashboard-desktop.png"
       ]
     },
     "accessibility": {
-      "score": 78,
-      "findings": "axe-core runs: independent review caught 6 in-scope color-contrast nodes (text-green-600/red-600 table spans on summary) which were fixed to 700-shade tokens and confirmed by post-fix re-run. Remaining findings are pre-existing shared app chrome (icon-only Header search/bell buttons without names, slate-500-on-slate-900 sidebar headers at 3.75:1, duplicate nav landmarks) present identically on every app page. One accepted-convention minor: empty actions-column header per finance/payables.tsx convention; row buttons are self-labeled. All in-table controls keyboard reachable with visible focus rings (focus-hover-states journey).",
+      "contrast_ratio_pass": "pass",
+      "aria_labels_present": "pass",
+      "keyboard_navigation": "pass",
+      "focus_indicators_visible": "pass",
+      "alt_text_present": "not_applicable",
+      "alt_text_note": "No img elements in the app; all icons are decorative inline SVG (lucide) hidden from AT.",
+      "findings": "axe-core: 0 violations across 9 page x viewport runs after fixing 13 (contrast, heading-order, landmark-unique, select-name, empty-table-header). Keyboard Tab reaches global search with visible box-shadow focus ring; closed drawer is visibility:hidden so not tabbable.",
       "evidence": [
-        "prime/evidence/browser/products-axe.json",
-        "prime/evidence/browser/summary-axe.json",
-        "prime/evidence/browser/adjustments-axe.json"
+        "prime/reports/phase-6-a11y-audit.json",
+        "prime/evidence/ui-audit/p6-evidence.json"
       ]
     },
     "responsive_layout": {
-      "score": 90,
-      "findings": "At 390px the filter select expands to full width (w-full sm:w-44), tables scroll horizontally without clipping page chrome, PageTabs remain usable, and no horizontal overflow of container content was observed in mobile screenshots. Modal fits mobile viewport.",
+      "desktop_layout_correct": "pass",
+      "tablet_layout_correct": "pass",
+      "mobile_layout_correct": "pass",
+      "no_horizontal_overflow": "pass",
+      "breakpoints_functional": "pass",
+      "findings": "scrollWidth-clientWidth = 0px on all 9 runs at 1280x800, 768x1024, 375x812; wide tables and the tab strip scroll inside their own containers; lg breakpoint switches fixed sidebar to drawer and drawer open/close-on-nav verified live.",
       "evidence": [
-        "prime/evidence/browser/products-mobile.png",
-        "prime/evidence/browser/summary-mobile.png",
-        "prime/evidence/browser/adjustments-mobile.png"
+        "prime/evidence/ui-audit/p6-evidence.json",
+        "prime/evidence/screenshots/p6-inventory-products-mobile.png"
       ]
     },
     "visual_consistency": {
-      "score": 92,
-      "findings": "All three inventory pages share PageTabs + PageContainer header pattern, identical Table styling, badge color language (green/gray for Active/Inactive; stock status colors single-sourced from stockStatus()), and consistent button variants.",
+      "no_element_overlap": "pass",
+      "no_text_clipping": "pass",
+      "alignment_consistent": "pass",
+      "whitespace_balanced": "pass",
+      "no_visual_artifacts": "pass",
+      "findings": "Visual review of all 9 fullPage screenshots: cards align on a consistent grid, no unintended overlap or clipped text (truncation only inside intentional scrollers), balanced whitespace on dashboard/report/products at every viewport.",
       "evidence": [
-        "prime/evidence/browser/products-desktop.png",
-        "prime/evidence/browser/products-tablet.png",
-        "prime/evidence/browser/products-mobile.png",
-        "prime/evidence/browser/summary-desktop.png",
-        "prime/evidence/browser/summary-tablet.png",
-        "prime/evidence/browser/summary-mobile.png"
+        "prime/evidence/screenshots/p6-dashboard-desktop.png",
+        "prime/evidence/screenshots/p6-reports-tablet.png",
+        "prime/evidence/screenshots/p6-inventory-products-mobile.png"
       ]
     },
     "component_quality": {
-      "score": 90,
-      "findings": "Reusable Table/Badge/Modal/Input/Select/Pagination components used without duplication; loading skeleton, empty message, and error banner states wired; pagination hidden when rows (10) < PAGE_SIZE (20) which is correct conditional behavior confirmed at all viewports.",
+      "buttons_render_correctly": "pass",
+      "forms_functional": "pass",
+      "cards_consistent": "pass",
+      "navigation_works": "pass",
+      "modals_functional": "warning",
+      "modal_note": "New Product opens a fixed overlay form that closes on Escape (verified live), but the overlay lacks role=dialog, so screen readers do not announce it as a dialog - logged as a medium defect for follow-up.",
+      "findings": "Stat cards navigate via SPA Link preserving the demo session; bell disclosure grows receivables links 2->3 with overdue copy; search submits to /finance/search?q= and seeds the field; drawer, collapse and tab scrollers behave correctly.",
       "evidence": [
-        "prime/evidence/browser/adjustments-desktop.png",
-        "prime/evidence/browser/products-desktop.png",
-        "prime/evidence/browser/journey-products-modal.png"
+        "prime/evidence/ui-audit/p6-token-probe.json",
+        "prime/test/reports/UAT-DASHBOARD-INTERACTIONS.json",
+        "prime/reports/phase-5-test-results.json"
       ]
     }
   },
+  "summary": {
+    "verdict": "pending-tool",
+    "critical_issues": [
+      "(none blocking) pre-existing jspdf/dompurify advisories tracked in phase-6-security-scan.json"
+    ],
+    "notes": "Overall score computed by check-ui-quality.mjs scoring pass; modal role=dialog is the only warning."
+  },
   "analysis": {
+    "dimensions": {
+      "design_tokens": {
+        "score": 100,
+        "max": 100,
+        "weight": 0.25,
+        "passed": 5,
+        "failed": 0,
+        "status": "pass",
+        "details": [
+          {
+            "check": "color_palette_match",
+            "status": "pass"
+          },
+          {
+            "check": "typography_scale_match",
+            "status": "pass"
+          },
+          {
+            "check": "spacing_consistency",
+            "status": "pass"
+          },
+          {
+            "check": "border_radius_consistency",
+            "status": "pass"
+          },
+          {
+            "check": "shadow_consistency",
+            "status": "pass"
+          }
+        ]
+      },
+      "accessibility": {
+        "score": 100,
+        "max": 100,
+        "weight": 0.25,
+        "passed": 4,
+        "failed": 0,
+        "status": "pass",
+        "details": [
+          {
+            "check": "contrast_ratio_pass",
+            "status": "pass"
+          },
+          {
+            "check": "aria_labels_present",
+            "status": "pass"
+          },
+          {
+            "check": "keyboard_navigation",
+            "status": "pass"
+          },
+          {
+            "check": "focus_indicators_visible",
+            "status": "pass"
+          },
+          {
+            "check": "alt_text_present",
+            "status": "not_applicable"
+          }
+        ]
+      },
+      "responsive_layout": {
+        "score": 100,
+        "max": 100,
+        "weight": 0.2,
+        "passed": 5,
+        "failed": 0,
+        "status": "pass",
+        "details": [
+          {
+            "check": "desktop_layout_correct",
+            "status": "pass"
+          },
+          {
+            "check": "tablet_layout_correct",
+            "status": "pass"
+          },
+          {
+            "check": "mobile_layout_correct",
+            "status": "pass"
+          },
+          {
+            "check": "no_horizontal_overflow",
+            "status": "pass"
+          },
+          {
+            "check": "breakpoints_functional",
+            "status": "pass"
+          }
+        ]
+      },
+      "visual_consistency": {
+        "score": 100,
+        "max": 100,
+        "weight": 0.15,
+        "passed": 5,
+        "failed": 0,
+        "status": "pass",
+        "details": [
+          {
+            "check": "no_element_overlap",
+            "status": "pass"
+          },
+          {
+            "check": "no_text_clipping",
+            "status": "pass"
+          },
+          {
+            "check": "alignment_consistent",
+            "status": "pass"
+          },
+          {
+            "check": "whitespace_balanced",
+            "status": "pass"
+          },
+          {
+            "check": "no_visual_artifacts",
+            "status": "pass"
+          }
+        ]
+      },
+      "component_quality": {
+        "score": 90,
+        "max": 100,
+        "weight": 0.15,
+        "passed": 5,
+        "failed": 0.5,
+        "status": "pass",
+        "details": [
+          {
+            "check": "buttons_render_correctly",
+            "status": "pass"
+          },
+          {
+            "check": "forms_functional",
+            "status": "pass"
+          },
+          {
+            "check": "cards_consistent",
+            "status": "pass"
+          },
+          {
+            "check": "navigation_works",
+            "status": "pass"
+          },
+          {
+            "check": "modals_functional",
+            "status": "warning"
+          }
+        ]
+      }
+    },
+    "overall_score": 99,
     "verdict": "pass",
-    "overall_score": 86,
-    "notes": "Score is desktop/tablet/mobile screenshot review + computed-style token probes + axe output. Pre-existing app-chrome accessibility debt tracked separately from this increment."
+    "critical_dimensions": [],
+    "warning_dimensions": [],
+    "analyzed_at": "2026-09-24T08:32:30.790Z"
   }
 }

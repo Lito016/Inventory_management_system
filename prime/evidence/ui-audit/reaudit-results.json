@@ -1,0 +1,97 @@
+[
+  {
+    "id": "U1.drawer-closed",
+    "pass": true,
+    "detail": "aside x=-240, menu button count=1"
+  },
+  {
+    "id": "U1.drawer-open",
+    "pass": true,
+    "detail": "after open aside x=0, overlay nodes=1"
+  },
+  {
+    "id": "U1.close-on-nav",
+    "pass": true,
+    "detail": "after nav aside x=-240 (should be off-canvas)"
+  },
+  {
+    "id": "U2.no-overflow-375-inventory",
+    "pass": true,
+    "detail": "scrollWidth-clientWidth=0 on inventory"
+  },
+  {
+    "id": "U6.single-title",
+    "pass": true,
+    "detail": "H1='Products', breadcrumb=['Inventory', 'Inventory']"
+  },
+  {
+    "id": "U1.esc-close-focus",
+    "pass": true,
+    "detail": "after Esc aside x=-240, focus='Open navigation menu'"
+  },
+  {
+    "id": "U2.no-overflow-375-reports",
+    "pass": true,
+    "detail": "/reports overflow=0"
+  },
+  {
+    "id": "U2.no-overflow-375-settings-users",
+    "pass": true,
+    "detail": "/settings/users overflow=0"
+  },
+  {
+    "id": "U4.drawer-not-tabbable",
+    "pass": true,
+    "detail": "closed drawer visibility=hidden, on-screen aside links=0"
+  },
+  {
+    "id": "U2.no-overflow-768-reports",
+    "pass": true,
+    "detail": "reports overflow=0"
+  },
+  {
+    "id": "U2.no-overflow-768-users",
+    "pass": true,
+    "detail": "users overflow=0"
+  },
+  {
+    "id": "U1.settings-banner",
+    "pass": true,
+    "detail": "DemoBanner present on /settings/users"
+  },
+  {
+    "id": "U3.collapse-sync",
+    "pass": true,
+    "detail": "collapsed aside width=68, main x=68, gap=0"
+  },
+  {
+    "id": "U4.focus-ring",
+    "pass": true,
+    "detail": "focused='Search records' via Tab, box-shadow=rgb(255, 255, 255) 0px 0px 0px 1px, rgb("
+  },
+  {
+    "id": "U5.search-nav",
+    "pass": true,
+    "detail": "url=http://localhost:4178/finance/search?q=cotton, seeded=cotton"
+  },
+  {
+    "id": "U5.bell-handler",
+    "pass": true,
+    "detail": "bell button present with aria-label"
+  },
+  {
+    "id": "U5.bell-popover",
+    "pass": true,
+    "detail": "receivables-links 2->3 after click, panel contains overdue status: 'Alerts6 overdue receivables need attention'"
+  },
+  {
+    "id": "U7.density",
+    "pass": true,
+    "detail": "NeedsAttention=1 RecentActivity=1 mainHeight=905"
+  },
+  {
+    "id": "U8.no-gradient-avatar",
+    "pass": true,
+    "detail": "avatar backgroundImage=none"
+  }
+]

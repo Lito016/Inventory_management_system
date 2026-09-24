@@ -87,7 +87,7 @@ export function ReceivablesPage() {
     },
     {
       key: 'actions',
-      header: '',
+      header: 'Actions',
       render: (row) => (
         <Button
           variant="ghost"

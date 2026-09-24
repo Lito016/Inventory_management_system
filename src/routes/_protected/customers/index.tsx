@@ -94,7 +94,7 @@ export function CustomersPage() {
     },
     {
       key: 'actions',
-      header: '',
+      header: 'Actions',
       render: (row) => (
         <Button
           variant="ghost"

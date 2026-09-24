@@ -1,0 +1,764 @@
+{
+  "schema_version": "1.1",
+  "phase": 6,
+  "name": "Verify",
+  "agent": "prime-evaluate",
+  "procedure": [
+    "prime-evaluate-test"
+  ],
+  "mandatory_skills": [
+    "quality-review",
+    "caveman",
+    "testing",
+    "code-quality"
+  ],
+  "core_skills": [
+    "quality-review",
+    "caveman"
+  ],
+  "mandatory_skills_when_ui": [
+    "frontend"
+  ],
+  "skills_by_shape": {
+    "focused": [
+      "testing"
+    ],
+    "product_increment": [
+      "testing",
+      "code-quality"
+    ]
+  },
+  "checks_by_shape": {
+    "focused": [
+      "test-suite",
+      "critical-journeys",
+      "acceptance-criteria"
+    ],
+    "product_increment": [
+      "test-suite",
+      "critical-journeys",
+      "acceptance-criteria"
+    ]
+  },
+  "recommended_skills": [
+    "frontend",
+    "database",
+    "baas",
+    "performance-optimization"
+  ],
+  "mandatory_skills_when": {
+    "database": {
+      "condition": "has_persistence",
+      "description": "When application surface discovery finds Prisma, Drizzle, Supabase, PostgreSQL, MySQL, SQLite, MongoDB, Firebase persistence, ORM models, migrations, or database queries, or critical journeys mutate persistent data"
+    }
+  },
+  "independence_requirement": {
+    "min_distinct_invocations": 2,
+    "required_independent_skill": "quality-review"
+  },
+  "required_artifacts": [
+    "prime/reports/phase-6-verify.md",
+    "prime/reports/evaluation-report.md",
+    "prime/reports/phase-6-quality-review.md",
+    "prime/reports/phase-6-e2e-results.json",
+    "prime/reports/phase-6-security-scan.json",
+    "prime/reports/output-quality-scorecard.json",
+    "prime/reports/phase-6-runtime-errors.json",
+    "prime/reports/phase-6-browser-console.json",
+    "prime/reports/phase-6-ui-quality.json",
+    "prime/reports/phase-6-implementation-quality.json"
+  ],
+  "artifacts_by_shape": {
+    "focused": [
+      "prime/reports/phase-6-verify.md",
+      "prime/reports/phase-6-quality-review.md",
+      "prime/reports/output-quality-scorecard.json",
+      "prime/reports/phase-6-runtime-errors.json",
+      "prime/reports/phase-6-browser-console.json",
+      "prime/reports/phase-6-implementation-quality.json"
+    ],
+    "product_increment": [
+      "prime/reports/phase-6-verify.md",
+      "prime/reports/evaluation-report.md",
+      "prime/reports/phase-6-quality-review.md",
+      "prime/reports/phase-6-e2e-results.json",
+      "prime/reports/phase-6-security-scan.json",
+      "prime/reports/output-quality-scorecard.json",
+      "prime/reports/phase-6-runtime-errors.json",
+      "prime/reports/phase-6-browser-console.json",
+      "prime/reports/phase-6-ui-quality.json",
+      "prime/reports/phase-6-implementation-quality.json"
+    ]
+  },
+  "required_checks": [
+    "test-suite",
+    "critical-journeys",
+    "acceptance-criteria"
+  ],
+  "critical_journeys_definition": {
+    "description": "Critical journeys are user workflows that span multiple components and require real browser interaction to verify. They are not unit tests or API checks.",
+    "mandatory_when_auth_exists": [
+      "Login/authentication flow — follow testing/references/login-e2e.md protocol",
+      "Session state verification — cookies, localStorage, sessionStorage contain auth markers",
+      "Dashboard/landing page reached after authentication — visible authenticated marker confirmed"
+    ],
+    "mandatory_when_user_workflows_exist": [
+      "Primary user workflow — the core action the product exists to perform (e.g., create order, submit form, process payment)",
+      "Error handling paths — negative tests with diagnostic evidence (console errors, failed requests, visible error state)"
+    ],
+    "evidence_requirements": "Each critical journey must produce: (1) at least 2 screenshots (key interaction + final state), (2) session state verification, (3) browser console check, (4) scenario JSON report validated by scripts/check-e2e-evidence.mjs. A screenshot-only check is NOT valid E2E evidence."
+  },
+  "gates_by_shape": {
+    "focused": [
+      {
+        "id": "G1"
+      },
+      {
+        "id": "G4"
+      },
+      {
+        "id": "G5"
+      },
+      {
+        "id": "G27"
+      },
+      {
+        "id": "G36"
+      },
+      {
+        "id": "G37"
+      },
+      {
+        "id": "G38"
+      },
+      {
+        "id": "G39"
+      },
+      {
+        "id": "G40"
+      },
+      {
+        "id": "G47"
+      },
+      {
+        "id": "G48"
+      },
+      {
+        "id": "G51"
+      },
+      {
+        "id": "G52"
+      },
+      {
+        "id": "G54"
+      }
+    ],
+    "product_increment": [
+      {
+        "id": "G1"
+      },
+      {
+        "id": "G2"
+      },
+      {
+        "id": "G3"
+      },
+      {
+        "id": "G4"
+      },
+      {
+        "id": "G5"
+      },
+      {
+        "id": "G6"
+      },
+      {
+        "id": "G7"
+      },
+      {
+        "id": "G9"
+      },
+      {
+        "id": "G10"
+      },
+      {
+        "id": "G22"
+      },
+      {
+        "id": "G23"
+      },
+      {
+        "id": "G27"
+      },
+      {
+        "id": "G28"
+      },
+      {
+        "id": "G29"
+      },
+      {
+        "id": "G30"
+      },
+      {
+        "id": "G31"
+      },
+      {
+        "id": "G32"
+      },
+      {
+        "id": "G33"
+      },
+      {
+        "id": "G34"
+      },
+      {
+        "id": "G35"
+      },
+      {
+        "id": "G36"
+      },
+      {
+        "id": "G37"
+      },
+      {
+        "id": "G38"
+      },
+      {
+        "id": "G39"
+      },
+      {
+        "id": "G40"
+      },
+      {
+        "id": "G44"
+      },
+      {
+        "id": "G45"
+      },
+      {
+        "id": "G47"
+      },
+      {
+        "id": "G48"
+      },
+      {
+        "id": "G49"
+      },
+      {
+        "id": "G50"
+      },
+      {
+        "id": "G51"
+      },
+      {
+        "id": "G52"
+      },
+      {
+        "id": "G53"
+      },
+      {
+        "id": "G54"
+      },
+      {
+        "id": "G55"
+      },
+      {
+        "id": "G56"
+      }
+    ],
+    "full": [
+      {
+        "id": "G1"
+      },
+      {
+        "id": "G2"
+      },
+      {
+        "id": "G3"
+      },
+      {
+        "id": "G4"
+      },
+      {
+        "id": "G5"
+      },
+      {
+        "id": "G6"
+      },
+      {
+        "id": "G7"
+      },
+      {
+        "id": "G8"
+      },
+      {
+        "id": "G9"
+      },
+      {
+        "id": "G10"
+      },
+      {
+        "id": "G11"
+      },
+      {
+        "id": "G12"
+      },
+      {
+        "id": "G13"
+      },
+      {
+        "id": "G14"
+      },
+      {
+        "id": "G15"
+      },
+      {
+        "id": "G16"
+      },
+      {
+        "id": "G17"
+      },
+      {
+        "id": "G18"
+      },
+      {
+        "id": "G19"
+      },
+      {
+        "id": "G20"
+      },
+      {
+        "id": "G21"
+      },
+      {
+        "id": "G22"
+      },
+      {
+        "id": "G23"
+      },
+      {
+        "id": "G24"
+      },
+      {
+        "id": "G25"
+      },
+      {
+        "id": "G26"
+      },
+      {
+        "id": "G27"
+      },
+      {
+        "id": "G28"
+      },
+      {
+        "id": "G29"
+      },
+      {
+        "id": "G30"
+      },
+      {
+        "id": "G31"
+      },
+      {
+        "id": "G32"
+      },
+      {
+        "id": "G33"
+      },
+      {
+        "id": "G34"
+      },
+      {
+        "id": "G35"
+      },
+      {
+        "id": "G36"
+      },
+      {
+        "id": "G37"
+      },
+      {
+        "id": "G38"
+      },
+      {
+        "id": "G39"
+      },
+      {
+        "id": "G40"
+      },
+      {
+        "id": "G41"
+      },
+      {
+        "id": "G42"
+      },
+      {
+        "id": "G43"
+      },
+      {
+        "id": "G44"
+      },
+      {
+        "id": "G45"
+      },
+      {
+        "id": "G46"
+      },
+      {
+        "id": "G47"
+      },
+      {
+        "id": "G48"
+      },
+      {
+        "id": "G49"
+      },
+      {
+        "id": "G50"
+      },
+      {
+        "id": "G51"
+      },
+      {
+        "id": "G52"
+      },
+      {
+        "id": "G53"
+      },
+      {
+        "id": "G54"
+      },
+      {
+        "id": "G55"
+      },
+      {
+        "id": "G56"
+      }
+    ]
+  },
+  "gate_contracts": [
+    {
+      "id": "G1",
+      "outcome": "verification report documents test results with actual execution evidence",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(tests?:\\s*\\d+|passed:\\s*\\d+|failed:\\s*\\d+|\\d+\\s*(tests?\\s+)?(pass|fail)|coverage:\\s*\\d+|executed:\\s*\\d+)\"",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G2",
+      "outcome": "evaluation report records pass/fail verdicts",
+      "check": "node scripts/gate-check.mjs size prime/reports/evaluation-report.md 200",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G3",
+      "outcome": "verification report documents executed test results with pass/fail counts or coverage data",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"test.*(pass|fail|success|result|coverage|executed|ran)\"",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G4",
+      "outcome": "evaluation report records acceptance verdicts with traceability to requirements",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/evaluation-report.md \"pass|fail|accepted|rejected|verdict|satisfied\"",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G5",
+      "outcome": "quality audit verdict is recorded for phase artifacts",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-quality-review.md \"verdict:\\s*(pass|block|request changes)\"",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G6",
+      "outcome": "E2E test execution results exist with structured pass/fail data",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-e2e-results.json \"tests_run|passed|failed|suites\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Semantic judgment required: do the E2E results cover critical user journeys? N/A for non-UI projects. The structural check verifies that E2E tests were executed and results recorded in structured format, not just mentioned in a report."
+    },
+    {
+      "id": "G7",
+      "outcome": "runtime security scan report exists with severity-classified findings",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-security-scan.json \"findings|vulnerabilities|critical|high|medium|low|scan_tool\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Semantic judgment required: do the security scan findings demonstrate adequate runtime coverage? N/A for projects with no security surface. The structural check verifies that a security scan was executed and findings recorded in structured format."
+    },
+    {
+      "id": "G9",
+      "outcome": "quality audit report references specific file locations as evidence",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-quality-review.md \"\\.[\\w/\\-]+\\.(ts|js|tsx|jsx|py|go|rs|cs|java|dart|swift|kt|vue|svelte|html|css|json|yaml|mjs)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Semantic judgment required: do the cited locations correspond to meaningful review points? The structural check verifies the review engaged with specific code rather than producing a generic verdict."
+    },
+    {
+      "id": "G10",
+      "outcome": "verification report includes structured test execution counts or coverage data",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"tests?:\\s*\\d+|executed:\\s*\\d+|passed:\\s*\\d+|failed:\\s*\\d+|coverage:\\s*\\d+\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Semantic judgment required: do the test counts reflect adequate coverage for the project scope? The structural check verifies the report includes quantitative test execution data rather than only qualitative statements."
+    },
+    {
+      "id": "G22",
+      "outcome": "production readiness controls have evidence or substantive non-applicability justification",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs readiness prime/reports/production-readiness.json",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the risk classification is appropriate and the cited evidence demonstrates operational readiness for the actual deployment environment."
+    },
+    {
+      "id": "G23",
+      "outcome": "verification report records prior knowledge recall or online research evidence",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"search|source|research|benchmark|verified|reference\"",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G27",
+      "outcome": "verification report includes multi-dimensional quality evidence covering tests, performance, security, and maintainability",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(?=[\\s\\S]*(test|coverage|passed|failed))(?=[\\s\\S]*(perf|latency|load time|lighthouse|bundle|memory))(?=[\\s\\S]*(security|vulnerability|scan|audit))(?=[\\s\\S]*(maintain|complexity|debt|readability))\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the verification report includes evidence across at least four quality dimensions: functional correctness (tests), performance, security, and maintainability. Generic mentions without data are insufficient."
+    },
+    {
+      "id": "G28",
+      "outcome": "website meets performance budget with Lighthouse score or load time evidence",
+      "kind": "hybrid",
+      "applicable_when": "has_website",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(lighthouse|performance score|page speed|load time|FCP|LCP|CLS|TTFB|bundle size|gzip|compress|cache|cdn|core web vital)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the verification includes specific performance metrics (Lighthouse scores, load times, bundle sizes) — not just 'performance was checked'. N/A for non-website UI."
+    },
+    {
+      "id": "G29",
+      "outcome": "API input validation tested with invalid, malformed, and malicious payloads",
+      "kind": "hybrid",
+      "applicable_when": "has_api",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(input valid|invalid (input|payload|request)|malformed|boundary|edge case|sql injection|xss|csrf|negative test|400|422|error response|fuzz)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the API was tested with specifically invalid inputs — not just happy-path tests. N/A for non-API projects."
+    },
+    {
+      "id": "G30",
+      "outcome": "database migration reversibility or backup procedure verified",
+      "kind": "hybrid",
+      "applicable_when": "has_database",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(rollback|reversib|migrate down|backup|restore|point.in.time|dry.run|migration test|schema revert|idempoten)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the verification tested that migrations can be rolled back or that a backup exists. N/A for projects with no database."
+    },
+    {
+      "id": "G31",
+      "outcome": "CLI tested with various argument combinations, invalid input, and help output",
+      "kind": "hybrid",
+      "applicable_when": "has_cli",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(--help|help output|argument|invalid input|exit code|stderr|missing arg|unknown flag|usage|subcommand|pipe)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the CLI was tested with valid args, invalid args, missing args, and --help. N/A for non-CLI projects."
+    },
+    {
+      "id": "G32",
+      "outcome": "data quality validated across pipeline stages with source, transformation, and output checks",
+      "kind": "hybrid",
+      "applicable_when": "has_data_ai",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(data quality|source valid|schema check|type check|null check|dedup|drift|anomal|distribution|row count|checksum|expect|great.expect|dbt test)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm data quality checks exist at multiple pipeline stages — not just output validation. N/A for non-data projects."
+    },
+    {
+      "id": "G33",
+      "outcome": "documentation links verified and code examples tested",
+      "kind": "hybrid",
+      "applicable_when": "has_docs",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(link check|broken link|code example|snippet test|runnable|copy.paste|markdown lint|mdx|build docs|doc.*test)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm links were checked and code examples were verified to work. N/A for non-documentation projects."
+    },
+    {
+      "id": "G34",
+      "outcome": "plugin API contract verified stable and breaking changes documented",
+      "kind": "hybrid",
+      "applicable_when": "has_plugin",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(api contract|public api|breaking change|backward compat|semver|version|export|interface|deprecat|peer depend|integration test)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the plugin's public API was tested for stability. N/A for non-plugin projects."
+    },
+    {
+      "id": "G35",
+      "outcome": "verification report confirms dashboard loading, error, empty, and large-data states were tested",
+      "kind": "hybrid",
+      "applicable_when": "has_dashboard",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(loading state|skeleton|error state|empty state|no data|large data|pagination|virtuali[sz]ation|1000 rows|stress|slow network|throttl)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the dashboard was tested in loading, error, empty, and large-data states. N/A for non-dashboard UI."
+    },
+    {
+      "id": "G36",
+      "outcome": "test report contains no fake or placeholder claims",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(test.*pass|test.*fail|coverage|assertion|expect|actual|result)\"",
+      "expect": "GATE-PASS",
+      "enforcement_script": "node scripts/validate-evidence-adequacy.mjs <project-root>",
+      "enforcement_purpose": "Validates semantic quality of evidence, not just presence/structure. Rejects weak evidence like 'Button works.', checks provenance for runtime claims, and detects static-vs-runtime contradictions. Exit code 0 = adequate, 1 = weak/contradictory evidence.",
+      "manual_followup": "Verify test report contains actual test results, not generic claims like 'all tests pass' without evidence. Run `node scripts/validate-evidence-adequacy.mjs <project-root>` for automated semantic validation."
+    },
+    {
+      "id": "G37",
+      "outcome": "verification evidence is not generic prose",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(verified|validated|confirmed|tested|measured|checked|audited|scanned|analyzed)\"",
+      "expect": "GATE-PASS",
+      "enforcement_script": "node scripts/validate-evidence-adequacy.mjs <project-root>",
+      "enforcement_purpose": "Validates semantic quality of evidence, not just presence/structure. Rejects weak evidence like 'Button works.', checks provenance for runtime claims, and detects static-vs-runtime contradictions. Exit code 0 = adequate, 1 = weak/contradictory evidence.",
+      "manual_followup": "Ensure verification report contains specific evidence, not just 'looks good' or 'works fine' without data. Run `node scripts/validate-evidence-adequacy.mjs <project-root>` for automated semantic validation."
+    },
+    {
+      "id": "G38",
+      "outcome": "output quality scorecard JSON records inspected artifact, evidence paths, defects, refinement actions, and final rating",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs quality-scorecard prime/reports/output-quality-scorecard.json",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the scorecard JSON has specific evidence paths and actionable refinement actions - not generic 'looks good' claims. The structural check verifies the JSON exists with required fields; gate-check.mjs quality-scorecard validator enforces field content and UI-specific rules."
+    },
+    {
+      "id": "G39",
+      "outcome": "high-impact UI quality scorecard includes a Design Benchmark Record tying screenshots and quality findings back to external benchmark decisions",
+      "kind": "hybrid",
+      "applicable_when": "has_ui",
+      "check": "node scripts/gate-check.mjs design-benchmark prime/reports/output-quality-scorecard.json",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the final UI evidence actually reflects the benchmark decisions. The structural check validates source count, adopted patterns, local decisions, and rejects vague or Mobbin MCP-based evidence."
+    },
+    {
+      "id": "G40",
+      "outcome": "E2E scenario reports exist with structured evidence (screenshots, checks, diagnostics) for critical user journeys",
+      "kind": "hybrid",
+      "applicable_when": "has_ui",
+      "check": "node scripts/gate-check.mjs find prime/test/reports UAT-.*\\.json$",
+      "expect": "GATE-PASS",
+      "manual_followup": "Run `node scripts/check-e2e-evidence.mjs <each-scenario-report.json>` on every E2E scenario report. Each PASS report must have: 2+ screenshots under prime/test/screenshots/verify/, project analysis filled (not placeholders), all required checks true, and no secrets. Each FAIL report must retain screenshots and diagnostics. BLOCKED reports must state the prerequisite gap. A scenario that only captures one viewport screenshot is incomplete and must not count as PASS."
+    },
+    {
+      "id": "G44",
+      "outcome": "every applicable TRACE_REQUIRED mutation has complete cross-layer evidence — frontend, backend, persistence, and UI result are all verified with no unexplained missing layers",
+      "kind": "hybrid",
+      "applicable_when": "has_persistence",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/coverage-map.json \"trace_level|TRACE_REQUIRED|persistence_verified\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm each TRACE_REQUIRED item in the coverage map has at least one trace with frontend.status=verified, backend.status=verified, data.persistence_verified=true, and ui_result.refresh_verified=true. N/A for projects without persistence. See FULL-STACK-TRACE-PROTOCOL.md for trace levels and evidence requirements."
+    },
+    {
+      "id": "G45",
+      "outcome": "data integrity verification exists for every data model — foreign keys, uniqueness, constraints, derived fields, totals, status consistency verified via direct database query where environment permits",
+      "kind": "hybrid",
+      "applicable_when": "has_persistence",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/coverage-map.json \"data_integrity\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm each data model in the coverage map has a data_integrity object with pass/fail/not_tested for applicable checks. UI correctness alone is NOT evidence of data integrity — direct database verification is required where the environment permits. N/A for projects without persistence."
+    },
+    {
+      "id": "G47",
+      "outcome": "verification report documents impact analysis of code changes — what changed, what observable behavior could regress, and what verification depth was selected — with evidence that selected verification was executed",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"(affected behavior|verification depth|impact analysis|changed behavior|regression|behavior preserv|refactor.*verif|verif.*refactor)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the verification report explicitly documents: (1) what code changed, (2) what observable behavior could be affected, (3) what verification depth was selected (static/unit/integration/E2E) and why, (4) evidence that the selected verification was executed. For simple changes, a brief assessment suffices. For critical-journey refactors, the report must show E2E or explain why E2E was not executable. Completion claims must not exceed available verification evidence. N/A only when no code was changed."
+    },
+    {
+      "id": "G48",
+      "outcome": "verification report contains an Autopilot Depth Extensions section with pass/not_required/not_applicable status for each of the 6 depth capabilities and evidence or justification for each",
+      "kind": "hybrid",
+      "applicable_when": "autopilot_mode",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-verify.md \"Autopilot Depth Extensions\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm each of the 6 depth extensions has a status entry: pass, not_required (with reason), or not_applicable (with reason). The structural check verifies the section exists; human review confirms the evidence is substantive. N/A for non-autopilot quality modes."
+    },
+    {
+      "id": "G49",
+      "outcome": "security scan report covers all applicable OWASP Top 10 categories with evidence or explicit NOT_APPLICABLE justification for each missing category",
+      "kind": "hybrid",
+      "applicable_when": "has_security_surface",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-security-scan.json \"owasp_top10|A01|A02|A03|A04|A05|A06|A07|A08|A09|A10\"",
+      "expect": "GATE-PASS",
+      "enforcement_script": "node scripts/reconcile-security.mjs <project-root>",
+      "enforcement_purpose": "Cross-validates security-sensitive surfaces against test evidence: every AUTH_REQUIRED, ROLE_REQUIRED, TENANT_SCOPED, or RLS_POLICY boundary must have corresponding security test evidence in the coverage map. Unresolved critical/high findings from the security scan are also flagged.",
+      "manual_followup": "Confirm each OWASP category marked as verified has substantive test evidence, not just a checkbox. Categories marked NOT_APPLICABLE must have project-specific justification. N/A for projects with no security surface."
+    },
+    {
+      "id": "G50",
+      "outcome": "ASVS compliance level selected (L1/L2/L3) and per-chapter verdicts recorded in security scan report",
+      "kind": "hybrid",
+      "applicable_when": "has_security_surface",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-6-security-scan.json \"asvs_level\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the selected ASVS level matches the project risk profile: L1 for all projects, L2 for projects with auth/payments/PII, L3 for fintech/health/government. Per-chapter verdicts must exist for the selected level. N/A for projects with no security surface."
+    },
+    {
+      "id": "G51",
+      "outcome": "runtime error detection report exists with structured error classification, startup verification, and provenance",
+      "kind": "hybrid",
+      "applicable_when": "has_runtime_server",
+      "check": "node scripts/gate-check.mjs runtime-report prime/reports/phase-6-runtime-errors.json",
+      "expect": "GATE-PASS",
+      "enforcement_script": "node scripts/check-runtime-errors.mjs <project-root>",
+      "enforcement_purpose": "Starts the application server on an isolated available port, captures stderr/stdout for runtime errors (stack traces, uncaught exceptions, port conflicts, missing modules), verifies HTTP response, and produces a structured JSON report with provenance (command, URL, timestamp, exit code). Uses cross-platform process tree kill to ensure clean shutdown. Exit code 0 = no runtime errors, 1 = errors detected.",
+      "manual_followup": "Confirm the runtime error report was generated from an actual server start with provenance fields (tool_identity, timestamp, start_command or url). The startup_success field must be true, http_status must be < 500, and error_count must be 0 for a pass. The structural validator checks startup_success, http_status, error_count, and verdict. N/A for non-server projects (libraries, CLIs without HTTP)."
+    },
+    {
+      "id": "G52",
+      "outcome": "browser console error report exists with console message classification, network failure analysis, and provenance",
+      "kind": "hybrid",
+      "applicable_when": "has_ui",
+      "check": "node scripts/gate-check.mjs browser-report prime/reports/phase-6-browser-console.json",
+      "expect": "GATE-PASS",
+      "enforcement_script": "node scripts/check-browser-console.mjs <project-root>",
+      "enforcement_purpose": "Validates the browser console error report produced via Playwright MCP tools (browser_console_messages, browser_network_requests). Checks for uncaught exceptions, network failures, CORS errors, hydration errors, and framework-specific warnings. Requires at least one page checked with console_messages and network_failures arrays. Exit code 0 = no console errors, 1 = errors found.",
+      "manual_followup": "Confirm the browser console report was filled using Playwright MCP tools against a running application, not fabricated. The pages_checked array must contain at least one page. The structural validator checks timestamp, url, pages_checked, console_messages, network_failures, and analysis verdict. N/A for non-UI projects."
+    },
+    {
+      "id": "G53",
+      "outcome": "UI quality assessment report exists with multi-dimensional scoring, screenshot evidence, and provenance",
+      "kind": "hybrid",
+      "applicable_when": "has_ui",
+      "check": "node scripts/gate-check.mjs ui-report prime/reports/phase-6-ui-quality.json",
+      "expect": "GATE-PASS",
+      "enforcement_script": "node scripts/check-ui-quality.mjs <project-root>",
+      "enforcement_purpose": "Validates the UI quality report produced via snapcheck MCP tools (verify_design, accessibility_audit, check_contrast, visual_regression, analyze_layout, check_responsive). Scores 5 quality dimensions: design tokens (25%), accessibility (25%), responsive layout (20%), visual consistency (15%), component quality (15%). Requires screenshots array with existing files. Exit code 0 = pass, 1 = critical issues.",
+      "manual_followup": "Confirm the UI quality report was produced using snapcheck MCP tools against screenshots at desktop, tablet, and mobile viewports. Each of the 5 quality dimensions must have per-check pass/fail results. The structural validator checks dimensions, screenshots existence, and overall_score. N/A for non-UI projects."
+    },
+    {
+      "id": "G54",
+      "outcome": "implementation quality aggregation report exists with weighted overall score, per-category verdicts, and fail-closed enforcement",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs impl-report prime/reports/phase-6-implementation-quality.json",
+      "expect": "GATE-PASS",
+      "enforcement_script": "node scripts/check-implementation-quality.mjs <project-root>",
+      "enforcement_purpose": "Aggregates all Phase 6 verification reports (runtime errors, browser console, UI quality, E2E results, security scan, quality scorecard, verification report) into a single quality assessment with weighted scoring. Fails closed when fewer than 4 assessments completed, runtime startup failed, browser checked 0 pages, or any assessment failed. Exit code 0 = all checks pass, 1 = one or more critical checks fail.",
+      "manual_followup": "Confirm the implementation quality report aggregates evidence from at least 4 verification sources with fail_closed_reasons array empty or containing only acceptable justifications. The overall_score must be >= 60, verdict must be pass, and all applicable assessments must have status pass or warning. The structural validator checks verdict, overall_score, assessments completion, and fail-closed reasons."
+    },
+    {
+      "id": "G55",
+      "outcome": "E2E evidence includes screenshots on disk, console log, and specific e2e tool identity",
+      "kind": "hybrid",
+      "applicable_when": "has_ui",
+      "check": "node scripts/gate-check.mjs e2e-evidence prime/reports/phase-6-e2e-results.json .",
+      "expect": "GATE-PASS",
+      "enforcement_script": "node scripts/gate-check.mjs e2e-evidence <e2e-results.json> <project-root>",
+      "enforcement_purpose": "Validates E2E evidence: requires screenshots on disk, console log capture, and specific e2e tool identity (playwright, cypress, or puppeteer — not the generic 'e2e-runner' family name). Cross-checks that referenced test files exist. Exit code 0 = evidence valid, 1 = evidence invalid or fabricated. N/A for non-UI projects.",
+      "manual_followup": "Confirm the e2e screenshots were captured during actual browser test execution, not fabricated. The tool_identity must be playwright, cypress, or puppeteer (not the generic 'e2e-runner' family name). N/A for non-UI projects."
+    },
+    {
+      "id": "G56",
+      "outcome": "a11y evidence includes known tool identity, evidence paths on disk, and tool output",
+      "kind": "hybrid",
+      "applicable_when": "has_ui",
+      "check": "node scripts/gate-check.mjs a11y-evidence prime/reports/phase-6-a11y-audit.json .",
+      "expect": "GATE-PASS",
+      "enforcement_script": "node scripts/gate-check.mjs a11y-evidence <a11y-audit.json> <project-root>",
+      "enforcement_purpose": "Validates a11y evidence: requires known tool identity (axe, lighthouse, pa11y, or snapcheck — not the generic 'accessibility-auditor' family name), evidence paths that exist on disk, and tool output. Manual-only claims without tool evidence are rejected. Exit code 0 = evidence valid, 1 = evidence invalid or fabricated. N/A for non-UI projects.",
+      "manual_followup": "Confirm the a11y audit was produced by axe, lighthouse, pa11y, or snapcheck against the actual application. Manual-only claims without tool evidence are rejected. N/A for non-UI projects."
+    }
+  ]
+}

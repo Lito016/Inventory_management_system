@@ -1,0 +1,21 @@
+{
+ "dashboard_h2_sizes": [
+  "14px/600",
+  "14px/600",
+  "14px/600",
+  "14px/600"
+ ],
+ "tokens": {
+  "primary_btn_bg": "rgb(37, 99, 235)",
+  "input_radius": "4px",
+  "th_font": "12px",
+  "th_weight": "600",
+  "th_transform": "uppercase",
+  "td_font": "14px",
+  "aside_bg": "rgb(15, 23, 42)"
+ },
+ "modal_open": null,
+ "modal_trigger_note": "Rows are not modal triggers; New Product button opens fixed z-10 overlay with form heading New Product and closes on Escape (second probe). Overlay lacks role=dialog - logged as low defect.",
+ "modal_open_via_new_product": true,
+ "modal_close_esc": true
+}

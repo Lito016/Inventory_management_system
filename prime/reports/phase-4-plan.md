@@ -1,22 +1,22 @@
-# Phase 4 — Plan: Inventory Module Rebuild (T-021/T-022)
+# Phase 4 — Plan: UI/UX Enhancement (v1.2)
 
-> Owner: prime-instruct (assumed in main agent) · Autopilot mode · 2026-09-23
+**Run:** `ims-uiux-enhance` · **Owner role:** prime-instruct · **Date:** 2026-09-24
 
-## Specification decisions recorded
+## Specification decisions
 
-1. **No new data layer.** Existing hooks (`useProducts`/`useCreateProduct`/`useUpdateProduct` in use-b2b.ts; `useInventoryMovements`/`useCreateInventoryAdjustment` in use-b2c.ts) cover R1/R2/R4 write-and-list paths; R3's current-stock lookup is a direct single-row read of `v_inventory_summary` on product-select change (no new hook warranted for one query). The increment is page-layer alignment, not backend work. Decision: zero hook or migration changes → smallest coherent slice, trivial rollback.
-2. **View is the single derivation point.** current_quantity and totals are read from `v_inventory_summary`; pages must not recompute (guards against divergence from DB triggers). Search stays server-side via `.or(ilike)` with a 150 ms debounce; commas in the search term are stripped client-side because they break PostgREST `or()` parsing (400, not cosmetic).
-3. **Signed adjustment storage.** Decreases insert negative `quantity`; increases positive. The view adds adjustments linearly, so sign semantics are the only convention that keeps received − released + adjustments exact. Zero rejected client-side.
-4. **Negative-stock guard is confirm-then-commit**, mirroring FR-INV-003 wording ("will result in negative stock … Continue?"). Confirmation is advisory (operators may legitimately drive stock negative during count corrections) — recorded decision: do NOT hard-block; DB accepts either.
-5. **Shared tabs constant** Products · Summary · Adjustments on all three inventory pages (single source in each page file — three literals, acceptable duplication vs. premature shared module; pages co-locate their tab arrays today).
-6. **Reports page aligned** because it queries the same view with stale column names; leaving it broken would violate R5 data-consistency even though not in the original file list. Scope addition is minimal (one select + map).
+1. **Shell strategy (U1/U3):** single `ProtectedLayout` owns sidebar state (`open` drawer <lg, `collapsed` rail ≥lg) instead of Sidebar-local state — this is what fixes the dead-gap defect (UX-3) structurally rather than by patching a margin constant. The duplicated inline shell for `/settings/users` (`App.tsx:105–119`, which also lacks `DemoBanner`) is consolidated into `ProtectedLayout` with `AdminRoute` nested inside, so there is exactly one shell in the app. Drawer uses translate + overlay, not unmount, so nav links keep focus behavior identical on desktop.
+2. **Breakpoint choice:** `lg` (1024px) as the drawer/desktop boundary — tablet (768) gets the drawer; this matches the audit evidence (overflow at 768) and DESIGN.md layout §3 density intent.
+3. **Table containment (U2):** fix in the shared `Table.tsx` wrapper (`overflow-x-auto`) so all consumers inherit; page-level custom grids only patched where the audit flagged overflow (inventory/reports/users).
+4. **Focus approach (U4):** Tailwind `focus-visible:ring-2` with `ring-primary-500` token — keyboard-only focus, no mouse-click rings; applied at primitive level (Button/Input/Select) plus icon buttons in Header/Sidebar/login cards.
+5. **Honest affordances (U5):** search becomes a popover that submits to `/finance/search?q=` (page seeds from `useSearchParams`); bell becomes a real counts popover (low-stock + overdue from existing mock-backed view queries) rather than removal — demo data supports it (`mock-client.ts` supports `.or`/ilike; `useDashboardSummary` already returns overdueCount).
+6. **Title de-duplication (U6):** Header drops the last breadcrumb crumb (module context remains); content H1 is the single title.
+7. **Dashboard density (U7):** two compact sections under Modules — "Needs Attention" (low/out-of-stock from `v_inventory_summary`) and "Recent Activity" (last 5 movements) — reusing existing queries; no new endpoints.
+8. **Token discipline (U8):** no new palette; slate sidebar surface is grandfathered (declared in PRD v1.2); all new UI uses gray-*/primary-*/semantic tokens.
 
-## Sequencing, dependencies, verification points
+## Ordering and verification
 
-See docs/PRP.md §10: 4 ordered steps, dependency chain 1→2→3→4, per-step acceptance criteria, ~2.5 day effort estimate, rollback = revert four files. Milestone verification per step maps to R1…R6; final gate is build + browser pass in Verify phase.
+T-101 → T-107 in dependency order (shell before header features; primitives before page tweaks); full ordered table with effort estimates, risks, rollback in `docs/PRP.md` §11. Phase 6 re-runs `prime/evidence/ui-audit/audit.py` (extended with drawer/focus probes) as the done-check.
 
-## Methodology
+## Autopilot checkpoints
 
-- [x] Reused PRD v1.1 acceptance criteria as verification points (no placeholder steps; every step names files, effort, and a checkable outcome).
-- [x] Dependency/prerequisite audit: dependency install executed pre-plan (node_modules absent was a real blocker for verification); external B2B trigger behavior verified out of scope.
-- [x] Concrete-planning check: each step's "done" is executable evidence (tsc pass, rendered row, insert visible), not assertion.
+After T-101/T-102 (shell+tables render at 3 viewports) and after T-104/T-106 (header/dashboard features) — recorded in checkpoint review artifact.

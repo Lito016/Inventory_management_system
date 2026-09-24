@@ -69,7 +69,7 @@ export function SuppliersPage() {
     { key: 'address', header: 'Address' },
     {
       key: 'actions',
-      header: '',
+      header: 'Actions',
       render: (row) => (
         <Button
           variant="ghost"

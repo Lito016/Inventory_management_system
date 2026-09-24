@@ -26,12 +26,12 @@ export function Table<T>({
 }: TableProps<T>) {
   if (loading) {
     return (
-      <div className="bg-white border border-gray-200 rounded-md">
-        <table className="w-full">
+      <div className="bg-white border border-gray-200 rounded-md overflow-x-auto">
+        <table className="w-full min-w-[640px]">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-200">
               {columns.map((col) => (
-                <th key={col.key} className="px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide text-left">
+                <th key={col.key} aria-label={col.header || col.key} className="px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide text-left">
                   {col.header}
                 </th>
               ))}
@@ -62,12 +62,12 @@ export function Table<T>({
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-md overflow-hidden">
-      <table className="w-full">
+    <div className="bg-white border border-gray-200 rounded-md overflow-x-auto">
+      <table className="w-full min-w-[640px]">
         <thead>
           <tr className="bg-gray-50 border-b border-gray-200">
             {columns.map((col) => (
-              <th key={col.key} className="px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide text-left">
+              <th key={col.key} aria-label={col.header || col.key} className="px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide text-left">
                 {col.header}
               </th>
             ))}

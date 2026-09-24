@@ -1,6 +1,7 @@
 {
   "schema_version": "1.0",
   "phase": 6,
+  "run_id": "ims-uiux-enhance-muf6w3nv-7eyrph",
   "agent": "prime-evaluate",
   "invocations": [
     {
@@ -11,7 +12,7 @@
         "prime/reports/phase-6-quality-review.md",
         "prime/reports/phase-6-verify.md"
       ],
-      "note": "Independent quality-review subagent (distinct invocation from the evaluator author) audited all phase-6 evidence and returned verdict: request changes with 3 majors + 7 minors; every major reproduced against source, fixed in code (products sanitization, 700-shade contrast tokens, products Pagination wiring), re-verified via tsc/22 unit tests/vite build/Playwright 6/6 re-run, closing at verdict: pass in the same report."
+      "note": "Independent quality-review subagent (distinct invocation from the evaluator author; authored none of the reviewed artifacts) re-executed npm test (24/24), wrote its own Playwright probes (0px overflow at 375 on three pages, 0 axe violations full-rule, movement sign colors rgb(21,128,61)/rgb(185,28,28), bell click-diff 2->3, SQLi probe clean render) and cross-reconciled every cited number; returned verdict: pass with 0 critical, 0 major, 4 minor, 2 nit. All 4 minors fixed in this phase (output-intent 16->19 check count, modal severity standardized to medium, DCL relabeled as one document-load timing per viewport context, unverifiable '13 violations' rephrased to the 5 persisted rule categories); both nits logged as tracked follow-ups in output-quality-scorecard.json refinement_actions."
     },
     {
       "skill": "caveman",
@@ -19,49 +20,53 @@
       "evidence": [
         "prime/reports/phase-6-quality-review.md"
       ],
-      "note": "Reviewer findings and closure recorded one line per finding (path:line: severity: problem. fix.) with severities preserved."
+      "note": "Reviewer findings and their closure recorded one line per finding (path:line: severity: problem. fix.) with severities preserved."
     },
     {
       "skill": "testing",
       "status": "applied",
       "evidence": [
         "prime/reports/phase-6-e2e-results.json",
+        "prime/test/reports/UAT-LOGIN-ADMIN.json",
+        "prime/test/reports/UAT-NAV-DRAWER-MOBILE.json",
+        "prime/test/reports/UAT-DASHBOARD-INTERACTIONS.json",
+        "prime/evidence/ui-audit/reaudit-results.json",
         "prime/reports/phase-6-browser-console.json",
         "prime/reports/phase-6-runtime-errors.json",
-        "tests/inventory-logic.test.ts",
-        "tests/inventory-view-contract.test.ts",
-        "prime/test/reports/UAT-adjustment-negative-stock-confirm.json"
+        "prime/evidence/ui-audit/p6-malformed-probes.json",
+        "tests/demo-mode.test.ts",
+        "tests/inventory-logic.test.ts"
       ],
-      "note": "Browser E2E tier: Playwright 1.63 against the running app, 3 pages x 3 viewports fullPage screenshots + axe injection + 6 critical journeys (mutation flows through the real UI incl. mandatory-field validation and negative-stock confirmation gate), re-run after review fixes; unit tier re-executed (22/22). Post-test state integrity holds because journeys run against the reset-per-load prototype mock."
+      "note": "Browser E2E tier against the built VITE_DEMO bundle served at :4178 (not dev server): 19/19 reaudit acceptance checks (drawer, 3-viewport overflow, collapse sync, real-Tab focus ring, search popover, bell real-data popover, single title, density, avatar token, settings banner), 3/3 Playwright journeys with per-journey console/pageerror/requestfailed capture and 9 screenshots under prime/test/screenshots/verify/, 5 malformed-input adversarial probes through in-app navigation, and the unit tier re-executed at 24/24 including the movement-sign regression pins."
     },
     {
       "skill": "code-quality",
       "status": "applied",
       "evidence": [
         "prime/reports/phase-6-implementation-quality.json",
-        "prime/reports/phase-6-quality-review.md"
+        "prime/reports/phase-6-quality-review.md",
+        "prime/reports/phase-6-verify.md"
       ],
-      "note": "Related-issue pattern scan (unsanitized filter interpolation, unreachable pagination) executed repo-wide from the root cause of review M-1/M-3; matches classified in-scope-fixed vs accepted-convention-deferred; aggregate implementation-quality report produced with per-category executed scores."
+      "note": "Root-cause discipline at Polish depth: the sr-only-in-th overflow defect class (absolute positioning resolving to the initial containing block, escaping overflow-x-auto scrollers) was diagnosed via getBoundingClientRect sweeps rather than patched symptomatically, and closed with visible Actions headers across all 12 action columns. Aggregate implementation-quality report regenerated after review fixes: 98/100, 7/7 assessments pass."
     },
     {
       "skill": "security-testing",
       "status": "applied",
       "evidence": [
         "prime/reports/phase-6-security-scan.json",
-        "prime/reports/phase-5-security-testing.md"
+        "prime/evidence/ui-audit/pnpm-audit-prod.txt",
+        "prime/evidence/ui-audit/p6-malformed-probes.json"
       ],
-      "note": "ASVS L2 aggregation with OWASP A01-A10 per-category dispositions and severity-classified findings; A03 evidence downgraded to honest state when review found the products path unsanitized, then restored after the fix + browser re-verification; residual risk list retained."
+      "note": "ASVS L2 with OWASP A01-A10 dispositions. pnpm audit --prod executed with full transcript persisted (28 pre-existing advisories incl. 2 critical jsPDF in the report-PDF chain; 0 introduced by this increment — no dependency or lockfile diff). The one new URL-parameter path (finance search ?q=) verified sanitized via sanitizeSearchTerm in both receivable and payable branches and probed live with ilike metacharacters, SQLi and XSS payloads (0 dialogs, 0 console errors)."
     },
     {
       "skill": "database",
       "status": "applied",
       "evidence": [
         "tests/inventory-view-contract.test.ts",
-        "supabase/migrations/20260826000008_views.sql",
-        "supabase/migrations/20260826000010_rls_policies.sql",
-        "prime/reports/coverage-map.json"
+        "prime/reports/phase-5-test-results.json"
       ],
-      "note": "Persistence-layer verification: v_inventory_summary derivation audited against canonical SQL (lines 40-52), RLS grant matrix (SELECT/INSERT/UPDATE authenticated, DELETE absent) confirmed in 20260826000010_rls_policies.sql:141-143, and pinning regressions executed via the view-contract test; live-instance execution limitation recorded in coverage-map persistence_note."
+      "note": "This increment is UI-only (demo mock client, no schema/migration/RLS diff). Persistence-layer verification is limited to the data-shape contract the new dashboard bands and header widgets consume: inventory-view-contract tests pin the v_inventory_summary derivation the dashboard stock-status and receivables aggregations read, re-executed green within the 24/24 unit run. No live-instance execution was in scope."
     },
     {
       "skill": "frontend",
@@ -71,17 +76,18 @@
         "skills/frontend/references/design/quality-parts/index.json",
         "skills/frontend/references/design/quality-parts/part-16-design-system-accessibility-and-performance.md",
         "skills/frontend/references/design/quality-parts/part-09-dashboard-ui-references.md",
-        "skills/frontend/scripts/ui-ux-pro-max/search.py executed for phase-6 verification context (design-system selector run 2026-09-23)"
+        "skills/frontend/scripts/ui-ux-pro-max/search.py executed for phase-6 verification context (design-system selector run 2026-09-24)"
       ],
       "evidence": [
         "prime/reports/phase-6-ui-quality.json",
         "prime/reports/phase-6-a11y-audit.json",
         "prime/reports/output-quality-scorecard.json",
-        "prime/evidence/screenshots/products-desktop.png",
-        "prime/evidence/screenshots/summary-desktop.png",
-        "prime/evidence/screenshots/adjustments-desktop.png"
+        "prime/evidence/screenshots/p6-dashboard-desktop.png",
+        "prime/evidence/screenshots/p6-reports-tablet.png",
+        "prime/evidence/screenshots/p6-inventory-products-mobile.png",
+        "prime/evidence/ui-audit/p6-token-probe.json"
       ],
-      "note": "Focused-depth route (existing design system + verification task): UI/UX Pro Max selector re-run for phase-6 context, part-16 contrast/token rules applied to the review-caught contrast fix (600->700 shades per the darker-token rule the part documents), part-09 dashboard density conventions used for the ui-quality dimension scoring; screenshots at 3 viewports and design-token computed-style probes recorded in the UI quality report."
+      "note": "Design-token fidelity measured by computed styles against docs/DESIGN.md (primary button rgb(37,99,235) = #2563EB, 4px input radius, 12px/600 uppercase table headers, slate-900 aside), axe-core 4.10.2 injected on 3 pages x 3 viewports (0 violations; 5 pre-fix rule categories root-caused and fixed), fullPage screenshots at desktop/tablet/mobile reviewed for overlap/clipping, focus-visible verified with real keyboard Tab, and the Design Benchmark Record (W3C WCAG 2.4.7, MDN :focus-visible, ARIA APG disclosure, Tailwind ring utilities) carried in output-intent.json. UI quality scored 99/100."
     }
   ]
 }

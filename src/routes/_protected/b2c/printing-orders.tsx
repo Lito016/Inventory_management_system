@@ -51,7 +51,7 @@ export function PrintingOrdersPage() {
     { key: 'customer', header: 'Customer', render: (r) => <span className="font-medium">{r.customer?.name}</span> },
     { key: 'total_amount', header: 'Total', render: (r) => `₱${parseFloat(r.total_amount).toFixed(2)}` },
     { key: 'status', header: 'Status', render: (r) => <Badge status={r.status} colorMap={PRINTING_ORDER_STATUS_COLORS} /> },
-    { key: 'actions', header: '', render: (r) => (
+    { key: 'actions', header: 'Actions', render: (r) => (
       <div className="flex gap-1">
         {r.status === 'Pending' && <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); updateStatus.mutate({ id: r.id, status: 'In Production' }); }}>Start</Button>}
         {r.status === 'In Production' && <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); updateStatus.mutate({ id: r.id, status: 'Completed' }); }}>Complete</Button>}

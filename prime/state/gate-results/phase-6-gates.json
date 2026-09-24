@@ -1,6 +1,7 @@
 {
   "schema_version": "1.1",
   "phase": 6,
+  "run_id": "ims-uiux-enhance-muf6w3nv-7eyrph",
   "verdict": "pass",
   "checks": [
     {
@@ -8,8 +9,8 @@
       "status": "pass",
       "evidence": [
         "prime/reports/phase-6-verify.md",
-        "prime/reports/phase-6-runtime-errors.json",
-        "prime/reports/phase-6-browser-console.json",
+        "prime/reports/phase-6-test-results.json",
+        "tests/demo-mode.test.ts",
         "tests/inventory-logic.test.ts",
         "tests/inventory-view-contract.test.ts"
       ]
@@ -19,10 +20,11 @@
       "status": "pass",
       "evidence": [
         "prime/reports/phase-6-e2e-results.json",
-        "prime/test/reports/UAT-adjustment-negative-stock-confirm.json",
-        "prime/test/reports/UAT-products-modal-and-tabs.json",
-        "prime/test/reports/UAT-summary-search-filters.json",
-        "prime/evidence/screenshots/journey-adjustment-negstock-confirm.png"
+        "prime/test/reports/UAT-LOGIN-ADMIN.json",
+        "prime/test/reports/UAT-NAV-DRAWER-MOBILE.json",
+        "prime/test/reports/UAT-DASHBOARD-INTERACTIONS.json",
+        "prime/test/screenshots/verify/uat-01-login-page.png",
+        "prime/test/screenshots/verify/uat-03-bell-popover.png"
       ]
     },
     {
@@ -31,11 +33,29 @@
       "evidence": [
         "prime/reports/evaluation-report.md",
         "prime/reports/phase-6-quality-review.md",
-        "prime/reports/coverage-map.json",
-        "prime/reports/phase-6-implementation-quality.json"
+        "prime/reports/phase-6-implementation-quality.json",
+        "prime/reports/output-quality-scorecard.json"
+      ]
+    },
+    {
+      "name": "security-verification",
+      "status": "pass",
+      "evidence": [
+        "prime/reports/phase-6-security-scan.json",
+        "prime/evidence/ui-audit/pnpm-audit-prod.txt",
+        "prime/evidence/ui-audit/p6-malformed-probes.json"
+      ]
+    },
+    {
+      "name": "release-signoff",
+      "status": "pass",
+      "evidence": [
+        "prime/reports/production-readiness.json",
+        "prime/reports/evaluation-report.md",
+        "prime/reports/phase-6-quality-review.md"
       ]
     }
   ],
-  "reverify_count": 1,
-  "last_reverified_at": "2026-09-23T11:05:00Z"
+  "reverify_count": 0,
+  "last_reverified_at": null
 }

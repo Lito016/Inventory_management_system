@@ -44,7 +44,7 @@ export function HistoricalDebtsPage() {
     { key: 'amount', header: 'Amount', render: (r) => `₱${parseFloat(r.amount).toFixed(2)}` },
     { key: 'source', header: 'Source', render: (r) => r.source || '—' },
     { key: 'verification_status', header: 'Status', render: (r) => <Badge status={r.verification_status} colorMap={VERIFICATION_STATUS_COLORS} /> },
-    { key: 'actions', header: '', render: (r) => (
+    { key: 'actions', header: 'Actions', render: (r) => (
       <div className="flex gap-1">
         {r.verification_status === 'Pending' && <>
           <Button variant="ghost" size="sm" onClick={() => updateStatus.mutate({ id: r.id, verification_status: 'Verified' })}>Verify</Button>

@@ -1,64 +1,157 @@
 {
-  "scan_tool": "manual ASVS review + rg pattern audit + dependency audit (static analysis)",
-  "asvs_level": "L2",
-  "timestamp": "2026-09-23T10:46:43Z",
-  "scope": [
-    "src/lib/inventory.ts",
-    "src/routes/_protected/inventory/*",
-    "src/hooks/use-b2b.ts",
-    "src/hooks/use-b2c.ts",
-    "supabase/migrations/2026082600000*",
-    "src/lib/supabase/client.ts"
-  ],
-  "owasp_top10": {
-    "A01_broken_access_control": {
-      "status": "pass",
-      "evidence": "RLS enforced in migration 20260826000010: authenticated SELECT/INSERT/UPDATE on inventory_movements, DELETE denied; UI never constructs privileged queries; routes guarded by _protected auth wrapper."
-    },
-    "A02_cryptographic_failures": {
-      "status": "not_applicable",
-      "justification": "Increment handles no secrets or crypto; Supabase client uses HTTPS + JWTs managed by platform."
-    },
-    "A03_injection": {
-      "status": "pass",
-      "evidence": "All queries go through supabase-js parameterized filters; sanitizeSearchTerm strips ILIKE/fts operators [,()_%] before user text reaches .or() filter grammar on both search paths (summary.tsx:49 and products.tsx via sanitizeSearchTerm(search) at the useProducts call — the products gap found in independent review was fixed and re-verified in-browser); tests/inventory-logic.test.ts 'ILIKE wildcards are stripped'."
-    },
-    "A04_insecure_design": {
-      "status": "pass",
-      "evidence": "Negative-stock adjustments require explicit second confirmation; reason is mandatory for auditability; adjustments stored signed in inventory_movements."
-    },
-    "A05_security_misconfiguration": {
-      "status": "pass",
-      "evidence": "Prototype mode requires explicit missing env vars; no credentials in code; .env.local gitignored."
-    },
-    "A06_vulnerable_and_outdated_components": {
-      "status": "pass",
-      "evidence": "pnpm workspace on current majors; vite build clean; no known-critical transitive advisories surfaced during install."
-    },
-    "A07_identification_and_authentication_failures": {
-      "status": "pass",
-      "evidence": "JWT session via useAuth; created_by set from authenticated user id server-policy-side, never from form input."
-    },
-    "A08_software_and_data_integrity_failures": {
-      "status": "pass",
-      "evidence": "Client-side validation (parseAdjustmentQuantity rejects NaN/zero/round-to-zero) with authoritative RLS as server enforcement; movement_type constrained to view contract values."
-    },
-    "A09_logging_and_monitoring_failures": {
-      "status": "pass",
-      "evidence": "Every adjustment persisted as inventory_movements row with reason, actor, date — tamper-evident audit trail (DELETE denied by RLS)."
-    },
-    "A10_server_side_request_forgery": {
-      "status": "not_applicable",
-      "justification": "No server-side fetching of user-supplied URLs in this increment; browser app talks only to configured Supabase origin."
-    }
+ "schema_version": "1.0",
+ "asvs_level": "L2",
+ "asvs_level_rationale": "Authenticated internal SPA handling inventory/finance/user data with role-based authorization (admin/staff); the demo deployment carries mock data only but the same surface ships to real Supabase-backed use, so auth, access-control and input-validation audits are required.",
+ "scan_tool": "pnpm audit + manual code review + Playwright browser probes",
+ "scan_date": "2026-09-24T08:15:43.581363+00:00",
+ "owasp_top10": {
+  "A01": {
+   "status": "verified",
+   "tests": [
+    "E2E UAT-LOGIN-ADMIN: protected /dashboard and /inventory/products only reachable post-login; full-page goto without session returns to login (memory-only demo session)",
+    "Admin-only /settings/users stays inside ProtectedLayout requireAdmin -> AdminRoute (source review; unchanged by increment)",
+    "All new dashboard links route through the authenticated shell only; no public data surface added"
+   ]
   },
-  "findings": [],
-  "residual_risks": [
-    {
-      "severity": "low",
-      "description": "Negative-stock race: two concurrent adjustments could both pass the warning check before either commits; accepted because RLS permits the operations and stock is advisory, not reservation-grade."
-    }
-  ],
-  "verdict": "pass",
-  "notes": "Detailed reasoning in prime/reports/phase-5-security-testing.md; no open critical or high findings."
+  "A02": {
+   "status": "NOT_APPLICABLE",
+   "justification": "No new cryptographic surface in this increment; transport is HTTPS via static hosting, no secrets handled client-side, demo data is mock-only."
+  },
+  "A03": {
+   "status": "verified",
+   "tests": [
+    "sanitizeSearchTerm applied to URL q param before ilike interpolation in finance/search (round-1 review finding closed; verified in source and live probe q=cotton)",
+    "React auto-escaping on all new JSX interpolations (bell panel, movement rows, stat cards); no dangerouslySetInnerHTML added",
+    "All queries use existing parameterized hooks and view selects; no string-built SQL introduced"
+   ]
+  },
+  "A04": {
+   "status": "verified",
+   "tests": [
+    "Increment scope review: no new persistence, sharing or privilege paths; UI/UX tasks T-101..T-107 only, data boundaries unchanged"
+   ]
+  },
+  "A05": {
+   "status": "verified",
+   "tests": [
+    "Production build via vite preview :4178 shows no dev-only diagnostics; 0 console messages across 9 page x viewport runs",
+    ".env files gitignored; VITE_DEMO is a deliberate public demo toggle, not a secret",
+    "Repo secrets scan found no committed credentials; Cloudflare token lives only in GitHub Secrets"
+   ]
+  },
+  "A06": {
+   "status": "verified",
+   "tests": [
+    "pnpm audit --prod executed 2026-09-24: 28 advisories (2 critical, 8 high, 15 moderate, 3 low) in the pre-existing jspdf/dompurify report-PDF chain; none introduced by this increment (no dependency diff)",
+    "Full audit transcript stored at prime/evidence/ui-audit/pnpm-audit-prod.txt"
+   ]
+  },
+  "A07": {
+   "status": "verified",
+   "tests": [
+    "Demo role-picker is an explicit mock auth labeled by a persistent DEMO banner; real Supabase auth path untouched",
+    "Session reset semantics probed: full page load clears the memory session and returns to /login (expected demo behavior)"
+   ]
+  },
+  "A08": {
+   "status": "verified",
+   "tests": [
+    "No dependency, lockfile or CI changes in this increment; GitHub Actions builds from the committed lockfile (pre-existing)",
+    "Deployment remains static-pages only; artifact integrity chain unmodified"
+   ]
+  },
+  "A09": {
+   "status": "NOT_APPLICABLE",
+   "justification": "Client-side SPA adds no server logging in this increment; browser console capture shows 0 messages, so no sensitive-data leak path was introduced."
+  },
+  "A10": {
+   "status": "NOT_APPLICABLE",
+   "justification": "No server-side URL fetching or outbound request feature exists or was added; the app only calls its configured Supabase endpoint over HTTPS."
+  }
+ },
+ "asvs_chapters": {
+  "V5": {
+   "status": "pass",
+   "evidence": [
+    "prime/reports/phase-5-security-testing.md",
+    "sanitizeSearchTerm closure verified in src/routes/_protected/finance/search.tsx"
+   ],
+   "notes": "Input validation on the only new URL-parameter path"
+  },
+  "V6": {
+   "status": "pass",
+   "evidence": [
+    "prime/test/reports/UAT-LOGIN-ADMIN.json"
+   ],
+   "notes": "Authorization posture unchanged; E2E confirms protected routing"
+  },
+  "V1": {
+   "status": "pass",
+   "evidence": [
+    "prime/evidence/ui-audit/pnpm-audit-prod.txt"
+   ],
+   "notes": "Audit executed; pre-existing jspdf/dompurify advisories logged as follow-up, no delta from the increment"
+  }
+ },
+ "threat_model": {
+  "documented": true,
+  "artifact_path": "prime/reports/phase-5-security-testing.md",
+  "trust_boundaries": [
+   "browser to static CDN (demo bundle)",
+   "SPA to Supabase (production mode only)",
+   "URL query param to ilike interpolation"
+  ]
+ },
+ "findings": [
+  {
+   "id": "SEC-01",
+   "severity": "critical",
+   "title": "jsPDF Local File Inclusion / Path Traversal (affected range <=3.0.4)",
+   "description": "Installed jspdf ^2.5.1 falls in the vulnerable range; browser-only bundle lowers practical exposure because the Node filesystem path is not shipped.",
+   "location": "package.json dependencies.jspdf",
+   "owasp_category": "A06",
+   "triage_status": "open-preexisting-out-of-scope",
+   "remediation": "Upgrade jspdf to a patched major (>=4.2.1); requires API migration of the reports PDF export, deliberately deferred from this UI/UX increment."
+  },
+  {
+   "id": "SEC-02",
+   "severity": "critical",
+   "title": "jsPDF HTML Injection in New Window paths (affected range <=4.2.0)",
+   "description": "Same dependency chain; HTML-to-PDF rendering of untrusted markup could inject. The app converts only fixed internal report markup.",
+   "location": "package.json dependencies.jspdf",
+   "owasp_category": "A06",
+   "triage_status": "open-preexisting-out-of-scope",
+   "remediation": "Covered by the same jspdf upgrade follow-up."
+  },
+  {
+   "id": "SEC-03",
+   "severity": "high",
+   "title": "8 high-severity advisories in report-PDF chain (jspdf/dompurify, some transitive)",
+   "description": "Aggregate entry; itemized in the audit transcript.",
+   "location": "pnpm-lock.yaml",
+   "owasp_category": "A06",
+   "triage_status": "open-preexisting-out-of-scope",
+   "remediation": "jspdf/dompurify upgrade follow-up."
+  },
+  {
+   "id": "SEC-04",
+   "severity": "medium",
+   "title": "15 moderate and 3 low advisories, same chain",
+   "description": "Aggregate entry; itemized in the audit transcript.",
+   "location": "pnpm-lock.yaml",
+   "owasp_category": "A06",
+   "triage_status": "open-preexisting-out-of-scope",
+   "remediation": "jspdf/dompurify upgrade follow-up."
+  }
+ ],
+ "summary": {
+  "total_findings": 4,
+  "critical": 2,
+  "high": 1,
+  "medium": 1,
+  "low": 0,
+  "false_positives_eliminated": 0,
+  "introduced_by_increment": 0,
+  "verdict": "PASS for this increment's delta (no new attack surface, injection path sanitized, auth posture unchanged); 2 pre-existing critical dependency advisories logged as an explicit upgrade follow-up for the reports PDF chain"
+ }
 }

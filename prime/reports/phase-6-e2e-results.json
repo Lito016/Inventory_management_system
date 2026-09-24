@@ -1,123 +1,27 @@
 {
-  "tool": "playwright",
-  "tool_version": "1.63.0",
-  "timestamp": "2026-09-23T10:46:43Z",
-  "url": "http://localhost:5173",
-  "started_at": "2026-09-23T10:45:58.004Z",
-  "finished_at": "2026-09-23T10:46:27.771Z",
-  "pages_checked": [
-    "http://localhost:5173/inventory/products",
-    "http://localhost:5173/inventory/summary",
-    "http://localhost:5173/inventory/adjustments"
-  ],
-  "tests_run": 6,
-  "passed": 6,
-  "failed": 0,
-  "suites": [
-    "inventory-critical-journeys"
-  ],
-  "journeys": [
-    {
-      "name": "summary-search-filters",
-      "status": "passed",
-      "steps": [
-        {
-          "action": "count initial rows",
-          "result": 10
-        },
-        {
-          "action": "type \"silk\", wait debounce",
-          "rows_after": 2
-        }
-      ]
-    },
-    {
-      "name": "summary-status-badges",
-      "status": "passed",
-      "steps": [
-        {
-          "action": "detect stock statuses",
-          "found": [
-            "In Stock",
-            "Out of Stock"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "adjustment-negative-stock-confirm",
-      "status": "passed",
-      "steps": [
-        {
-          "action": "open New Adjustment modal"
-        },
-        {
-          "action": "submit empty -> required errors shown",
-          "error_fields": 1
-        },
-        {
-          "action": "submit negative beyond stock -> confirm dialog",
-          "confirm_dialog": true,
-          "adjust_anyway_btn": true
-        }
-      ]
-    },
-    {
-      "name": "products-modal-and-tabs",
-      "status": "passed",
-      "steps": [
-        {
-          "action": "inventory tabs present",
-          "tabs": 3
-        },
-        {
-          "action": "open create modal",
-          "dialog_present": true
-        }
-      ]
-    },
-    {
-      "name": "adjustment-type-filter",
-      "status": "passed",
-      "steps": [
-        {
-          "action": "filter movement type = Adjustment",
-          "all_rows": 10,
-          "filtered_rows": 2
-        }
-      ]
-    },
-    {
-      "name": "focus-hover-states",
-      "status": "passed",
-      "steps": [
-        {
-          "action": "hover + focus",
-          "bg_before": "rgb(37, 99, 235)",
-          "bg_after_hover": "rgb(29, 78, 216)",
-          "changed_on_hover": true,
-          "focus": "solid|rgb(255, 255, 255) 0px 0px 0px 0px, rgb(219, 234, 254) 0px 0px 0px 2px, rgba(0, 0, 0, 0) 0px 0px 0px 0px"
-        }
-      ]
-    }
-  ],
-  "screenshots": [
-    "prime/evidence/browser/products-desktop.png",
-    "prime/evidence/browser/products-tablet.png",
-    "prime/evidence/browser/products-mobile.png",
-    "prime/evidence/browser/summary-desktop.png",
-    "prime/evidence/browser/summary-tablet.png",
-    "prime/evidence/browser/summary-mobile.png",
-    "prime/evidence/browser/adjustments-desktop.png",
-    "prime/evidence/browser/adjustments-tablet.png",
-    "prime/evidence/browser/adjustments-mobile.png",
-    "prime/evidence/browser/journey-summary-search.png",
-    "prime/evidence/browser/journey-adjustment-validation.png",
-    "prime/evidence/browser/journey-adjustment-negstock-confirm.png",
-    "prime/evidence/browser/journey-products-modal.png",
-    "prime/evidence/browser/journey-adjustment-filter.png"
-  ],
-  "console_log": "No console errors or pageerrors captured across 9 page-viewport loads (3 pages x desktop 1440x900, tablet 768x1024, mobile 390x844).",
-  "console_error_count": 0,
-  "network_failure_count": 0
+ "timestamp": "2026-09-24T08:20:40.418040+00:00",
+ "tool_identity": "playwright",
+ "project_root": "C:/Projects/inventory_management",
+ "journeys": [
+  "UAT-DASHBOARD-INTERACTIONS",
+  "UAT-LOGIN-ADMIN",
+  "UAT-NAV-DRAWER-MOBILE"
+ ],
+ "tests_run": 3,
+ "passed": 3,
+ "failed": 0,
+ "screenshots": [
+  "prime/test/screenshots/verify/uat-03-dashboard-1280.png",
+  "prime/test/screenshots/verify/uat-03-bell-popover.png",
+  "prime/test/screenshots/verify/uat-03-search-results.png",
+  "prime/test/screenshots/verify/uat-01-login-page.png",
+  "prime/test/screenshots/verify/uat-01-dashboard.png",
+  "prime/test/screenshots/verify/uat-01-protected-products.png",
+  "prime/test/screenshots/verify/uat-02-drawer-closed.png",
+  "prime/test/screenshots/verify/uat-02-drawer-open.png",
+  "prime/test/screenshots/verify/uat-02-products-375.png"
+ ],
+ "console_errors": [],
+ "console_log": "captured per journey; 0 errors on PASS journeys (see UAT-*.json console_errors arrays)",
+ "summary": "3 journeys through demo login: admin login+session, 375px drawer, dashboard interactions (link/bell/search)"
 }

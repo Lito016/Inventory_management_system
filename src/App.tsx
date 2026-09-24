@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import { AuthProvider } from '@/providers/auth-provider';
 import { QueryProvider } from '@/providers/query-provider';
 import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
@@ -33,16 +34,46 @@ import { ReportsPage } from '@/routes/_protected/reports/index';
 import { DocumentsPage } from '@/routes/_protected/documents/index';
 import { UsersPage } from '@/routes/_protected/settings/users';
 
-function ProtectedLayout({ children }: { children: React.ReactNode }) {
+function ProtectedLayout({ children, requireAdmin = false }: { children: React.ReactNode; requireAdmin?: boolean }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const menuBtnRef = useRef<HTMLButtonElement>(null);
+  const location = useLocation();
+
+  // Close the mobile drawer whenever the route changes.
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+
+  // Esc closes the drawer and returns focus to the menu button.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') { setMobileOpen(false); menuBtnRef.current?.focus(); }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [mobileOpen]);
+
   return (
     <ProtectedRoute>
-      <div className="flex min-h-screen bg-slate-50">
-        <Sidebar />
-        <div className="flex-1 ml-60 transition-[margin] duration-200">
+      <div className="min-h-screen bg-slate-50">
+        {mobileOpen && (
+          <div
+            className="fixed inset-0 z-30 bg-gray-900/40 lg:hidden"
+            onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+        <Sidebar
+          mobileOpen={mobileOpen}
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed((c) => !c)}
+          onCloseMobile={() => setMobileOpen(false)}
+        />
+        <div className={`transition-[margin] duration-200 ${collapsed ? 'lg:ml-[68px]' : 'lg:ml-60'}`}>
           <DemoBanner />
-          <Header />
-          <main className="p-6">
-            {children}
+          <Header onOpenMobile={() => setMobileOpen(true)} menuBtnRef={menuBtnRef} />
+          <main className="p-4 sm:p-6">
+            {requireAdmin ? <AdminRoute>{children}</AdminRoute> : children}
           </main>
         </div>
       </div>
@@ -103,19 +134,7 @@ export default function App() {
 
             {/* Settings (admin only) */}
             <Route path="/settings/users" element={
-              <ProtectedRoute>
-                <AdminRoute>
-                  <div className="flex min-h-screen bg-slate-50">
-                    <Sidebar />
-                    <div className="flex-1 ml-60 transition-[margin] duration-200">
-                      <Header />
-                      <main className="p-6">
-                        <UsersPage />
-                      </main>
-                    </div>
-                  </div>
-                </AdminRoute>
-              </ProtectedRoute>
+              <ProtectedLayout requireAdmin><UsersPage /></ProtectedLayout>
             } />
 
             {/* Default redirect */}

@@ -1,0 +1,18 @@
+{
+  "phase": 4,
+  "agent": "prime-instruct",
+  "invocations": [
+    {
+      "skill": "quality-review",
+      "status": "applied",
+      "evidence": ["prime/reports/phase-4-quality-review.md"],
+      "note": "Independent subagent reviewer; verdict request-changes on 2 majors, all findings closed and re-verified verdict: pass in same file."
+    },
+    {
+      "skill": "caveman",
+      "status": "applied",
+      "evidence": ["prime/reports/phase-4-quality-review.md"],
+      "note": "Reviewer output in one-line caveman finding format (location: severity: problem. fix.)."
+    }
+  ]
+}

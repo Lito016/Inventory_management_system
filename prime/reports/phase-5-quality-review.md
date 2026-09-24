@@ -1,40 +1,89 @@
-# Phase 5 Quality Review — Inventory (Build phase)
+# Phase 5 Quality Review — UI/UX Enhancement (PRD v1.2, T-101…T-107)
+
+Run: ims-uiux-enhance-muf6w3nv-7eyrph · Reviewer: independent quality-review agent (not the implementer)
 
 verdict: request changes
 
+**Independence statement:** I did not implement any of the reviewed changes. I reviewed the working-tree diff (`git diff -- src/`), read every changed file in full, traced callers/callees (hooks, mock client, query provider, route guards, seed data, tailwind config, DESIGN.md, PRD U1–U8), re-executed the claimed evidence myself, and ran additional adversarial browser probes beyond the shipped harness. No source file was edited by me; the only file written is this report. (Prior content of this file belonged to the earlier Inventory increment and is superseded.)
+
+## Summary
+
+The increment is well-engineered: the drawer/collapse state is single-sourced correctly, the Esc/outside-click handlers avoid stale closures, focus return works in a real browser, table containment fixes the 375px overflow class (verified beyond the shipped matrix), and the header controls are genuinely honest. However, the new dashboard ships a confirmed data-misdisplay bug (released stock shown as positive inflow), its footer links kick demo users to the login screen via full reloads, and evidence claims in the phase-5 reports are false (sanitizeSearchTerm is not applied on the receiving search page; the claimed dashboard error-banner/keepPreviousData posture does not exist). Findings: 0 critical, 4 major, 4 minor, 4 nit.
+
 ## Findings
 
-- src/lib/inventory.ts:16: 🔴 major: parseAdjustmentQuantity('0.0001') passes the non-zero check pre-rounding but returns 0 post-rounding — both the RHF validate (adjustments.tsx:169, `!== null`) and onSubmit check (adjustments.tsx:113-117) let 0 through, inserting a quantity-'0' movement, violating mandatory signed non-zero. Round first, then `if (rounded === 0) return null`; add a test for the 0<|v|<0.005 path.
-- src/routes/_protected/inventory/adjustments.tsx:56: 🔴 major: movement list is fetched paginated (20/page via use-b2c.ts:99) but no Pagination control is rendered and `data.total` is unused — rows past page 0 are unreachable; requirement says list must be paginated. Render src/components/ui/Pagination.tsx with total, and call resetPage() when typeFilter changes.
-- src/routes/_protected/inventory/summary.tsx:73: 🟡 minor: stock-color thresholds hardcode `10`, duplicating stockStatus/LOW_STOCK_THRESHOLD logic used one line below for the badge. Reuse stockStatus() for both color and badge.
-- src/routes/_protected/inventory/adjustments.tsx:105: 🟡 minor: when saveAdjustment fails via the negative-confirm path (line 187), formError renders inside the Modal while the ConfirmDialog stays open on top and hides it. Show the error in the dialog or close it on failure.
-- src/lib/inventory.ts:5: 🟡 minor: stockStatus(NaN) falls through both comparisons and returns 'In Stock' — a malformed current_quantity would badge as healthy. Guard !Number.isFinite → 'Out of Stock'.
-- src/lib/inventory.ts:12: 🟡 minor: sanitizeSearchTerm strips PostgREST-reserved chars but not ILIKE wildcards `%`/`_`; a term like "50%" matches loosely. Not a failure/injection risk; escape or document.
-- package.json:8: 🟡 minor: no `test` script — the two new node:test files only run via the ad-hoc per-file `node --test <file>` command recorded in prime/reports/phase-5-test-results.json. Add a test script so CI/devs run them.
-- src/lib/inventory.ts:29: ⚪ nit: 'received' branch prints the raw string (`+${quantity}`) while 'released' reformats via Math.abs — inconsistent for stored values like '8.000'. Normalize both.
+1. **major** — `src/routes/_protected/dashboard.tsx:196` (`const positive = qty >= 0`): Recent Activity renders the *stored* sign of `quantity`, but released movements are stored positive by design (asserted by `tests/inventory-logic.test.ts` — "released shows minus regardless of stored sign"; `src/lib/inventory.ts:28` `movementQuantityDisplay` encodes the invariant). Empirically confirmed on the live demo: "Cotton Poplin — Released · Sep 4 → **+100**" in green, i.e. an outflow displayed as an inflow. Fix: derive sign from `movement_type` via the existing `movementQuantityDisplay` helper (also removes duplicated logic).
+2. **major** — `src/routes/_protected/dashboard.tsx:172,215`: "View inventory →" / "View all movements →" are raw `<a href>` anchors, causing a full document reload. The demo session is memory-only (`src/lib/supabase/mock-client.ts:40`), so the first click logs the user out to `/login` — confirmed by browser probe (url became `/login`, session lost). The re-audit itself documents this landmine ("full goto would reset the memory-only demo session", `prime/evidence/ui-audit/reaudit.py:118`) yet the shipped feature hits it. Fix: use react-router `Link`.
+3. **major** — false evidence claim: `prime/reports/phase-5-build.md:40` and `prime/reports/phase-5-security-testing.md` §1 state the header search term is "constrained by the existing `sanitizeSearchTerm` on the receiving page". It is not — `src/routes/_protected/finance/search.tsx:47,59` interpolates the raw `search` state (seeded from `?q=` by this increment) straight into `.or('customer_name.ilike.%<term>%,…')`; terms containing `, ( )` break the filter grammar and `%`/`_` become wildcards. The receiving-page gap predates the diff, but the increment creates the input funnel and the reports assert a control that does not exist. Fix: apply `sanitizeSearchTerm` in the search page's queryFn (products/summary pages already do).
+4. **major** — evidence accuracy: `phase-5-build.md:44` claims "Query errors surface as banners via handleSupabaseError (dashboard additions follow the existing pattern)". The new dashboard queries (`dashboard.tsx:55,70`) never destructure `error`; on failure the cards silently render "All products are sufficiently stocked." / "No stock movements recorded yet." — a failure dressed as an honest all-clear state. Related overstatement: `phase-5-build.md:36` claims the dashboard additions "reuse existing queries with keepPreviousData" — `keepPreviousData`/`placeholderData` appears nowhere in dashboard.tsx or use-b2c.ts (only inventory/summary.tsx:47). Fix: handle `error` on the two new query surfaces and correct the report.
+5. **minor** — `prime/evidence/ui-audit/reaudit.py:125`: the `U5.bell-popover` assertion is vacuous — `locator("text=/overdue|All clear/i").count() >= 1` also matches the dashboard's own "Overdue Receivables" stat card; I measured 1 match *without* ever opening the popover, so the check passes unconditionally. (The feature itself works — I confirmed the popover renders "6 overdue receivables need attention" with the bell clicked, and the empty-state branch exists.) The gate does not assert what it claims; scope the locator to the popover container.
+6. **minor** — `prime/evidence/ui-audit/reaudit.py` U2 coverage is narrower than PRD U2's acceptance criterion ("inventory/reports/users at 768px **and** 375px"): the harness tests inventory@375 + reports@768 + users@768 only. My supplementary probes closed the gap and found 0px overflow at 375 for reports, users and receivables — product is compliant, but the stored evidence does not prove the stated AC. Add the missing viewport combinations to the harness.
+7. **minor** — `src/components/layout/Sidebar.tsx:50`: the closed drawer is hidden by transform only, so all nav links stay tab-focusable off-screen below `lg`. Measured at 375px: 20 links receive keyboard focus at x=−232 while invisible (WCAG 2.4.3/4.1.2 issue). Fix: toggle `invisible`/`visible` (or `aria-hidden` + `inert`) when `!mobileOpen`, released at `lg`.
+8. **minor** — test coverage gap: no unit test covers the new dashboard derivations (`needsAttention` filter/slice, movement row rendering). Finding #1 is exactly the regression class such a test would catch; project standards require tests for new logic. Extract the derivation into a pure helper and add a node:test case.
+9. **nit** — `src/components/layout/Sidebar.tsx:66,93`: focus rings use `ring-blue-400` where U4/DESIGN.md specify the `primary-500` token (`tailwind.config.js` primary-500 = #3B82F6 ≠ blue-400 #60A5FA). Visible and ≥2px, so U4's AC is met; token-fidelity deviation only.
+10. **nit** — `src/routes/_protected/dashboard.tsx:199`: `(m as unknown as { product?: { name?: string } }).product?.name ?? '—'` — the double cast defeats the hook's real type (`src/hooks/use-b2c.ts:102` already types `product: { name: string; unit: string }` non-null); the `?? '—'` fallback is dead code.
+11. **nit** — `src/routes/_protected/finance/search.tsx:35-37`: the sync effect keys on `searchParams` *identity*, so a same-route navigation with an unchanged URL query (e.g. header re-submits the currently loaded term) re-seeds state and clobbers a mid-typing edit. No infinite loop (`usePagination` is pure local state and never writes the URL), and normal flows are clean; keying on `searchParams.get('q')` would tighten it.
+12. **nit** — `src/routes/_protected/dashboard.tsx:55-68`: fetching all of `v_inventory_summary` to filter client-side is *sound today* (every non-"In Stock" row has qty < 10 and ascending order front-loads them; mock sorts numerically and applies no default range), but on a real PostgREST backend the implicit 1000-row default would make the top-5 claim silently wrong past scale. The "mock has no `.lt()`" justification is accurate (verified absent from mock-client.ts; gte/lte exist, lt does not). Consider adding `.lt()` to the mock builder.
 
-## Verified correct
+## Verified correct (independently confirmed)
 
-- All queried columns match migrations exactly: v_inventory_summary select (summary.tsx:52) matches 20260826000008_views.sql:40-52 and seed-data.ts:271-287; inventory insert payload (adjustments.tsx:92-101) matches 20260826000007_inventory_table.sql columns/checks (movement_type='adjustment', reference_type='adjustment', reference_id null, created_by=session user id).
-- Reports inventory case (reports/index.tsx:45-48) selects only real view columns.
-- Summary badges use stockStatus with correct ≤0 Out / <10 Low / else In semantics; debounced (150ms) server-side search on real name/category columns via properly built or() filter.
-- Adjustments form: product Select/Input integrate with react-hook-form correctly (both forward refs); signed quantity, required date, mandatory reason with required + maxLength 500; negative-stock projection (projectedQuantityAfterAdjustment) gates ConfirmDialog "Adjust Anyway" before save; save is fail-closed while stock query is pending (no stale-product race — query is keyed to the watched product_id).
-- Movement type filter wired to useInventoryMovements (use-b2c.ts:91-105); Products/Summary/Adjustments tabs present on all 3 pages.
-- No placeholder/TODO content; tests pass (19/19 via node --test, incl. view-contract test vs seed data); `tsc --noEmit` clean.
+Commands executed by me (not the implementer):
 
-## Re-verification (post-fix, 2026-09-23)
+- `npm test` → **24 tests, 8 suites, pass 24, fail 0** (node --test, 3 files) — matches claim.
+- `npx tsc --noEmit` → **exit 0, no diagnostics** — matches claim.
+- `python prime/evidence/ui-audit/reaudit.py` re-run against the live `vite preview` on :4178 → **16/16 PASS**, per-check details consistent with the stored `reaudit-results.json` — claim reproduced. Freshness verified: `dist/index.html` (15:21) is newer than every file under `src/` (`find src -newer dist/index.html` empty), so the audited bundle is built from the reviewed tree.
+- Extra adversarial probes (inline Playwright, nothing written to disk): drawer closed/open/c-close-on-nav at 375px; Esc-close + focus return to the menu button (real keyboard); page overflow **0** at 375px on /reports, /settings/users and /finance/receivables (extending the shipped matrix); bell popover real content ("6 overdue receivables need attention") and the vacuous-regex demo of finding #5; released-sign misdisplay of finding #1; reload-logout of finding #2; off-screen tabbable links of finding #7.
+- **U3**: collapsed aside width 68px with content `lg:ml-[68px]` → measured gap 0px (≤8 required); the collapse/mobile split via `lg:` prefixes is done correctly at every level (width, margin, hidden labels via `lg:hidden`), so a stale `collapsed` value cannot shrink the mobile drawer.
+- **State correctness**: `ProtectedLayout` single-sources `mobileOpen`/`collapsed`; navigating between route elements preserves the layout instance (same component type at same tree position) so collapse state survives navigation; the close-on-pathname effect is idempotent; no stale closures in Esc/outside-click handlers (functional setState + refs; the `[]`-dep outside-click effect reads only refs); overlay z-30 sits between header z-20 and sidebar z-40 coherently.
+- **Header honesty (U5)**: `overdueCount` genuinely computed from data (`src/hooks/use-finance.ts:99-128`, `.eq('is_overdue', true)` exact count), shared `['dashboard']` cache (30s staleTime) so the header adds no per-page request storm; "9+" cap logic correct; "All clear." empty state real; search navigates via `encodeURIComponent` and the receiving page seeds correctly (`?q=cotton` → input shows "cotton", confirmed by my harness re-run).
+- **Route consolidation**: `/settings/users` now under one `ProtectedLayout requireAdmin` → `AdminRoute` (redirect-based guard intact; authorization posture unchanged); DemoBanner now renders there (harness check `U1.settings-banner` passed).
+- **U6**: terminal breadcrumb crumb dropped (`pathSegments.slice(0, -1)`); the stored "breadcrumb=['Inventory','Inventory']" detail is a selector artifact (span + nested anchor both counted), UI shows one crumb — H1 ≠ breadcrumb verified.
+- **U8 / tokens**: `git diff -- src/ | grep '^+.*#[0-9a-fA-F]{3,8}'` → empty (no raw hex on added lines); overlay `bg-gray-900/40`, popover `border-gray-300` are inside the DESIGN.md gray token table; avatar gradient replaced by `bg-primary-600`; no new dependencies (package.json not in diff).
+- Mock/real parity for the new query paths: `v_inventory_summary` seeded and registered in the mock table map (`mock-client.ts:32`, `seed-data.ts:271`); mock `order()` is numeric-aware (lines 273-286), so ascending current_quantity ordering is correct; `.or()`/`ilike` supported.
+
+## Passes run
+
+Pre-review change-impact trace (callers of modified components, hooks, mock client, guard chain) → Correctness (findings 1, 2, 7, 11, 12) → Security (finding 3; plus sweeps: no XSS sinks added, no secrets in diff, authz posture unchanged) → Performance (cache reuse verified; no N+1 in new surfaces) → Maintainability (findings 4, 10) → Test coverage (findings 5, 6, 8) → Adversarial browser probes (findings 1, 2, 5, 7 reproduced empirically; U2 matrix extended beyond shipped evidence) → Fact-check of claimed evidence (findings 3, 4: claims contradicted by source; 16/16, 24/24, tsc claims all reproduced). Simplifier cleanup pass skipped deliberately — reviewer-only mandate, no source edits permitted.
+
+## Confidence
+
+**High** on findings 1–7 (each reproduced in the live demo or read directly against source of truth). Assumption: the VITE_DEMO mock build is the verification target for this increment, as the PRD/reports state. Not verified: real-Supabase behavior of `.or()` with hostile terms (mock diverges from PostgREST grammar strictness); visual polish of `shots2/` screenshots beyond measured geometry.
+
+## Round 2 — re-verification (post-fix)
+
+Reviewer: independent quality-review agent (different instance from round 1; did not implement any change, edited no source file — the only file written is this report appended below).
 
 verdict: pass
 
-All findings closed by the implementer and independently re-checked:
+**Independence statement:** I performed this round 2 myself against the current working tree and the live build on :4178; I did not trust the implementer's closure claims and re-derived every finding from source plus runtime probes. I had no role in implementing the fixes reviewed in round 1 of this increment.
 
-- Major 1 (round-to-zero): `src/lib/inventory.ts` now returns null when the 2-dp rounding collapses a non-zero input to 0; regression tests `parseAdjustmentQuantity('0.0001') → null` and `-0.0001 → null` added.
-- Major 2 (pagination): `adjustments.tsx` renders `Pagination` below the movements `Table` driven by `movementData.total` (PAGE_SIZE=20, matching `use-b2c.ts:99` range), page resets on typeFilter change, page changes re-query via `useInventoryMovements`.
-- Minor (summary color duplication): current-stock color now derives from `stockStatus()` — single source of truth for the 0/10 thresholds.
-- Minor (hidden save error): `saveAdjustment` catch closes the ConfirmDialog so the form error is visible.
-- Minor (NaN status): `stockStatus` guards `!Number.isFinite` → 'Out of Stock'; tests for NaN/±Infinity added.
-- Minor (ILIKE wildcards): `sanitizeSearchTerm` also strips `%` and `_`; wildcard test added.
-- Minor (no test script): `package.json` now has `"test": "node --test tests/inventory-logic.test.ts tests/inventory-view-contract.test.ts"`.
-- Nit (inconsistent received display): `movementQuantityDisplay` normalizes received/released/adjustment via parsed numbers.
+### Per-finding closure status
 
-Evidence: `pnpm exec tsc --noEmit` exit 0; `node --test` both files exit 0 (22/22 cases, 2 files); `pnpm exec vite build` success. See prime/reports/phase-5-test-results.json.
+1. **M1 (recent-activity sign) — CLOSED.** `src/routes/_protected/dashboard.tsx:200-201` renders `movementQuantityDisplay(m.movement_type, m.quantity)` and derives `positive = display.startsWith('+')`. Runtime probe on the served bundle: rows render `received → +200 / +150 / +80` and `released → -100 / -200`, released rows carry `text-error-700`, received `text-success-700`.
+2. **M2 (SPA links) — CLOSED.** `dashboard.tsx:2` imports `Link`; StatCard wrapper `dashboard.tsx:48` uses `<Link to>`; both footer links `dashboard.tsx:175,220` are `Link`. No `<a href>` remains in the new/edited surface (the pre-existing `ModuleLink` anchor is untouched old code, outside the finding's scope). Runtime: clicking "View inventory →" → `/inventory/summary`, "View all movements →" → `/inventory/adjustments`, StatCard → `/finance/receivables`; URL never became `/login`, session survived; `performance.getEntriesByType('navigate')` count stayed 0 across the footer click → client-side navigation, no reload.
+3. **M3 (search sanitization) — CLOSED.** `finance/search.tsx:14` imports `sanitizeSearchTerm`; `:46` computes `const term = sanitizeSearchTerm(search)` inside queryFn; `:51,63` use `term` in both `.or(...)` branches. Runtime with hostile deep-link `?q=abc%(x)_1,y`: page seeds the raw term, 0 pageerrors, renders honest "No transactions found." (sanitized term), no error banner.
+4. **M4 (error posture + report accuracy) — CLOSED.** Both queries destructure `isError` (`dashboard.tsx:56,71`); explicit failure copy `dashboard.tsx:155-156` ("Could not load stock levels.") and `:193-194` ("Could not load recent movements.") renders *before* the empty-state branch. `text-error-700` is a compiled token (present in served CSS: `color:rgb(185 28 28 / …)`). `prime/reports/phase-5-build.md`: zero occurrences of `keepPreviousData`; Error-handling section now states the isError branches verbatim; responsive section documents the Link/memory-only-session fix — claims match source.
+5. **m5 (bell assertion) — CLOSED.** `reaudit.py:144-157`: click-diff on `a[href='/finance/receivables']` count (measured 2→3) plus a positioned-panel (absolute/fixed, top<100, right>800) text scan. No bare page-wide `text=/overdue/i` match remains. The dashboard's "Overdue" stat card is statically positioned and cannot satisfy the panel filter, so the check is no longer unconditional.
+6. **m6 (U2 coverage) — CLOSED.** `reaudit.py:63-69` adds /reports and /settings/users overflow checks at 375px (both observed 0); `:70-81` adds `U4.drawer-not-tabbable` asserting computed `visibility == hidden` on the closed drawer (observed `hidden`, 0 on-screen aside links). Harness total now 19 checks; re-run by me: **19/19 PASS**.
+7. **m7 (sidebar tabbability) — CLOSED.** `Sidebar.tsx` aside class: `${mobileOpen ? 'translate-x-0' : '-translate-x-full invisible lg:visible'}` (diff at ~line 47). Runtime at 375px with drawer closed: 40 sequential Tab presses never placed focus inside the aside; reopening yields `visibility: visible` and focusable links.
+8. **n9 (rings) — CLOSED.** `grep ring-blue-400 src/components/layout/Sidebar.tsx` → empty; `focus-visible:ring-primary-500` present on both the collapse button and NavLinks.
+9. **n10 (cast) — CLOSED.** `dashboard.tsx:202` uses `m.product?.name ?? '—'` directly; `as unknown as` count is 0 in dashboard.tsx and search.tsx; `tsc --noEmit` exit 0 confirms the hook's real type carries `product`.
+10. **n11 (search effect) — CLOSED.** `search.tsx:30,38-40`: effect keyed on `qParam` value, not `searchParams` identity. Runtime: typing "cotton" into the seeded page input after arrival via `?q=abc%…` retains the edit (value kept = "cotton").
+
+### Commands and probes executed by me (round 2)
+
+- `npx tsc --noEmit` → exit 0, no diagnostics.
+- `npm test` → 24 tests / 8 suites, 24 pass, 0 fail.
+- `python prime/evidence/ui-audit/reaudit.py` → **19/19 acceptance checks passed** (fresh run; all line items above taken from this run's output).
+- Bundle freshness: `find src -newer dist/index.html` → empty; served asset `assets/index-Djq8kyb-.js` on :4178 contains `Could not load stock levels` and `invisible lg:visible`, so the audited bundle is built from the reviewed tree.
+- Inline Playwright probes (no files written): recent-activity sign/color extraction; footer-link and StatCard click-through with URL + navigate-entry assertions; closed-drawer 40-Tab focus sweep at 375px; hostile-term deep-link (`?q=abc%(x)_1,y`) pageerror/empty-state check; edit-retention check for n11.
+
+### Residual notes (not claimed as closed, do not block)
+
+- Round-1 finding **#8 (minor)** remains open: no unit test covers the new dashboard derivations (`needsAttention` filter/slice, movement-row rendering). The fix list did not claim it. Recommended as follow-up.
+- Round-1 finding **#12 (nit)** remains open by design: dashboard still fetches the full `v_inventory_summary` client-side and the mock builder still has no `.lt()` (grep confirmed). Acceptable at demo scale; revisit on a real backend.
+- `ModuleLink` (pre-existing, untouched) still uses raw `<a href>` and would full-reload the memory-only demo session — outside this increment's diff and finding scope, worth a future ticket.
+
+### Round-2 verdict rationale
+
+All four majors and every claimed minor/nit closure verified in source and reproduced in the live bundle; the shipped harness (19/19), unit suite (24/24), and type check (exit 0) all pass under independent re-execution; no new defect surfaced in my adversarial probes. Remaining open items are one minor (test coverage) and two out-of-scope nits, none of which meets the request-changes bar (critical/major only).

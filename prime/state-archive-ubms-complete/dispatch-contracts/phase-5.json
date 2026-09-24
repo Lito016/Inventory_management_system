@@ -1,0 +1,472 @@
+{
+  "schema_version": "1.1",
+  "phase": 5,
+  "name": "Build",
+  "agent": "prime-make",
+  "procedure": [
+    "prime-make-build"
+  ],
+  "mandatory_skills": [
+    "quality-review",
+    "caveman",
+    "testing",
+    "code-quality"
+  ],
+  "core_skills": [
+    "quality-review",
+    "caveman",
+    "testing"
+  ],
+  "mandatory_skills_when_ui": [
+    "frontend"
+  ],
+  "skills_by_shape": {
+    "focused": [],
+    "product_increment": [
+      "code-quality"
+    ]
+  },
+  "checks_by_shape": {
+    "focused": [
+      "build"
+    ],
+    "product_increment": [
+      "build",
+      "unit-tests",
+      "code-review"
+    ]
+  },
+  "recommended_skills": [
+    "frontend",
+    "backend",
+    "database",
+    "baas",
+    "devops",
+    "data-ai",
+    "data-engineering",
+    "business",
+    "cross-platform",
+    "performance-optimization",
+    "ai-ml",
+    "automation",
+    "cli-tooling",
+    "media-processing"
+  ],
+  "required_artifacts": [
+    "prime/reports/phase-5-build.md",
+    "prime/reports/phase-5-test-results.json",
+    "prime/reports/phase-5-quality-review.md",
+    "prime/reports/output-intent.json"
+  ],
+  "artifacts_by_shape": {
+    "focused": [
+      "prime/reports/phase-5-build.md",
+      "prime/reports/output-intent.json"
+    ],
+    "product_increment": [
+      "prime/reports/phase-5-build.md",
+      "prime/reports/phase-5-test-results.json",
+      "prime/reports/phase-5-quality-review.md",
+      "prime/reports/output-intent.json"
+    ]
+  },
+  "required_checks": [
+    "build",
+    "unit-tests",
+    "code-review"
+  ],
+  "gate_contracts": [
+    {
+      "id": "G1",
+      "outcome": "build artifacts or source code exist and are non-empty",
+      "check": "node scripts/gate-check.mjs source-files . .ts,.js,.py,.go,.rs,.cs,.java,.dart,.swift,.kt",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G2",
+      "outcome": "build report documents what was implemented",
+      "check": "node scripts/gate-check.mjs size prime/reports/phase-5-build.md 200",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G3",
+      "outcome": "test execution report exists with structured results (tests_run, passed, failed counts)",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-test-results.json \"tests_run|passed|failed\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Semantic judgment required: do the test results demonstrate adequate coverage? The structural check verifies that tests were executed and results recorded in structured format, not just that test files exist."
+    },
+    {
+      "id": "G4",
+      "outcome": "security testing evidence recorded or applicability justification documented",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-security-testing.md \"security|vulnerability|threat|scan|audit|not applicable|justification\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Semantic judgment required: does the security evidence demonstrate adequate coverage for the project's threat surface? The structural check verifies that security-testing was applied and recorded; only human review can assess whether the security assessment is sufficient for the project's risk profile."
+    },
+    {
+      "id": "G5",
+      "outcome": "quality audit verdict is recorded for phase artifacts",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-quality-review.md \"verdict:\\s*(pass|block|request changes)\"",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G12",
+      "outcome": "build methodology checklist records applied steps and evidence",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"methodology checklist|steps applied|\\[x\\].*(test|security|review|implement)\"",
+      "expect": "GATE-PASS"
+    },
+    {
+      "id": "G13",
+      "outcome": "UI implementation follows the design language from Phase 3 — colors, typography, spacing, and components match the documented design system",
+      "kind": "hybrid",
+      "applicable_when": "has_ui",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(design system|design language|palette|typography|spacing|component|brand|anti-slop|engineering standard|design token|oklch|hsl|type scale|spacing scale|4px|8px|breakpoint|easing|duration)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Semantic judgment required: does the implemented UI actually match the Phase 3 design language, or did the agent revert to generic defaults? The structural check verifies the build report documents design system adherence with specific token values; only human review or visual inspection can confirm the implementation matches. Generic descriptions like 'used a nice color palette' indicate the reference was not loaded. N/A for projects with no UI."
+    },
+    {
+      "id": "G14",
+      "outcome": "security testing report records specific security patterns from loaded references (not just 'checked for vulnerabilities')",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-security-testing.md \"(input validation|output encoding|parameterized query|csrf|xsrf|rate limit|csp|cors|sanitiz|auth|session|token|jwt|oauth|rbac|abac|supply.chain|dependency|secret|credential|encrypt|hash|bcrypt|argon|timing.attack|path.traversal|injection|xss|ssrf)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Verify the security testing report records specific security patterns actually implemented, not just 'security was considered'. The vocabulary should match patterns from SECURITY-AUDIT.md reference. Generic statements indicate the reference was not loaded."
+    },
+    {
+      "id": "G15",
+      "outcome": "build report references the Phase 3 design document (docs/DESIGN.canvas.tsx) as the design source for implementation",
+      "kind": "hybrid",
+      "applicable_when": "has_ui",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(docs/DESIGN|DESIGN\\.canvas|DESIGN\\.md|design document|design spec|design decision|Phase 3)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the build report explicitly references docs/DESIGN.canvas.tsx (or the project's design document) as the design source, demonstrating traceability from design to implementation. Generic statements like 'followed the design' without citing the document indicate the reference was not loaded. N/A for projects with no UI."
+    },
+    {
+      "id": "G16",
+      "outcome": "source code is free of placeholder, stub, and lorem ipsum content unless explicitly requested by the user",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs source-files . .ts,.js,.tsx,.jsx,.py,.go,.rs,.cs,.java,.dart,.swift,.kt,.vue,.svelte,.html,.css",
+      "expect": "GATE-PASS",
+      "manual_followup": "Scan source files for placeholder patterns: TODO, FIXME, lorem ipsum, 'coming soon', 'under construction', template brackets ([...], <...>). If placeholders were explicitly requested by the user, this gate is N/A. Otherwise, any placeholder content indicates incomplete implementation."
+    },
+    {
+      "id": "G17",
+      "outcome": "build report documents responsive breakpoints, performance budget, and SEO metadata for the website",
+      "kind": "hybrid",
+      "applicable_when": "has_website",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(responsive|viewport|breakpoint|mobile|tablet|performance|lighthouse|page speed|seo|meta tag|open graph|favicon|preload|lazy|critical css)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the build report addresses specific responsive breakpoints, performance targets, and SEO metadata — not just generic mentions. N/A for non-website UI (dashboards, internal tools)."
+    },
+    {
+      "id": "G18",
+      "outcome": "build report documents input validation, error response format, authentication, and rate limiting for API endpoints",
+      "kind": "hybrid",
+      "applicable_when": "has_api",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(input valid|sanitiz|error (response|format|handler)|status code|4[0-9]{2}|5[0-9]{2}|auth|rate limit|throttl|cors|helmet|csrf|xss|injection)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the build report documents specific validation rules, error response schemas, and authentication mechanisms — not just generic 'added validation'. N/A for non-API projects."
+    },
+    {
+      "id": "G19",
+      "outcome": "build records migration strategy, backup plan, and data validation for database changes",
+      "kind": "hybrid",
+      "applicable_when": "has_database",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(migration|schema change|rollback|backup|seed|data valid|integrity|constraint|index|foreign key|cascade|idempoten)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the build records how schema changes are applied, whether they are reversible, and what data validation is in place. N/A for projects with no database."
+    },
+    {
+      "id": "G20",
+      "outcome": "build includes help text, argument parsing, and exit code documentation for CLI tools",
+      "kind": "hybrid",
+      "applicable_when": "has_cli",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(help|--help|-h|usage|argument|option|flag|subcommand|exit code|stderr|stdin|pipe|parse)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the CLI has usable help text and documented exit codes. N/A for non-CLI projects."
+    },
+    {
+      "id": "G21",
+      "outcome": "build documents data sources, validation steps, and transformations for data/AI workflows",
+      "kind": "hybrid",
+      "applicable_when": "has_data_ai",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(data source|dataset|pipeline|etl|feature (engine|store|flag|extract)|model (training|serving|inference)|training loop|inference endpoint|data validation|schema (check|valid)|type check|null check|dedup|data quality)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the build documents data lineage, validation rules, and transformation logic. N/A for non-data projects."
+    },
+    {
+      "id": "G22",
+      "outcome": "build includes cross-references and working code examples for documentation projects",
+      "kind": "hybrid",
+      "applicable_when": "has_docs",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(cross-reference|see also|related|example|code sample|snippet|```|tutorial|guide|api reference|changelog)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm documentation includes working code examples and cross-references between related pages. N/A for non-documentation projects."
+    },
+    {
+      "id": "G23",
+      "outcome": "build documents public API, version compatibility, and breaking changes for plugins/packages",
+      "kind": "hybrid",
+      "applicable_when": "has_plugin",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(public api|export|interface|breaking change|backward compat|semver|version|changelog|deprecat|migration guide|peer depend)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the plugin documents its public API surface and versioning policy. N/A for non-plugin projects."
+    },
+    {
+      "id": "G24",
+      "outcome": "build report documents loading states, error handling, empty states, and large-data behavior for dashboards",
+      "kind": "hybrid",
+      "applicable_when": "has_dashboard",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(loading|skeleton|spinner|error (state|boundary|fallback)|empty state|no data|pagination|virtuali[sz]ation|infinite scroll|large data|optimistic)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the dashboard handles loading, error, empty, and large-data states gracefully. N/A for non-dashboard UI (marketing sites, landing pages)."
+    },
+    {
+      "id": "G25",
+      "outcome": "source code is free of hardcoded secrets, API keys, and credentials",
+      "kind": "heuristic",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(secret scan|credential check|no hardcoded|environment variable|dotenv|vault|secret manager)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Scan source files for hardcoded secrets (API keys, passwords, tokens). If secrets are found, gate fails. Use environment variables or secret managers. This gate checks report text only — it does not scan source files directly."
+    },
+    {
+      "id": "G26",
+      "outcome": "source code contains no empty catch blocks or swallowed exceptions",
+      "kind": "heuristic",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(error handling|exception|catch block|error boundary|try.catch|error log)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Check for empty catch blocks or swallowed exceptions. All errors should be logged, re-thrown, or handled appropriately. This gate checks report text only — it does not scan source files directly."
+    },
+    {
+      "id": "G27",
+      "outcome": "error handling uses structured logging or error boundaries, not console-only output",
+      "kind": "heuristic",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-5-build.md \"(structured log|error log|logging framework|winston|pino|bunyan|log level|error boundary|Sentry|Rollbar|Datadog)\"",
+      "expect": "GATE-PASS",
+      "manual_followup": "Verify error handling uses structured logging or error tracking services, not just console.error/console.log. N/A for CLI tools or scripts where console output is appropriate. This gate checks report text only — it does not scan source files directly."
+    },
+    {
+      "id": "G28",
+      "outcome": "output intent JSON records output type, audience, quality bar, verification method, and evidence artifacts",
+      "kind": "hybrid",
+      "check": "node scripts/gate-check.mjs quality-intent prime/reports/output-intent.json",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the output intent JSON has specific, measurable quality criteria - not vague goals like 'make it fast' or 'good UX'. The structural check verifies the JSON exists with required fields; gate-check.mjs quality-intent validator enforces field content."
+    },
+    {
+      "id": "G29",
+      "outcome": "high-impact UI build intent includes a traceable Design Benchmark Record with external sources, adopted patterns, local decisions, and rejected ideas when applicable",
+      "kind": "hybrid",
+      "applicable_when": "has_ui",
+      "check": "node scripts/gate-check.mjs design-benchmark prime/reports/output-intent.json",
+      "expect": "GATE-PASS",
+      "manual_followup": "Confirm the benchmark sources and adopted patterns are relevant to the actual UI being built. The structural check rejects missing, vague, one-source, and Mobbin MCP-based records."
+    },
+    {
+      "id": "G30",
+      "outcome": "test results verified by actual execution",
+      "kind": "runnable",
+      "check": "node scripts/gate-check.mjs test-results prime/reports/phase-5-test-results.json .",
+      "expect": "GATE-PASS",
+      "enforcement_purpose": "Re-executes every test file referenced in the test results JSON and compares claimed pass/fail counts against actual exit codes. GATE-PASS only if all pass AND counts match. GATE-FAIL with claimed-vs-actual diff if mismatch. Partial result when test files cannot be executed due to infrastructure constraints."
+    }
+  ],
+  "gates_by_shape": {
+    "focused": [
+      {
+        "id": "G1"
+      },
+      {
+        "id": "G2"
+      },
+      {
+        "id": "G12"
+      },
+      {
+        "id": "G16"
+      },
+      {
+        "id": "G25"
+      },
+      {
+        "id": "G26"
+      },
+      {
+        "id": "G27"
+      },
+      {
+        "id": "G28"
+      },
+      {
+        "id": "G29"
+      }
+    ],
+    "product_increment": [
+      {
+        "id": "G1"
+      },
+      {
+        "id": "G2"
+      },
+      {
+        "id": "G3"
+      },
+      {
+        "id": "G4"
+      },
+      {
+        "id": "G5"
+      },
+      {
+        "id": "G12"
+      },
+      {
+        "id": "G13"
+      },
+      {
+        "id": "G14"
+      },
+      {
+        "id": "G15"
+      },
+      {
+        "id": "G16"
+      },
+      {
+        "id": "G17"
+      },
+      {
+        "id": "G18"
+      },
+      {
+        "id": "G19"
+      },
+      {
+        "id": "G20"
+      },
+      {
+        "id": "G21"
+      },
+      {
+        "id": "G22"
+      },
+      {
+        "id": "G23"
+      },
+      {
+        "id": "G24"
+      },
+      {
+        "id": "G25"
+      },
+      {
+        "id": "G26"
+      },
+      {
+        "id": "G27"
+      },
+      {
+        "id": "G28"
+      },
+      {
+        "id": "G29"
+      },
+      {
+        "id": "G30"
+      }
+    ],
+    "full": [
+      {
+        "id": "G1"
+      },
+      {
+        "id": "G2"
+      },
+      {
+        "id": "G3"
+      },
+      {
+        "id": "G4"
+      },
+      {
+        "id": "G5"
+      },
+      {
+        "id": "G6"
+      },
+      {
+        "id": "G7"
+      },
+      {
+        "id": "G8"
+      },
+      {
+        "id": "G9"
+      },
+      {
+        "id": "G10"
+      },
+      {
+        "id": "G11"
+      },
+      {
+        "id": "G12"
+      },
+      {
+        "id": "G13"
+      },
+      {
+        "id": "G14"
+      },
+      {
+        "id": "G15"
+      },
+      {
+        "id": "G16"
+      },
+      {
+        "id": "G17"
+      },
+      {
+        "id": "G18"
+      },
+      {
+        "id": "G19"
+      },
+      {
+        "id": "G20"
+      },
+      {
+        "id": "G21"
+      },
+      {
+        "id": "G22"
+      },
+      {
+        "id": "G23"
+      },
+      {
+        "id": "G24"
+      },
+      {
+        "id": "G25"
+      },
+      {
+        "id": "G26"
+      },
+      {
+        "id": "G27"
+      },
+      {
+        "id": "G28"
+      },
+      {
+        "id": "G29"
+      },
+      {
+        "id": "G30"
+      }
+    ]
+  }
+}

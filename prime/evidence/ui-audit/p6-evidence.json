@@ -1,0 +1,127 @@
+{
+  "timestamp": "2026-09-24T08:03:28Z",
+  "url": "http://localhost:4178",
+  "console_messages": [],
+  "network_failures": [],
+  "pages": [
+    {
+      "path": "/dashboard",
+      "viewport": "desktop",
+      "screenshot": "prime/evidence/screenshots/p6-dashboard-desktop.png",
+      "dcl_ms": 151,
+      "h_overflow_px": 0
+    },
+    {
+      "path": "/inventory/products",
+      "viewport": "desktop",
+      "screenshot": "prime/evidence/screenshots/p6-inventory-products-desktop.png",
+      "dcl_ms": 151,
+      "h_overflow_px": 0
+    },
+    {
+      "path": "/reports",
+      "viewport": "desktop",
+      "screenshot": "prime/evidence/screenshots/p6-reports-desktop.png",
+      "dcl_ms": 151,
+      "h_overflow_px": 0
+    },
+    {
+      "path": "/dashboard",
+      "viewport": "tablet",
+      "screenshot": "prime/evidence/screenshots/p6-dashboard-tablet.png",
+      "dcl_ms": 135,
+      "h_overflow_px": 0
+    },
+    {
+      "path": "/inventory/products",
+      "viewport": "tablet",
+      "screenshot": "prime/evidence/screenshots/p6-inventory-products-tablet.png",
+      "dcl_ms": 135,
+      "h_overflow_px": 0
+    },
+    {
+      "path": "/reports",
+      "viewport": "tablet",
+      "screenshot": "prime/evidence/screenshots/p6-reports-tablet.png",
+      "dcl_ms": 135,
+      "h_overflow_px": 0
+    },
+    {
+      "path": "/dashboard",
+      "viewport": "mobile",
+      "screenshot": "prime/evidence/screenshots/p6-dashboard-mobile.png",
+      "dcl_ms": 137,
+      "h_overflow_px": 0
+    },
+    {
+      "path": "/inventory/products",
+      "viewport": "mobile",
+      "screenshot": "prime/evidence/screenshots/p6-inventory-products-mobile.png",
+      "dcl_ms": 137,
+      "h_overflow_px": 0
+    },
+    {
+      "path": "/reports",
+      "viewport": "mobile",
+      "screenshot": "prime/evidence/screenshots/p6-reports-mobile.png",
+      "dcl_ms": 137,
+      "h_overflow_px": 0
+    }
+  ],
+  "a11y": [
+    {
+      "page": "/dashboard",
+      "viewport": "desktop",
+      "tool": "axe",
+      "violations": []
+    },
+    {
+      "page": "/inventory/products",
+      "viewport": "desktop",
+      "tool": "axe",
+      "violations": []
+    },
+    {
+      "page": "/reports",
+      "viewport": "desktop",
+      "tool": "axe",
+      "violations": []
+    },
+    {
+      "page": "/dashboard",
+      "viewport": "tablet",
+      "tool": "axe",
+      "violations": []
+    },
+    {
+      "page": "/inventory/products",
+      "viewport": "tablet",
+      "tool": "axe",
+      "violations": []
+    },
+    {
+      "page": "/reports",
+      "viewport": "tablet",
+      "tool": "axe",
+      "violations": []
+    },
+    {
+      "page": "/dashboard",
+      "viewport": "mobile",
+      "tool": "axe",
+      "violations": []
+    },
+    {
+      "page": "/inventory/products",
+      "viewport": "mobile",
+      "tool": "axe",
+      "violations": []
+    },
+    {
+      "page": "/reports",
+      "viewport": "mobile",
+      "tool": "axe",
+      "violations": []
+    }
+  ]
+}

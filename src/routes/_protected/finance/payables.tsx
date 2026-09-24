@@ -120,7 +120,7 @@ export function PayablesPage() {
     },
     {
       key: 'actions',
-      header: '',
+      header: 'Actions',
       render: (row) => (
         <Button
           variant="ghost"

@@ -52,7 +52,7 @@ export function PurchaseOrdersPage() {
     { key: 'supplier', header: 'Supplier', render: (r) => <span className="font-medium">{r.supplier?.name}</span> },
     { key: 'status', header: 'Status', render: (r) => <Badge status={r.status} colorMap={PO_STATUS_COLORS} /> },
     { key: 'notes', header: 'Notes', render: (r) => r.notes || '—' },
-    { key: 'actions', header: '', render: (r) => (
+    { key: 'actions', header: 'Actions', render: (r) => (
       <div className="flex gap-1">
         {r.status === 'Draft' && <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); updateStatus.mutate({ id: r.id, status: 'Submitted' }); }}>Submit</Button>}
         {r.status === 'Draft' && <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); updateStatus.mutate({ id: r.id, status: 'Cancelled' }); }}>Cancel</Button>}

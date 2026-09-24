@@ -51,7 +51,7 @@ export function FulfillmentsPage() {
     { key: 'customer', header: 'Customer', render: (r) => <span className="font-medium">{r.customer?.name}</span> },
     { key: 'status', header: 'Status', render: (r) => <Badge status={r.status} colorMap={FULFILLMENT_STATUS_COLORS} /> },
     { key: 'notes', header: 'Notes', render: (r) => r.notes || '—' },
-    { key: 'actions', header: '', render: (r) => (
+    { key: 'actions', header: 'Actions', render: (r) => (
       <div className="flex gap-1">
         {r.status === 'Pending' && <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); updateStatus.mutate({ id: r.id, status: 'In Progress' }); }}>Start</Button>}
         {r.status === 'In Progress' && <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); updateStatus.mutate({ id: r.id, status: 'Completed' }); }}>Complete</Button>}

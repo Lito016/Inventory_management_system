@@ -1,0 +1,24 @@
+{
+  "phase": 2,
+  "agent": "prime-requirement",
+  "invocations": [
+    {
+      "skill": "quality-review",
+      "status": "applied",
+      "evidence": ["prime/reports/phase-2-quality-review.md"],
+      "note": "Delegated to independent reviewer subagent; findings applied to requirements before Build (debounce + column-name fix recorded in R1)."
+    },
+    {
+      "skill": "caveman",
+      "status": "applied",
+      "evidence": ["prime/reports/phase-2-quality-review.md"],
+      "note": "Review produced in caveman-compressed style per core_skills contract."
+    },
+    {
+      "skill": "software-architecture",
+      "status": "applied",
+      "evidence": ["prime/reports/phase-2-define.md"],
+      "note": "Single-source-of-truth boundary: computed view owns quantity derivation; page layer prohibited from recomputing totals (R1/R5)."
+    }
+  ]
+}

@@ -1,36 +1,35 @@
 {
   "schema_version": "2.0",
-  "run_id": "ubms-inventory-t021-t022-mudx7lbm-8uts6d",
+  "run_id": "ims-uiux-enhance-muf6w3nv-7eyrph",
   "recall": {
     "provider": "local",
-    "timestamp": "2026-09-23T09:49:15Z",
-    "input_fingerprint": "3ee6b0c2609fd8495c638c6c5fb37f2519832b7e78d7af609777d87e039cfb37",
+    "timestamp": "2026-09-24T00:00:00Z",
+    "input_fingerprint": "5f1b733e2c242b01e27ec1816c57790a03f59ebba05cde7e406cf9bd8fa19a25",
     "search_queries": [
-      "grep v_inventory_summary across src/ and supabase/migrations (ground truth: 20260826000008_views.sql:40-52 columns product_id,name,unit,category,is_active,total_received,total_released,total_adjustments,current_quantity)",
-      "grep useInventoryMovements|useCreateInventoryAdjustment in src/hooks (use-b2c.ts:91-117)",
-      "grep FR-INV-00[1-6] in docs/requirements-spec.md §6 and docs/PRD.md (T-021/T-022 completion criteria in docs/execution-plan.md:535-566)",
-      "grep inventory_movements RLS in 20260826000010_rls_policies.sql:141-143 (SELECT/INSERT/UPDATE authenticated, no DELETE)",
-      "grep auto-movement triggers in 20260826000009_triggers.sql:157-183 (received/released positive quantities from receiving/fulfillment)",
-      "route wiring App.tsx:90-92 + Sidebar.tsx:19; existing defects summary.tsx:11-18/37-38 and reports/index.tsx:46 (stale product_name/current_stock columns)"
+      "Read docs/DESIGN.md §1 density principles, §2 three-layer token system, §8 accessibility (source of truth for UI enhancement)",
+      "Read docs/PRD.md §3 personas (Admin/Staff) and existing increments; appended v1.2 UI/UX increment U1-U8",
+      "grep fixed w-60 / ml-60 in Sidebar.tsx:42 and App.tsx:41,110 (root cause of UX-1 mobile + UX-3 collapse dead-gap)",
+      "grep onClick on Header.tsx:81,86 search/bell buttons (confirmed dead affordances UX-8)",
+      "Read Table.tsx:64-96 wrapper (single overflow-hidden container -> overflow-x-auto target for UX-2)",
+      "Read dashboard.tsx:94-107 Modules grid (dead-zone below fold UX-7); use-finance.ts:99 useDashboardSummary returns overdueCount",
+      "grep .or( / ilike in mock-client.ts:78,193 (confirms demo search + bell-count queries are feasible)",
+      "Read finance/search.tsx search state (no useSearchParams yet -> seed from URL for U5)"
     ],
-    "summary": "Local repository recall established full ground truth: view contract, hooks, requirements, RLS posture, and the exact stale-column defects. No local-unknown required web fallback."
+    "summary": "Local repository recall plus a live Playwright audit of the deployed demo established full ground truth for the UI/UX enhancement: responsive shell defects (fixed sidebar, hardcoded margin, duplicated settings shell missing DemoBanner), contained-table-scroll target in the shared Table, dead header affordances, missing focus rings, and dashboard density gap. Design token source of truth confirmed as docs/DESIGN.md v1.0."
   },
   "research": {
-    "timestamp": "2026-09-23T09:49:15Z",
+    "timestamp": "2026-09-24T00:00:00Z",
     "search_queries": [
-      "Supabase PostgREST or filter ilike special characters comma escaping javascript client",
-      "TanStack Query v5 placeholderData keepPreviousData debounced search input best practice"
+      "ui-ux-pro-max design-system: professional dense inventory management dashboard admin panel light theme responsive (react stack)"
     ],
     "sources_consulted": [
-      "https://github.com/orgs/supabase/discussions/19651",
-      "https://stackoverflow.com/questions/76065534/how-to-escape-string-characters-in-supabase-js-or-query",
-      "https://supabase.com/docs/reference/javascript/using-filters",
-      "https://github.com/TanStack/query/discussions/6460",
-      "https://tanstack.com/query/latest/docs/framework/react/guides/placeholder-query-data"
+      "prime/evidence/ui-audit/design-system-recommendation.md (ui-ux-pro-max selector output)",
+      "docs/DESIGN.md v1.0 (project design system of record)",
+      "prime/evidence/ui-audit/audit-findings.json (Playwright 3-viewport live audit, UX-1..UX-8)"
     ],
     "findings": [
-      "Supabase or()/filter strings cannot carry unescaped commas or parentheses — user terms containing them produce syntax errors (400); accepted workaround is client-side sanitization of reserved characters before interpolation into or().",
-      "TanStack Query v5: keepPreviousData moved to placeholderData: keepPreviousData; pair with debounced input value in the queryKey to avoid table flash and per-keystroke refetch storms."
+      "Adopted the selector's pre-delivery interaction checklist: visible focus states for keyboard nav, 150-300ms hover transitions, cursor-pointer on clickables, 4.5:1 light-mode text contrast, responsive checkpoints 375/768/1024/1440.",
+      "Rejected the selector's Dark-Mode(OLED) style and Fira Code/Fira Sans typography — they contradict the approved light-only Inter theme in docs/DESIGN.md; DESIGN.md is the source of truth for tokens and typography."
     ]
   }
 }

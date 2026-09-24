@@ -880,3 +880,36 @@ Total estimate: ~2.5 days elapsed (S/M complexity per execution-plan T-021=M, T-
 ### Rollback
 
 All changes are page-level; revert the four touched files to restore prior behavior. No schema, migration, or hook-signature changes.
+
+---
+
+## 11. Increment Implementation Plan — UI/UX Enhancement (v1.2, 2026-09-24)
+
+Requirements traceability: tasks below map to `docs/PRD.md` v1.2 acceptance criteria **U1–U8**; design constraints from `docs/DESIGN.md` v1.0 (§1 density principles, §2 token layers, §8 accessibility). Audit evidence: `prime/evidence/ui-audit/` (findings UX-1…UX-8).
+
+### Milestones (ordered)
+
+| # | Task | Files | Traces | Effort (est.) | Verification |
+|---|---|---|---|---|---|
+| T-101 | Responsive shell: sidebar becomes off-canvas drawer below `lg`; header menu button + overlay + Esc (focus returns to menu button) + close-on-nav; collapse rail (desktop) state lifted so content margin stays in sync. **Includes consolidating the duplicated shell at `App.tsx:105–119`** (`/settings/users` reuses `ProtectedLayout` + `AdminRoute` as inner element — also fixes its missing `DemoBanner`) | `src/App.tsx` (ProtectedLayout + settings route), `src/components/layout/Sidebar.tsx`, `src/components/layout/Header.tsx` | U1, U3 | 3h | Playwright 375/768: drawer opens, nav works, no horizontal overflow; 1280 collapse: content starts at rail edge (gap <8px); Esc closes drawer with focus on menu button; /settings/users shows banner and drawer |
+| T-102 | Contained table scroll: `overflow-x-auto` wrapper in shared Table + audit-flagged custom grids | `src/components/ui/Table.tsx`, page-level wrappers as needed | U2 | 1h | `scrollWidth ≤ innerWidth + 2` at 768/375 on inventory, reports, users |
+| T-103 | Visible keyboard focus: `focus-visible:ring-2 ring-primary-500` on Button/Input/Select/icon buttons; remove default outline suppression where present | `src/components/ui/Button.tsx`, `Input.tsx`, `Select.tsx`, `Header.tsx`, `Sidebar.tsx`, login role cards | U4 | 1h | Tab probe: focused control computed box-shadow ≠ unfocused |
+| T-104 | Honest header: search button opens popover (input + Enter → `/finance/search?q=…`; `search.tsx` seeds query from `useSearchParams`); bell shows real counts (low-stock from `v_inventory_summary`, overdue from dashboard summary) with links, popover closes on Esc/outside | `Header.tsx`, `src/routes/_protected/finance/search.tsx` | U5 | 2.5h | Type "linen" + Enter → finance search filtered; bell counts match mock data; no dead buttons remain (source has handlers) |
+| T-105 | Single page title: breadcrumb renders module context only (drop last crumb duplicating content H1) | `Header.tsx` | U6 | 0.5h | Breadcrumb text ≠ H1 text on all audited pages |
+| T-106 | Dashboard density: "Needs Attention" (low/out-of-stock list) + "Recent Activity" (last 5 stock movements) sections under Modules, reusing existing view queries | `src/routes/_protected/dashboard.tsx`, possibly small hook in `use-b2b.ts` | U7 | 2.5h | 1280×800 screenshot: populated section below Modules, no dead zone >200px |
+| T-107 | Token fidelity pass: all new classes from DESIGN.md token tables (gray/primary semantic layers); no new hex/fonts | diff review | U8 | 0.5h | grep diff for raw hex/new palette classes |
+
+Total estimate ≈ 11h (PERT optimistic 8h / likely 11h / pessimistic 16h) — one working day.
+
+### Risks, dependencies, constraints, assumptions
+
+- **Risk R1 (regression):** drawer refactor could break desktop collapse → mitigation: keep `collapsed` behavior `lg+` only; audit script re-run covers 1280.
+- **Risk R2 (demo data):** bell counts depend on mock views (`v_inventory_summary`, receivables overdue) — verified mock client supports `.or`/`ilike` (`mock-client.ts:78,193`); if a view query shape mismatches, degrade bell to overdue-only.
+- **Risk R3 (deploy):** every push to main auto-deploys to Cloudflare Pages; incomplete work must not land on main → constraint: commit only after `tsc --noEmit` + `npm test` + local preview check.
+- **Dependency:** none new — no package additions (constraint).
+- **Constraint:** light theme + Inter + existing tokens only (DESIGN.md v1.0 is source of truth; ui-ux-pro-max dark-OLED suggestion rejected).
+- **Assumption:** mobile target is "usable, non-overflowing", not a touch-redesigned UI (out of scope per PRD v1.2).
+
+### Rollback
+
+Frontend-only change set; revert the v1.2 commit(s) on main redeploys the previous release automatically via GitHub Actions. No schema or data impact.

@@ -1,0 +1,32 @@
+{
+ "scenario_id": "UAT-LOGIN-ADMIN",
+ "scenario": "Admin signs in through demo role-picker, lands on dashboard, keeps session across in-app navigation",
+ "requirement": "U1/auth baseline + critical journey: login flow, dashboard marker, session state",
+ "result": "PASS",
+ "started_at": "2026-09-24T08:20:29.907058+00:00",
+ "finished_at": "2026-09-24T08:20:32.223479+00:00",
+ "project_analysis": {
+  "framework": "React 18 + Vite + TypeScript SPA with react-router and TanStack Query",
+  "start_command": "VITE_DEMO=true npx vite build && npx vite preview --port 4178 --strictPort",
+  "login_route": "/login",
+  "auth_state_expected": "Authenticated dashboard inside ProtectedLayout shell with role marker in header; in-memory demo session (VITE_DEMO)",
+  "credential_source": "Demo mode role-picker (mock session, no real credentials entered)"
+ },
+ "checks": {
+  "login_page_loaded": true,
+  "credentials_entered": true,
+  "sign_in_clicked": true,
+  "dashboard_redirect": true,
+  "welcome_or_identity_visible": true,
+  "session_state_present": true,
+  "no_console_errors": true,
+  "no_failed_requests": true
+ },
+ "screenshots": [
+  "prime/test/screenshots/verify/uat-01-login-page.png",
+  "prime/test/screenshots/verify/uat-01-dashboard.png",
+  "prime/test/screenshots/verify/uat-01-protected-products.png"
+ ],
+ "console_errors": [],
+ "failed_requests": []
+}

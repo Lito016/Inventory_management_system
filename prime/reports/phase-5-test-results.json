@@ -1,14 +1,26 @@
 {
-  "command": "pnpm test → node --test tests/inventory-logic.test.ts tests/inventory-view-contract.test.ts (executed per-file for gate re-run; Node 26 native type-stripping runner)",
-  "executed_at": "2026-09-23T12:40:00Z",
+  "command": "npm test -> node --test tests/demo-mode.test.ts tests/inventory-logic.test.ts tests/inventory-view-contract.test.ts (Node 26 native type-stripping runner)",
+  "executed_at": "2026-09-24T12:30:00Z",
   "exit_code": 0,
-  "tests_run": 2,
-  "passed": 2,
+  "tests_run": 3,
+  "passed": 3,
   "failed": 0,
   "test_files": [
+    "tests/demo-mode.test.ts",
     "tests/inventory-logic.test.ts",
     "tests/inventory-view-contract.test.ts"
   ],
-  "test_cases": { "total": 22, "passed": 22, "failed": 0 },
-  "notes": "Re-run after closing all quality-review findings: 2 majors (parseAdjustmentQuantity round-to-zero; Pagination UI on movements list) + 5 minors + 1 nit. tsc --noEmit clean; vite build succeeds (pre-existing 770kB chunk warning only)."
+  "test_cases": { "total": 24, "passed": 24, "failed": 0, "per_file": { "tests/demo-mode.test.ts": 2, "tests/inventory-logic.test.ts": 17, "tests/inventory-view-contract.test.ts": 5 } },
+  "browser_acceptance": {
+    "harness": "prime/evidence/ui-audit/reaudit.py (Playwright, built demo bundle served at localhost:4178)",
+    "checks": 19,
+    "passed": 19,
+    "results": "prime/evidence/ui-audit/reaudit-results.json",
+    "screenshots": "prime/evidence/ui-audit/shots2/"
+  },
+  "static_checks": {
+    "tsc_noEmit": "exit 0, no errors",
+    "vite_build": "success (VITE_DEMO=true; pre-existing 500kB chunk-size warning only)"
+  },
+  "notes": "Verification of the UI/UX enhancement increment (PRD v1.2 U1-U8), re-run after closing all review round-1 findings (4 majors, 2 minors, 3 nits — see phase-5-quality-review.md). Unit suite guards shared helpers touched by the increment (movementQuantityDisplay now drives Recent Activity sign/colors; sanitizeSearchTerm applied to the seeded ?q= term) plus demo-mode session semantics. The 19 browser checks execute the acceptance criteria themselves at 375/768/1280 viewports: drawer open/close/Esc-focus-return, closed drawer not tab-focusable, zero page overflow on inventory/reports/users at 375 and reports/users at 768, collapse margin sync (gap 0px), keyboard Tab focus ring, search popover end-to-end, bell popover verified by click-diff and panel text, single title, density sections, no-gradient avatar, settings banner."
 }

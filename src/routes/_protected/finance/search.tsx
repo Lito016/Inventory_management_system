@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase/client';
 import { PageContainer } from '@/components/layout/PageContainer';
@@ -10,6 +11,7 @@ import { usePagination } from '@/hooks/use-pagination';
 import { handleSupabaseError } from '@/lib/utils/api-errors';
 import { formatDate } from '@/lib/utils/dates';
 import { FINANCE_STATUS_COLORS } from '@/lib/constants';
+import { sanitizeSearchTerm } from '@/lib/inventory';
 import type { ColumnDef } from '@/components/ui/Table';
 
 interface TransactionRow {
@@ -24,20 +26,29 @@ interface TransactionRow {
 }
 
 export function FinanceSearchPage() {
-  const [search, setSearch] = useState('');
+  const [searchParams] = useSearchParams();
+  const qParam = searchParams.get('q');
+  const [search, setSearch] = useState(qParam ?? '');
   const [typeFilter, setTypeFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const { page } = usePagination();
+
+  // Sync when a header search navigates here with a new ?q (keyed on the value,
+  // so same-route re-navigation with an unchanged q does not clobber edits).
+  useEffect(() => {
+    setSearch(qParam ?? '');
+  }, [qParam]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['finance-search', search, typeFilter, statusFilter, page],
     queryFn: async () => {
       const rows: TransactionRow[] = [];
+      const term = sanitizeSearchTerm(search);
 
       if (!typeFilter || typeFilter === 'receivable') {
         let q = supabase.from('v_receivables').select('id, created_at, customer_name, notes, amount, outstanding_balance, status');
         if (statusFilter) q = q.eq('status', statusFilter);
-        if (search) q = q.or(`customer_name.ilike.%${search}%,notes.ilike.%${search}%`);
+        if (term) q = q.or(`customer_name.ilike.%${term}%,notes.ilike.%${term}%`);
         const { data: recs } = await q.order('created_at', { ascending: false });
         if (recs) rows.push(...recs.map(r => ({
           id: r.id as string, type: 'Receivable' as const, date: r.created_at as string,
@@ -49,7 +60,7 @@ export function FinanceSearchPage() {
       if (!typeFilter || typeFilter === 'payable') {
         let q = supabase.from('v_payables').select('id, created_at, supplier_name, notes, amount, outstanding_balance, status');
         if (statusFilter) q = q.eq('status', statusFilter);
-        if (search) q = q.or(`supplier_name.ilike.%${search}%,notes.ilike.%${search}%`);
+        if (term) q = q.or(`supplier_name.ilike.%${term}%,notes.ilike.%${term}%`);
         const { data: pays } = await q.order('created_at', { ascending: false });
         if (pays) rows.push(...pays.map(r => ({
           id: r.id as string, type: 'Payable' as const, date: r.created_at as string,

@@ -1,0 +1,82 @@
+{
+  "schema_version": "1.1",
+  "phase": 2,
+  "name": "Define",
+  "agent": "prime-requirement",
+  "procedure": [
+    "prime-requirement-architect"
+  ],
+  "mandatory_skills": [
+    "quality-review",
+    "caveman",
+    "software-architecture"
+  ],
+  "core_skills": [
+    "quality-review",
+    "caveman"
+  ],
+  "skills_by_shape": {
+    "product_increment": [
+      "software-architecture"
+    ]
+  },
+  "recommended_skills": [
+    "document",
+    "database",
+    "baas",
+    "business",
+    "security-testing"
+  ],
+  "required_artifacts": [
+    "docs/PRD.md",
+    "prime/reports/phase-2-define.md",
+    "prime/reports/phase-2-quality-review.md"
+  ],
+  "required_checks": [
+    "requirements-review"
+  ],
+  "gate_contracts": [
+    {
+      "id": "G1",
+      "outcome": "PRD contains structured problem, solution, and requirements sections",
+      "check": "node scripts/gate-check.mjs pattern docs/PRD.md \"#+\\s*(problem|solution|overview|requirement|scope|goal)\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G2",
+      "outcome": "define report captures requirements decisions",
+      "check": "node scripts/gate-check.mjs size prime/reports/phase-2-define.md 200",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G3",
+      "outcome": "requirements include explicit acceptance criteria",
+      "check": "node scripts/gate-check.mjs pattern docs/PRD.md \"shall|must|acceptance|criterion|given|when|then\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G4",
+      "outcome": "quality audit verdict is recorded for phase artifacts",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-2-quality-review.md \"verdict:\\s*(pass|block|request changes)\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G5",
+      "outcome": "define report records prior knowledge recall or online research evidence",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-2-define.md \"search|source|research|benchmark|verified|reference\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    },
+    {
+      "id": "G6",
+      "outcome": "define methodology checklist records applied steps and evidence",
+      "check": "node scripts/gate-check.mjs pattern prime/reports/phase-2-define.md \"methodology checklist|steps applied|\\[x\\].*(recall|research|requirement|elicita)\"",
+      "expect": "GATE-PASS",
+      "kind": "runnable"
+    }
+  ]
+}

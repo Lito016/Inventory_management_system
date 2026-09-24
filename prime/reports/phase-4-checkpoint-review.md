@@ -1,16 +1,29 @@
-# Phase 4 — Checkpoint Review (Autopilot mid-phase checkpoint, pre-Build)
+# Phase 4 — Checkpoint Review (mid-phase, before execution)
 
-> Artifact snapshot taken 2026-09-23 before execution: docs/PRP.md §10 (steps table), prime/reports/phase-4-plan.md (6 spec decisions), prime/reports/threat-model.md (T1-T6), PRD v1.1 R1-R6.
+**Run:** `ims-uiux-enhance` · **Date:** 2026-09-24 · **Trigger:** autopilot checkpoint after plan drafting
 
-## Findings and corrections
+## Artifact snapshot
 
-1. **Finding:** first plan draft left `src/routes/_protected/reports/index.tsx` out of scope (user brief listed only 3 inventory pages) while it queries `v_inventory_summary` with the same stale columns as summary.tsx. **Correction:** added as Step 3 (R5) — shipping a consistent view contract requires all consumers aligned; scope growth is one select statement.
-2. **Finding:** baseline verification would have used global `npx tsc` which resolved to TypeScript 7.0.2 (unrelated to project `~5.6`), producing a spurious `baseUrl removed` error. **Correction:** plan constraint recorded — verify via `pnpm exec tsc` after dependency install; prerequisite `pnpm install` executed and completed (exit 0).
-3. **Finding:** threat model T6 initially asserted RLS posture from memory. **Correction:** verified against `20260826000010_rls_policies.sql:141-143` (UPDATE allowed for authenticated, DELETE denied); residual documented as out-of-scope follow-up rather than silently dropped.
-4. **Finding:** confirm-vs-block ambiguity for negative stock (R3). **Correction:** resolved explicitly in spec decision 4 (advisory confirm, mirrors FR-INV-003 wording); recorded so Build cannot drift.
+- `docs/PRP.md` §11 (v1.2 increment plan) — 7 milestones, estimates, risks, rollback
+- `prime/reports/phase-4-plan.md` — 8 specification decisions
+- Inputs: `docs/PRD.md` v1.2 (U1–U8), `prime/evidence/ui-audit/` (UX-1…UX-8)
+
+## Findings & corrections applied at checkpoint
+
+| # | Finding | Correction |
+|---|---|---|
+| C1 | First draft kept sidebar state local to `Sidebar.tsx` — same structural cause as the UX-3 dead-gap defect; patching `ml-60` → conditional class would leave two sources of truth | Decision 1: state lifted to `ProtectedLayout`; Sidebar receives props. Blocker for T-101 resolved before coding |
+| C2 | Bell popover data source was assumed, not verified | Verified against mock client: `.or`/`ilike` supported (`mock-client.ts:78,193`); `useDashboardSummary` returns `overdueCount`. Fallback recorded in Risk R2 (overdue-only degradation) |
+| C3 | U7 acceptance had two thresholds (reviewer minor from Phase 2) | Checkpoint resolved to the strict one: no dead zone >200px at 1280×800 |
+| C4 | Search popover plan omitted seeding `/finance/search` from URL — feature would silently ignore `?q=` | T-104 now includes `useSearchParams` seeding in `search.tsx` |
+| C5 | Drawer Esc-close needs focus return to the menu button for keyboard users (a11y) | Added to T-101 done-check alongside U4 probes |
+| C6 | (Phase-4 review M-1) `/settings/users` renders a duplicated shell (`App.tsx:105–119`) missing `DemoBanner` — T-101's premise of one shell was false | T-101 scope extended to consolidate the settings route into `ProtectedLayout` + nested `AdminRoute`; verification includes banner + drawer on that page |
+| C7 | (Phase-4 review M-2) C5's correction was recorded here but not propagated into PRP §11 text | Esc/focus-return now appears in T-101 task and verification columns |
 
 ## Blockers
 
-None open. Dependency chain (install → schema facts → plan) complete; no external coordination required before Build.
+None open. No requirement in PRD v1.2 lacks a task; no task lacks a verification method.
 
-verdict: pass — plan is concrete (files, effort, per-step acceptance) and defect-corrected before execution; proceed to Build.
+## Verdict
+
+Plan is internally consistent, traceable (U1–U8 ↔ T-101…T-107), risk-bounded, and reversible (frontend-only, git-revert rollback). Cleared for Phase 5 execution. verdict: pass

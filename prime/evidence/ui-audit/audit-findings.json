@@ -1,0 +1,20 @@
+{
+  "source": "https://inventory-management-system-55w.pages.dev, Playwright chromium headless, viewports 1280x800 / 768x1024 / 375x812, full-page screenshots in shots/",
+  "corrected": [
+    {
+      "page": "dashboard/*",
+      "issue": "DEMO banner (role=status) missing — FALSE POSITIVE in automated pass; re-verified: document.querySelector('[role=status]') = true and banner visible in inventory-mobile.png. Real cause of capture anomaly: dashboard-mobile.png caught a transient login render before route settle.",
+      "resolution": "dismissed"
+    }
+  ],
+  "findings": [
+    { "id": "UX-1", "severity": "critical", "page": "all", "viewport": "375", "issue": "No mobile layout: fixed 240px sidebar consumes 64% of viewport, no drawer/hamburger; content column ~135px. Evidence: shots/dashboard-mobile.png, shots/inventory-mobile.png; Sidebar.tsx:42 (fixed w-60), App.tsx:41 (ml-60)." },
+    { "id": "UX-2", "severity": "major", "page": "inventory/reports/users", "viewport": "768+375", "issue": "Horizontal page overflow on data tables at tablet and mobile (document.scrollWidth > innerWidth). Tables lack a contained scroll wrapper. Evidence: audit pass 2 overflow flags; shots/inventory-tablet.png." },
+    { "id": "UX-3", "severity": "major", "page": "all", "viewport": "desktop", "issue": "Collapse sidebar button resizes aside to 68px but main content margin is hardcoded ml-60 — leaves a ~172px dead gap when collapsed. Evidence: Sidebar.tsx:42 vs App.tsx:41/110." },
+    { "id": "UX-4", "severity": "major", "page": "all", "viewport": "all", "issue": "No visible focus indicator on buttons (computed box-shadow 'none', outline-style 'none' after focus). Keyboard users cannot see position. Evidence: audit 'button focus style: none|none'; login Tab probe shows first focusable is a button with no ring." },
+    { "id": "UX-5", "severity": "minor", "page": "dashboard", "viewport": "desktop", "issue": "Duplicated page title: header breadcrumb 'Dashboard' plus large H1 'Dashboard' in content. Evidence: shots/dashboard-desktop.png." },
+    { "id": "UX-6", "severity": "minor", "page": "all", "viewport": "desktop", "issue": "Design-token drift: sidebar uses Tailwind slate-900/blue-400/500 while docs/DESIGN.md specifies gray-900 base + primary-* semantic tokens; module color layer (DESIGN.md 2.1 Layer 3) not applied to nav accents." },
+    { "id": "UX-7", "severity": "minor", "page": "dashboard", "viewport": "desktop", "issue": "Low information density below Modules grid — large empty area; design principle 'dense information display' (DESIGN.md §1) not met." },
+    { "id": "UX-8", "severity": "minor", "page": "header", "viewport": "all", "issue": "Search and notification bell icons in Header render as interactive buttons with no observable behavior in demo (dead affordances). Evidence: shots/dashboard-desktop.png header." }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "command": "npm test -> node --test tests/demo-mode.test.ts tests/inventory-logic.test.ts tests/inventory-view-contract.test.ts (Node 26 native type-stripping runner)",
+  "executed_at": "2026-09-24T08:45:00Z",
+  "exit_code": 0,
+  "tests_run": 3,
+  "passed": 3,
+  "failed": 0,
+  "test_files": [
+    "tests/demo-mode.test.ts",
+    "tests/inventory-logic.test.ts",
+    "tests/inventory-view-contract.test.ts"
+  ],
+  "test_cases": { "total": 24, "passed": 24, "failed": 0 },
+  "browser_acceptance": {
+    "harness": "prime/evidence/ui-audit/reaudit.py (Playwright, built demo bundle served at localhost:4178)",
+    "checks": 19,
+    "passed": 19,
+    "results": "prime/evidence/ui-audit/reaudit-results.json",
+    "screenshots": "prime/evidence/ui-audit/shots2/"
+  },
+  "e2e_journeys": {
+    "harness": "prime/evidence/ui-audit/p6-e2e.py (Playwright, 3 journeys)",
+    "passed": 3,
+    "failed": 0,
+    "results": "prime/reports/phase-6-e2e-results.json",
+    "screenshots": "prime/test/screenshots/verify/"
+  },
+  "notes": "Phase 6 re-execution after closing the independent review's minor findings (documentation precision only; no source change since the 19/19 reaudit run). Unit tier 24/24 observed directly in this run (duration_ms 136, exit 0); browser and E2E tiers cite the harness results captured against the same built bundle (dist unchanged since find -newer check)."
+}

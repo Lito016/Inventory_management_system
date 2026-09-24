@@ -1,50 +1,69 @@
 {
   "output_type": "dashboard",
-  "target_audience": "warehouse and inventory operations staff who track stock movements, perform physical-count adjustments, and review per-product inventory summaries in the UBMS internal admin tool",
-  "quality_bar": "All three inventory routes render live data with correct v_inventory_summary columns, working debounced search, functional pagination, negative-stock confirmation flow, zero TypeScript errors, 22 passing regression tests, and visual consistency with the docs/DESIGN.md token system",
-  "verification_method": "pnpm exec tsc --noEmit; node --test per file (22/22 cases); pnpm exec vite build; independent quality-review subagent with re-verification; browser walkthrough of /inventory/products, /inventory/summary, /inventory/adjustments in prototype mode",
+  "target_audience": "warehouse and inventory operations staff (admin and staff roles) who use the Inventory Management System demo on desktop, tablet, and phone — dashboards, product lists, search, and finance lookups",
+  "quality_bar": "Polish: every PRD v1.2 acceptance criterion (U1-U8) demonstrated passing in a real browser at 375/768/1280 viewports against the built bundle; zero page-level horizontal overflow; visible WCAG-target keyboard focus; honest (working) header affordances; no new dependencies; strict docs/DESIGN.md token fidelity; tsc clean; 24/24 unit tests green",
+  "verification_method": "npm test (node --test, 3 files, 24 cases); tsc --noEmit; VITE_DEMO=true vite build; Playwright acceptance harness prime/evidence/ui-audit/reaudit.py executing 19 checks (drawer, overflow at 3 viewports, collapse sync, keyboard-Tab focus ring, search popover end-to-end, bell real-data popover, single title, density, avatar token, settings banner) with screenshots in prime/evidence/ui-audit/shots2/; independent quality-review subagent over the diff",
   "evidence_artifacts": [
     "prime/reports/phase-5-build.md",
     "prime/reports/phase-5-security-testing.md",
     "prime/reports/phase-5-quality-review.md",
     "prime/reports/phase-5-test-results.json",
-    "prime/reports/threat-model.md"
+    "prime/evidence/ui-audit/reaudit-results.json",
+    "prime/evidence/ui-audit/shots2/",
+    "prime/evidence/ui-audit/audit-findings.json",
+    "prime/evidence/ui-audit/design-system-recommendation.md"
   ],
   "design_benchmark_record": {
     "task_type": "dashboard",
     "sources_consulted": [
       {
-        "name": "Supabase PostgREST filters reference",
-        "url": "https://supabase.com/docs/reference/javascript/using-filters",
-        "purpose": "Canonical grammar and escaping rules for or()/ilike filter strings that the search sanitization must not break",
+        "name": "W3C WAI — Understanding WCAG 2.4.7 Focus Visible (Level AA)",
+        "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html",
+        "purpose": "Authoritative requirements for focus indicators: subject to 1.4.11 Non-text Contrast, sufficient techniques C40 (two-color indicator) and C45 (:focus-visible), and 2.4.13 Focus Appearance as the size/consistency reference",
         "available": true
       },
       {
-        "name": "TanStack Query placeholder data guide",
-        "url": "https://tanstack.com/query/latest/docs/framework/react/guides/placeholder-query-data",
-        "purpose": "keepPreviousData pattern so paginated and searched tables do not flash empty during refetch",
+        "name": "MDN — :focus-visible CSS pseudo-class",
+        "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/:focus-visible",
+        "purpose": "Confirmed the UA-heuristic matching semantics that drove the harness fix: programmatic .focus() generally does not trigger :focus-visible, so focus rings must be tested with real keyboard navigation",
         "available": true
       },
       {
-        "name": "Supabase Row Level Security intro",
-        "url": "https://supabase.com/docs/guides/auth/row-level-security",
-        "purpose": "Default-deny policy posture used to validate the movements table access audit in the threat model",
+        "name": "W3C ARIA APG — Disclosure Navigation Menu example",
+        "url": "https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/examples/disclosure-navigation/",
+        "purpose": "Keyboard-support and semantics baseline for collapsible navigation surfaces (aria-labelled nav, dismissal keys, focus handling) applied to the drawer and popover behavior",
+        "available": true
+      },
+      {
+        "name": "Tailwind CSS — box-shadow/ring utilities documentation",
+        "url": "https://tailwindcss.com/docs/box-shadow",
+        "purpose": "Implementation vehicle for the 2px focus ring (ring + ring-offset utilities) used by the focus-visible token treatment on light and dark surfaces",
         "available": true
       }
     ],
+    "local_inputs_not_external_benchmarks": [
+      "UI/UX Pro Max selector dataset run (prime/evidence/ui-audit/design-system-recommendation.md)",
+      "docs/DESIGN.md v1.0 project design artifact (token/type/density authority; outranks generic defaults per frontend skill priority)",
+      "live 3-viewport Playwright audit of the current product (prime/evidence/ui-audit/audit-findings.json)"
+    ],
     "patterns_adopted": [
-      "dense data-table dashboard layout with one primary action button per page header",
-      "status badges color-coded by semantic state tokens instead of inline styles",
-      "filter toolbar above table with left-aligned compact select controls",
-      "confirmation dialog interrupting destructive or out-of-range operations"
+      "off-canvas drawer + scrim with route-change and Escape dismissal, focus returned to the trigger (APG disclosure keyboard baseline)",
+      "horizontal scroll containment for dense data tables (min-w inside overflow-x-auto) rather than compressing columns",
+      "2px primary-500 focus-visible ring with offset on every interactive control, kept ≥3:1 against both light and dark surfaces per WCAG 1.4.11 focus-indicator contrast",
+      "real-data notification badge with capped count ('9+') and honest empty state ('All clear.')",
+      "loading skeleton -> explicit error copy -> data -> empty state for new dashboard bands",
+      "focus verification driven by real Tab key events, mirroring :focus-visible UA heuristics"
     ],
     "local_design_decisions": [
-      "reuse the existing project component library (Table, Badge, Modal, Input, Select, Pagination, ConfirmDialog) rather than introducing new primitives",
-      "derive both the stock badge and the current-stock text color from one shared stockStatus helper so thresholds cannot diverge visually",
-      "keep adjustment quantity input as a single signed field with plus/minus semantics explained inline, matching operator mental models from the physical count workflow"
+      "sidebar state lifted into ProtectedLayout so drawer/collapse/content-margin share one source of truth (structural root-cause fix for the dead-gap class)",
+      "header search reuses the existing /finance/search page via ?q= deep link — zero new UI surface for an honest affordance",
+      "bell reuses the cached ['dashboard'] summary query (no extra request); Needs-Attention filters stockStatus client-side because the mock builder lacks .lt()"
     ],
     "patterns_rejected": [
-      "card-grid overview tiles for every metric, which the established dense-table design language of this admin tool does not use"
-    ]
+      "selector-suggested Dark-Mode(OLED) style and Fira Code/Fira Sans typography — contradict the approved light-only Inter theme in docs/DESIGN.md (project artifact outranks generic defaults)",
+      "rewriting tables to card lists on mobile — rejected in favor of scroll containment to preserve scanning density for operations staff",
+      "gradient avatar treatment — replaced with flat primary-600 token surface (anti-slop + token fidelity)"
+    ],
+    "unavailable_sources_note": "WebFetch was rate-limited during this phase (platform quota), so external sources were consulted via direct HTTPS retrieval instead; all four sources_consulted entries were actually fetched and informed the focus-ring, drawer-keyboard, and ring-utility decisions. Project-local authority (docs/DESIGN.md) still outranks generic defaults for tokens and typography."
   }
 }

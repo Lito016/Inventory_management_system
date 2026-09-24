@@ -1,17 +1,18 @@
 {
-  "timestamp": "2026-09-23T10:46:43Z",
-  "project_root": "C:/Projects/inventory_management",
-  "start_command": "pnpm dev",
-  "url": "http://localhost:5173/",
+  "timestamp": "2026-09-24T08:04:47.150Z",
+  "project_root": "C:\\Projects\\inventory_management",
+  "tool_identity": "check-runtime-errors.mjs",
+  "tool_version": "1.0.0",
   "startup_success": true,
   "http_status": 200,
-  "error_count": 0,
   "errors": [],
-  "checks": [
-    "vite dev server responded HTTP 200 at / before and during the Playwright session",
-    "no uncaught pageerror events across 3 inventory routes x 3 viewports",
-    "no console error-level messages",
-    "no failed network requests (requestfailed listeners) and no HTTP >=400 responses"
-  ],
+  "warnings": [],
+  "stderr_captured": "",
+  "stdout_captured": "",
+  "duration_ms": 18,
+  "exit_code": null,
+  "url": "http://localhost:4178",
+  "error_count": 0,
+  "warning_count": 0,
   "verdict": "pass"
 }

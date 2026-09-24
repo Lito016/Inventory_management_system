@@ -56,7 +56,7 @@ export function UsersPage() {
     { key: 'role', header: 'Role', render: (r) => <Badge status={r.role} colorMap={ROLE_COLORS} /> },
     { key: 'is_active', header: 'Status', render: (r) => <Badge status={r.is_active ? 'Active' : 'Inactive'} colorMap={ACTIVE_COLORS} /> },
     { key: 'created_at', header: 'Joined', render: (r) => formatDate(r.created_at) },
-    { key: 'actions', header: '', render: (r) => (
+    { key: 'actions', header: 'Actions', render: (r) => (
       <Button variant="ghost" size="sm" onClick={() => supabase.from('profiles').update({ is_active: !r.is_active }).eq('id', r.id).then(() => refetch())}>
         {r.is_active ? 'Deactivate' : 'Activate'}
       </Button>

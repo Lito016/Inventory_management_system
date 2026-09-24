@@ -1,0 +1,32 @@
+{
+ "scenario_id": "UAT-NAV-DRAWER-MOBILE",
+ "scenario": "375px drawer: closed by default (x=-240), opens (x=0), closes on nav (x=-240); products fits viewport (overflow=0px) with Actions header",
+ "requirement": "U1 responsive drawer + U2 no page overflow at 375 + Actions header a11y",
+ "result": "PASS",
+ "started_at": "2026-09-24T08:20:32.655366+00:00",
+ "finished_at": "2026-09-24T08:20:36.176376+00:00",
+ "project_analysis": {
+  "framework": "React 18 + Vite + TypeScript SPA with react-router and TanStack Query",
+  "start_command": "VITE_DEMO=true npx vite build && npx vite preview --port 4178 --strictPort",
+  "login_route": "/login",
+  "auth_state_expected": "Authenticated dashboard inside ProtectedLayout shell with role marker in header; in-memory demo session (VITE_DEMO)",
+  "credential_source": "Demo mode role-picker (mock session, no real credentials entered)"
+ },
+ "checks": {
+  "login_page_loaded": true,
+  "credentials_entered": true,
+  "sign_in_clicked": true,
+  "dashboard_redirect": true,
+  "welcome_or_identity_visible": true,
+  "session_state_present": true,
+  "no_console_errors": true,
+  "no_failed_requests": true
+ },
+ "screenshots": [
+  "prime/test/screenshots/verify/uat-02-drawer-closed.png",
+  "prime/test/screenshots/verify/uat-02-drawer-open.png",
+  "prime/test/screenshots/verify/uat-02-products-375.png"
+ ],
+ "console_errors": [],
+ "failed_requests": []
+}

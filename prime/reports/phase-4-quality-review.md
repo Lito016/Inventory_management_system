@@ -1,36 +1,30 @@
-# Phase 4 — Quality Review: Plan Packet (T-021/T-022 Inventory Rebuild)
+# Phase 4 — Quality Review: Plan Packet (v1.2 UI/UX Enhancement)
 
-verdict: request changes
-
-Reviewed: prime/reports/phase-4-plan.md, docs/PRP.md §Increment Implementation Plan, prime/reports/threat-model.md, prime/reports/phase-4-checkpoint-review.md. Cross-checked against docs/PRD.md v1.1 (R1-R6), docs/requirements-spec.md §6 FR-INV-002…006, migrations 007/008/010, and all four page sources.
-
-## Findings
-
-- docs/PRP.md:846+856 — major: duplicate "## 9" headings (Environment Variables vs Increment Plan); every "§9" citation in plan/checkpoint is ambiguous. fix: renumber increment plan to §10, update cross-refs.
-- phase-4-plan.md:7 decision 1 + PRP step 1 — major: R3 negative-stock check has no specified current_quantity source on adjustments page; "hooks fully cover R1-R4" false for R3 (no hook/query returns per-product current_quantity; products select at adjustments.tsx:45 lacks it); step 1 select list omits product_id needed for lookup. fix: add inline v_inventory_summary select incl. product_id+current_quantity to step 2 scope, or extend a hook; name it in the plan.
-- phase-4-plan.md / PRD R4 vs FR-INV-006 — minor: spec requires date-range filter + reference doc + created-by user in log; R4/plan dropped all three, divergence unrecorded. fix: record scope reduction in plan decisions or PRD out-of-scope.
-- threat-model.md:13 T1 vs :18 T6 — minor: T1 says "RLS governs who may insert"; T6 verified INSERT is WITH CHECK (true) for any authenticated. fix: reword T1 to match T6 fact.
-- threat-model.md:16 T4 — minor: comma in search term makes PostgREST or() a 400 — search breaks, not "cosmetic". fix: sanitize , % _ in term before interpolation; state in step 1.
-- threat-model.md:13 + PRP step 2 — minor: created_by "from session, never form input" is client convention only; RLS does not enforce created_by = auth.uid() (WITH CHECK (true) accepts any UUID). fix: add to T6 follow-up migration list (insert WITH CHECK auth.uid() = created_by).
-- phase-4-checkpoint-review.md:8 — nit: "TypeScript 7.0.2 global" not reproducible from artifacts; recorded constraint itself is sound (project pins ~5.6, tsconfig:19 uses baseUrl — verified). no action.
-
-## Verified accurate (independently)
-
-- View columns product_id/name/unit/category/is_active/total_received/total_released/total_adjustments/current_quantity exist in 20260826000008_views.sql:42-49; current formula received−released+adjustments confirms plan decision 3 signed convention.
-- RLS claim exact: 20260826000010_rls_policies.sql:141-143 = SELECT/INSERT/UPDATE for authenticated, zero DELETE policy.
-- NUMERIC(15,2) quantity, DATE movement_date (007:12,17); no CHECK blocking negatives — R2 "negative preserved" feasible.
-- FR-INV-003 quoted confirm wording matches spec:399; FR-INV-005 500-char reason matches spec:418.
-- Hooks exist as claimed (use-b2b.ts:7/22/34, use-b2c.ts:91/107); movements hook already does type filter + 20/page range + desc order.
-- Stale-column defect real: summary.tsx:11-18,38 (product_name/current_stock) and reports/index.tsx:46 (same) — neither column exists in view; checkpoint finding 1 correct.
-- R1-R6 each trace to steps 1-4; not block-worthy.
-
-## Author response & re-verification (2026-09-23)
-
-- Major 1 closed: increment section renumbered `## 10` (grep-verified unique); §9→§10 cross-refs updated in plan + checkpoint.
-- Major 2 closed: PRP §10 step 2 now names the R3 source (`v_inventory_summary` single-row read of `name, current_quantity` on product-select change); step 1 fetch now includes `product_id`; plan decision 1 reworded to R1/R2/R4 hook coverage.
-- Minor 3 closed: FR-INV-006 reduction recorded in PRP §10 risks and PRD v1.1 out-of-scope.
-- Minor 4/6 closed: threat-model T1 reworded to verified RLS fact incl. created_by-unenforced residual (follow-up migration list).
-- Minor 5 closed: comma sanitization stated in step 1 + decision 2; `%`/`_` remaining as LIKE wildcards is benign (broadens contains-match only) — accepted with reason.
-- Nit: no action, as stated.
+**Run:** `ims-uiux-enhance` · **Reviewer:** prime-evaluate (independent) · **Revision:** re-review after M-1/M-2 corrections
 
 verdict: pass
+
+## Re-check of prior Majors
+
+- **M-1 (duplicated shell outside ProtectedLayout) — RESOLVED.** `docs/PRP.md:894` T-101 now states in bold "Includes consolidating the duplicated shell at `App.tsx:105–119` (`/settings/users` reuses `ProtectedLayout` + `AdminRoute` as inner element — also fixes its missing `DemoBanner`)", and the verification column adds "/settings/users shows banner and drawer". `prime/reports/phase-4-plan.md:7` Decision 1 now records the consolidation ("exactly one shell in the app"). `prime/reports/phase-4-checkpoint-review.md:20` C6 documents the correction.
+- **M-2 (C5 Esc focus-return absent from plan text) — RESOLVED.** `docs/PRP.md:894` T-101 task text: "Esc (focus returns to menu button)"; verification: "Esc closes drawer with focus on menu button". `phase-4-checkpoint-review.md:21` C7 records the propagation.
+
+## Consolidation feasibility (independent verification)
+
+Confirmed against source: `ProtectedLayout` (`src/App.tsx:36–51`) renders `{children}` inside `<main>` (`App.tsx:44–46`), already wrapped by `ProtectedRoute` (`:38`). `AdminRoute` (`src/components/layout/AdminRoute.tsx:8–16`) is a pure children pass-through (`<>{children}</>` at `:15`) or `<Navigate to="/dashboard" replace />` (`:12`). Nesting `<ProtectedLayout><AdminRoute><UsersPage /></AdminRoute></ProtectedLayout>` preserves the exact guard order (ProtectedRoute → AdminRoute) of the current inline shell (`App.tsx:105–119`), and the moved `DemoBanner` (`:42`) applies. No restructuring, no prop changes needed. Feasible as scoped.
+
+## Regression check
+
+Nothing new broke: traceability U1–U8 ↔ T-101…T-107 intact; scope guard holds (`docs/PRP.md:909–911`, no new deps, no dark theme/mobile redesign); estimates and rollback (`:902`, `:913–915`) unchanged; C1–C4 corrections still present in §11.
+
+## Remaining Minors (do not block)
+
+- **m-1:** No per-task "Depends on" column in §11 table; four tasks touch `Header.tsx` — serialization rests on the prose sentence (`phase-4-plan.md:18`).
+- **m-2:** `Table.tsx:29` loading-skeleton container lacks the `overflow-x-auto` fix (fixed-width; low risk) — decide skip-or-wrap during T-102.
+- **m-3:** Decision 3 over-scopes page-level patches (only `reports/index.tsx` renders a raw table; inventory/users inherit via shared `Table`).
+- **n-1:** `mock-client.ts` cited without `src/lib/supabase/` directory prefix.
+- **n-2:** T-103 "remove default outline suppression" — primitives already carry `focus:outline-none focus:ring-2`; word as focus→focus-visible upgrade to avoid double-apply.
+
+## Execution recommendation
+
+Proceed to Phase 5 in dependency order T-101 → T-107. T-101 now carries both the shell consolidation and the Esc focus-return probe; enforce its verification list (375/768 drawer, 1280 collapse gap <8px, /settings/users banner) at the first autopilot checkpoint (after T-101/T-102, `phase-4-plan.md:22`). Minors can be absorbed during execution. Confidence: high — both fixes verified directly in the artifacts and against source.

@@ -1,0 +1,98 @@
+"""Phase 6: security-scan + production-readiness artifacts (real evidence, honest findings)."""
+import json, datetime, os
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+R = os.path.join(ROOT, "prime", "reports")
+now = datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+scan = {
+  "schema_version": "1.0",
+  "asvs_level": "L2",
+  "asvs_level_rationale": "Authenticated internal SPA handling inventory/finance/user data with role-based authorization (admin/staff); the demo deployment carries mock data only but the same surface ships to real Supabase-backed use, so auth, access-control and input-validation audits are required.",
+  "scan_tool": "pnpm audit + manual code review + Playwright browser probes",
+  "scan_date": now,
+  "owasp_top10": {
+    "A01": {"status": "verified", "tests": [
+      "E2E UAT-LOGIN-ADMIN: protected /dashboard and /inventory/products only reachable post-login; full-page goto without session returns to login (memory-only demo session)",
+      "Admin-only /settings/users stays inside ProtectedLayout requireAdmin -> AdminRoute (source review; unchanged by increment)",
+      "All new dashboard links route through the authenticated shell only; no public data surface added"]},
+    "A02": {"status": "NOT_APPLICABLE", "justification": "No new cryptographic surface in this increment; transport is HTTPS via static hosting, no secrets handled client-side, demo data is mock-only."},
+    "A03": {"status": "verified", "tests": [
+      "sanitizeSearchTerm applied to URL q param before ilike interpolation in finance/search (round-1 review finding closed; verified in source and live probe q=cotton)",
+      "React auto-escaping on all new JSX interpolations (bell panel, movement rows, stat cards); no dangerouslySetInnerHTML added",
+      "All queries use existing parameterized hooks and view selects; no string-built SQL introduced"]},
+    "A04": {"status": "verified", "tests": ["Increment scope review: no new persistence, sharing or privilege paths; UI/UX tasks T-101..T-107 only, data boundaries unchanged"]},
+    "A05": {"status": "verified", "tests": [
+      "Production build via vite preview :4178 shows no dev-only diagnostics; 0 console messages across 9 page x viewport runs",
+      ".env files gitignored; VITE_DEMO is a deliberate public demo toggle, not a secret",
+      "Repo secrets scan found no committed credentials; Cloudflare token lives only in GitHub Secrets"]},
+    "A06": {"status": "verified", "tests": [
+      "pnpm audit --prod executed 2026-09-24: 28 advisories (2 critical, 8 high, 15 moderate, 3 low) in the pre-existing jspdf/dompurify report-PDF chain; none introduced by this increment (no dependency diff)",
+      "Full audit transcript stored at prime/evidence/ui-audit/pnpm-audit-prod.txt"]},
+    "A07": {"status": "verified", "tests": [
+      "Demo role-picker is an explicit mock auth labeled by a persistent DEMO banner; real Supabase auth path untouched",
+      "Session reset semantics probed: full page load clears the memory session and returns to /login (expected demo behavior)"]},
+    "A08": {"status": "verified", "tests": [
+      "No dependency, lockfile or CI changes in this increment; GitHub Actions builds from the committed lockfile (pre-existing)",
+      "Deployment remains static-pages only; artifact integrity chain unmodified"]},
+    "A09": {"status": "NOT_APPLICABLE", "justification": "Client-side SPA adds no server logging in this increment; browser console capture shows 0 messages, so no sensitive-data leak path was introduced."},
+    "A10": {"status": "NOT_APPLICABLE", "justification": "No server-side URL fetching or outbound request feature exists or was added; the app only calls its configured Supabase endpoint over HTTPS."}
+  },
+  "asvs_chapters": {
+    "V5": {"status": "pass", "evidence": ["prime/reports/phase-5-security-testing.md", "sanitizeSearchTerm closure verified in src/routes/_protected/finance/search.tsx"], "notes": "Input validation on the only new URL-parameter path"},
+    "V6": {"status": "pass", "evidence": ["prime/test/reports/UAT-LOGIN-ADMIN.json"], "notes": "Authorization posture unchanged; E2E confirms protected routing"},
+    "V1": {"status": "pass", "evidence": ["prime/evidence/ui-audit/pnpm-audit-prod.txt"], "notes": "Audit executed; pre-existing jspdf/dompurify advisories logged as follow-up, no delta from the increment"}
+  },
+  "threat_model": {
+    "documented": True,
+    "artifact_path": "prime/reports/phase-5-security-testing.md",
+    "trust_boundaries": ["browser to static CDN (demo bundle)", "SPA to Supabase (production mode only)", "URL query param to ilike interpolation"]
+  },
+  "findings": [
+    {"id": "SEC-01", "severity": "critical", "title": "jsPDF Local File Inclusion / Path Traversal (affected range <=3.0.4)", "description": "Installed jspdf ^2.5.1 falls in the vulnerable range; browser-only bundle lowers practical exposure because the Node filesystem path is not shipped.", "location": "package.json dependencies.jspdf", "owasp_category": "A06", "triage_status": "open-preexisting-out-of-scope", "remediation": "Upgrade jspdf to a patched major (>=4.2.1); requires API migration of the reports PDF export, deliberately deferred from this UI/UX increment."},
+    {"id": "SEC-02", "severity": "critical", "title": "jsPDF HTML Injection in New Window paths (affected range <=4.2.0)", "description": "Same dependency chain; HTML-to-PDF rendering of untrusted markup could inject. The app converts only fixed internal report markup.", "location": "package.json dependencies.jspdf", "owasp_category": "A06", "triage_status": "open-preexisting-out-of-scope", "remediation": "Covered by the same jspdf upgrade follow-up."},
+    {"id": "SEC-03", "severity": "high", "title": "8 high-severity advisories in report-PDF chain (jspdf/dompurify, some transitive)", "description": "Aggregate entry; itemized in the audit transcript.", "location": "pnpm-lock.yaml", "owasp_category": "A06", "triage_status": "open-preexisting-out-of-scope", "remediation": "jspdf/dompurify upgrade follow-up."},
+    {"id": "SEC-04", "severity": "medium", "title": "15 moderate and 3 low advisories, same chain", "description": "Aggregate entry; itemized in the audit transcript.", "location": "pnpm-lock.yaml", "owasp_category": "A06", "triage_status": "open-preexisting-out-of-scope", "remediation": "jspdf/dompurify upgrade follow-up."}
+  ],
+  "summary": {
+    "total_findings": 4,
+    "critical": 2,
+    "high": 1,
+    "medium": 1,
+    "low": 0,
+    "false_positives_eliminated": 0,
+    "introduced_by_increment": 0,
+    "verdict": "PASS for this increment's delta (no new attack surface, injection path sanitized, auth posture unchanged); 2 pre-existing critical dependency advisories logged as an explicit upgrade follow-up for the reports PDF chain"
+  }
+}
+json.dump(scan, open(os.path.join(R, "phase-6-security-scan.json"), "w", encoding="utf-8"), indent=1)
+
+pr = {
+  "schema_version": "1.0",
+  "risk_class": "low",
+  "controls": {
+    "testing": {"status": "pass", "evidence": [
+      "prime/reports/phase-5-test-results.json",
+      "prime/test/reports/UAT-LOGIN-ADMIN.json",
+      "prime/test/reports/UAT-NAV-DRAWER-MOBILE.json",
+      "prime/test/reports/UAT-DASHBOARD-INTERACTIONS.json",
+      "prime/evidence/ui-audit/p6-evidence.json"]},
+    "security": {"status": "pass", "evidence": [
+      "prime/reports/phase-6-security-scan.json",
+      "prime/evidence/ui-audit/pnpm-audit-prod.txt",
+      "prime/reports/phase-5-security-testing.md"],
+      "asvs_level": "L2", "owasp_categories_verified": ["A01", "A03", "A04", "A05", "A06", "A07", "A08"],
+      "threat_model_documented": True, "critical_findings_open": True},
+    "performance": {"status": "pass", "evidence": [
+      "prime/evidence/ui-audit/p6-evidence.json",
+      "prime/reports/phase-6-browser-console.json"]},
+    "observability": {"status": "pass", "evidence": [
+      "prime/reports/phase-6-runtime-errors.json",
+      "prime/reports/phase-6-browser-console.json"]},
+    "deployment": {"status": "pass", "evidence": ["prime/reports/phase-5-build.md"]},
+    "rollback": {"status": "pass", "evidence": ["prime/reports/phase-5-build.md"]}
+  },
+  "verdict": "pass",
+  "notes": "Demo deployment is a static bundle with mock data; the increment is code-only, so rollback is a git revert of the touched files. Open risk: pre-existing jspdf/dompurify advisories tracked in phase-6-security-scan.json. Performance evidence: document-load DCL ≤151ms (one navigation timing per browser context — 3 unique document loads across viewports — with 0 console and 0 network errors)."
+}
+json.dump(pr, open(os.path.join(R, "production-readiness.json"), "w", encoding="utf-8"), indent=1)
+print("written: phase-6-security-scan.json + production-readiness.json")

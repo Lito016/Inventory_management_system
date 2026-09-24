@@ -24,7 +24,7 @@ export function PageTabs({ tabs }: PageTabsProps) {
 
   return (
     <div className="bg-white border-b border-slate-200 px-6 shadow-sm">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 min-w-0">
         <button
           onClick={handleBack}
           className="p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-all duration-200"
@@ -32,7 +32,7 @@ export function PageTabs({ tabs }: PageTabsProps) {
         >
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <nav className="flex gap-1 flex-1">
+        <nav aria-label="Section tabs" className="flex gap-1 flex-1 min-w-0 overflow-x-auto">
         {tabs.map((tab) => {
           const active = isActive(tab.to);
           return (

@@ -1,0 +1,72 @@
+{
+  "schema_version": "1.0",
+  "project_id": "ubms-inventory-t021-t022",
+  "quality_mode": "autopilot",
+  "project_tier": 0,
+  "lifecycle_shape": "product_increment",
+  "selected_phases": [
+    2,
+    4,
+    5,
+    6
+  ],
+  "current_phase": 6,
+  "status": "done",
+  "completed_phases": [
+    2,
+    4,
+    5,
+    6
+  ],
+  "phases": {
+    "1": {
+      "status": "skipped",
+      "attempt": 0,
+      "entered_at": null,
+      "completed_at": null,
+      "gate_result": null
+    },
+    "2": {
+      "status": "passed",
+      "attempt": 1,
+      "entered_at": "2026-09-23T09:29:32.124Z",
+      "completed_at": "2026-09-23T09:35:47.978Z",
+      "gate_result": "prime/state/gate-results/phase-2-gates.json"
+    },
+    "3": {
+      "status": "skipped",
+      "attempt": 0,
+      "entered_at": null,
+      "completed_at": null,
+      "gate_result": null
+    },
+    "4": {
+      "status": "passed",
+      "attempt": 1,
+      "entered_at": "2026-09-23T09:35:48.132Z",
+      "completed_at": "2026-09-23T09:46:54.269Z",
+      "gate_result": "prime/state/gate-results/phase-4-gates.json"
+    },
+    "5": {
+      "status": "passed",
+      "attempt": 1,
+      "entered_at": "2026-09-23T09:49:51.975Z",
+      "completed_at": "2026-09-23T10:19:17.712Z",
+      "gate_result": "prime/state/gate-results/phase-5-gates.json"
+    },
+    "6": {
+      "status": "passed",
+      "attempt": 1,
+      "entered_at": "2026-09-23T10:19:23.342Z",
+      "completed_at": "2026-09-23T10:53:26.638Z",
+      "gate_result": "prime/state/gate-results/phase-6-gates.json"
+    },
+    "7": {
+      "status": "skipped",
+      "attempt": 0,
+      "entered_at": null,
+      "completed_at": null,
+      "gate_result": null
+    }
+  }
+}

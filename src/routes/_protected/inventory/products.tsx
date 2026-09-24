@@ -49,7 +49,7 @@ export function ProductsPage() {
     { key: 'unit', header: 'Unit', render: (r) => r.unit },
     { key: 'category', header: 'Category', render: (r) => r.category || '—' },
     { key: 'is_active', header: 'Status', render: (r) => <Badge status={r.is_active ? 'Active' : 'Inactive'} colorMap={ACTIVE_COLORS} /> },
-    { key: 'actions', header: '', render: (r) => (
+    { key: 'actions', header: 'Actions', render: (r) => (
       <div className="flex gap-1">
         <Button variant="ghost" size="sm" onClick={() => { setEditProduct(r); reset({ name: r.name, unit: r.unit, category: r.category || '', description: r.description || '' }); }}>Edit</Button>
         <Button variant="ghost" size="sm" onClick={() => updateProduct.mutate({ id: r.id, is_active: !r.is_active })}>
