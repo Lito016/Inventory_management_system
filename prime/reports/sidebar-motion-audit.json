@@ -1,0 +1,81 @@
+{
+  "checks": [
+    {
+      "name": "initial width 240",
+      "ok": true,
+      "detail": "240"
+    },
+    {
+      "name": "width animating mid-flight",
+      "ok": true,
+      "detail": "mid width 88.984375"
+    },
+    {
+      "name": "labels fading mid-flight",
+      "ok": true,
+      "detail": "opacity 0"
+    },
+    {
+      "name": "collapsed width 68",
+      "ok": true,
+      "detail": "68"
+    },
+    {
+      "name": "nav labels invisible when collapsed",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "no horizontal scrollbar in nav",
+      "ok": true,
+      "detail": "False"
+    },
+    {
+      "name": "no page overflow",
+      "ok": true,
+      "detail": "False"
+    },
+    {
+      "name": "icons centered (~33.5px)",
+      "ok": true,
+      "detail": "{'33.0'}"
+    },
+    {
+      "name": "knob straddles rail border",
+      "ok": true,
+      "detail": "{'x': 55, 'y': 70, 'width': 24, 'height': 24}"
+    },
+    {
+      "name": "collapsed item has title tooltip",
+      "ok": true,
+      "detail": "Dashboard"
+    },
+    {
+      "name": "expand width animating",
+      "ok": true,
+      "detail": "mid width 219"
+    },
+    {
+      "name": "expanded width 240",
+      "ok": true,
+      "detail": "240"
+    },
+    {
+      "name": "labels visible after expand",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "collapse persisted to localStorage",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "active indicator kept when collapsed",
+      "ok": true,
+      "detail": "True"
+    }
+  ],
+  "defects": [],
+  "console_errors": []
+}

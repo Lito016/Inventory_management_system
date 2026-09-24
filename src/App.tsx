@@ -36,7 +36,9 @@ import { UsersPage } from '@/routes/_protected/settings/users';
 
 function ProtectedLayout({ children, requireAdmin = false }: { children: React.ReactNode; requireAdmin?: boolean }) {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => localStorage.getItem('ims-sidebar-collapsed') === 'true');
+
+  useEffect(() => { localStorage.setItem('ims-sidebar-collapsed', String(collapsed)); }, [collapsed]);
   const menuBtnRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
 
@@ -69,7 +71,7 @@ function ProtectedLayout({ children, requireAdmin = false }: { children: React.R
           onToggleCollapse={() => setCollapsed((c) => !c)}
           onCloseMobile={() => setMobileOpen(false)}
         />
-        <div className={`transition-[margin] duration-200 ${collapsed ? 'lg:ml-[68px]' : 'lg:ml-60'}`}>
+        <div className={`transition-[margin] duration-200 ease-[cubic-bezier(0.2,0,0,1)] ${collapsed ? 'lg:ml-[68px]' : 'lg:ml-60'}`}>
           <DemoBanner />
           <Header onOpenMobile={() => setMobileOpen(true)} menuBtnRef={menuBtnRef} />
           <main className="p-4 sm:p-6">
