@@ -1,4 +1,8 @@
 allowBuilds:
   core-js: true
   esbuild: true
-onlyBuiltDependencies: core-js,esbuild
+  workerd: true
+onlyBuiltDependencies:
+  - core-js
+  - esbuild
+  - workerd
