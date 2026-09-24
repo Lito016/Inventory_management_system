@@ -32,9 +32,9 @@ export function SearchInput({ value, onChange, placeholder = 'Search...', deboun
         value={localValue}
         onChange={(e) => setLocalValue(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-sm border border-gray-300 pl-9 pr-3 py-2 text-sm text-gray-800
-          placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-100
-          focus:border-primary-500 transition-colors"
+        className="w-full rounded-md border border-gray-300 bg-canvas pl-9 pr-3 py-2 text-sm text-gray-900
+          placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/30
+          focus:border-primary-500 focus:bg-surface transition-all duration-150"
       />
     </div>
   );

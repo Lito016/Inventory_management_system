@@ -47,8 +47,8 @@ export function ForgotPasswordPage() {
   if (sent) {
     return (
       <div className="w-full max-w-sm">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-          <Mail className="h-12 w-12 text-primary-600 mx-auto mb-4" />
+        <div className="bg-surface rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+          <Mail className="h-12 w-12 text-link mx-auto mb-4" />
           <h2 className="text-lg font-semibold text-gray-800 mb-2">Check your email</h2>
           <p className="text-sm text-gray-600 mb-6">
             We sent a password reset link to your email address.
@@ -64,7 +64,7 @@ export function ForgotPasswordPage() {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+      <div className="bg-surface rounded-lg shadow-sm border border-gray-200 p-8">
         <h2 className="text-lg font-semibold text-gray-800 mb-2">Forgot Password</h2>
         <p className="text-sm text-gray-600 mb-6">
           Enter your email address and we'll send you a link to reset your password.
@@ -94,7 +94,7 @@ export function ForgotPasswordPage() {
         <div className="mt-4 text-center">
           <button
             onClick={() => navigate('/login')}
-            className="text-sm text-primary-600 hover:text-primary-700"
+            className="text-sm text-link hover:text-link-hover"
           >
             Back to login
           </button>

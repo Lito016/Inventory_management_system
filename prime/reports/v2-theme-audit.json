@@ -1,0 +1,129 @@
+{
+  "base": "http://localhost:4178",
+  "themes": {
+    "light": {
+      "desktop": {
+        "dashboard": {
+          "overflow": false,
+          "theme_attr": "light",
+          "landed": true
+        },
+        "finance": {
+          "overflow": false,
+          "theme_attr": "light",
+          "landed": true
+        },
+        "products": {
+          "overflow": false,
+          "theme_attr": "light",
+          "landed": true
+        }
+      },
+      "tablet": {
+        "dashboard": {
+          "overflow": false,
+          "theme_attr": "light",
+          "landed": true
+        },
+        "finance": {
+          "overflow": false,
+          "theme_attr": "light",
+          "landed": true
+        },
+        "products": {
+          "overflow": false,
+          "theme_attr": "light",
+          "landed": true
+        }
+      },
+      "mobile": {
+        "dashboard": {
+          "overflow": false,
+          "theme_attr": "light",
+          "landed": true
+        },
+        "finance": {
+          "overflow": false,
+          "theme_attr": "light",
+          "landed": true
+        },
+        "products": {
+          "overflow": false,
+          "theme_attr": "light",
+          "landed": true
+        }
+      }
+    },
+    "dark": {
+      "desktop": {
+        "dashboard": {
+          "overflow": false,
+          "theme_attr": "dark",
+          "landed": true
+        },
+        "finance": {
+          "overflow": false,
+          "theme_attr": "dark",
+          "landed": true
+        },
+        "products": {
+          "overflow": false,
+          "theme_attr": "dark",
+          "landed": true
+        }
+      },
+      "tablet": {
+        "dashboard": {
+          "overflow": false,
+          "theme_attr": "dark",
+          "landed": true
+        },
+        "finance": {
+          "overflow": false,
+          "theme_attr": "dark",
+          "landed": true
+        },
+        "products": {
+          "overflow": false,
+          "theme_attr": "dark",
+          "landed": true
+        }
+      },
+      "mobile": {
+        "dashboard": {
+          "overflow": false,
+          "theme_attr": "dark",
+          "landed": true
+        },
+        "finance": {
+          "overflow": false,
+          "theme_attr": "dark",
+          "landed": true
+        },
+        "products": {
+          "overflow": false,
+          "theme_attr": "dark",
+          "landed": true
+        }
+      }
+    }
+  },
+  "toggle_test": {
+    "before": "light",
+    "after_click": "dark",
+    "localStorage": "dark",
+    "toggle_found": true,
+    "after_reload": "http://localhost:4178/dashboard theme=light"
+  },
+  "console_errors": [],
+  "defects": [],
+  "axe_dark": {
+    "violations": []
+  },
+  "axe_light": {
+    "violations": []
+  },
+  "axe_dark_receivables": {
+    "violations": []
+  }
+}

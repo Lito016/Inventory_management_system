@@ -26,14 +26,19 @@ export function ConfirmDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/50" onClick={onCancel} />
-      <div className="relative bg-white rounded-lg shadow-lg w-full max-w-md mx-4 p-6">
+      <div className="fixed inset-0 bg-black/50 backdrop-blur-[3px]" onClick={onCancel} aria-hidden="true" />
+      <div
+        className="relative bg-surface rounded-xl shadow-2xl ring-1 ring-gray-900/5 w-full max-w-md mx-4 p-6"
+        role="alertdialog"
+        aria-modal="true"
+        aria-label={title}
+      >
         <div className="flex items-start gap-4">
-          <div className="flex-shrink-0">
-            <AlertTriangle className={`h-6 w-6 ${variant === 'danger' ? 'text-error-600' : 'text-primary-600'}`} />
+          <div className="flex-shrink-0 h-10 w-10 rounded-full grid place-items-center bg-sunken">
+            <AlertTriangle className={`h-5 w-5 ${variant === 'danger' ? 'text-error-600' : 'text-link'}`} />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+            <h3 className="font-display text-lg font-semibold text-gray-900 tracking-tight">{title}</h3>
             <p className="mt-2 text-sm text-gray-600">{message}</p>
           </div>
         </div>

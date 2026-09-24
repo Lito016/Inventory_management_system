@@ -34,20 +34,30 @@ export function Modal({ open, onClose, title, size = 'md', footer, children }: M
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
-      <div className={`relative bg-white rounded-lg shadow-lg w-full ${sizeClasses[size]} mx-4`}>
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-[3px]"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <div
+        className={`relative bg-surface rounded-xl shadow-2xl ring-1 ring-gray-900/5 w-full ${sizeClasses[size]} mx-4`}
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+      >
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
+          <h2 className="font-display text-lg font-semibold text-gray-900 tracking-tight">{title}</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Close dialog"
+            className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
         <div className="px-5 py-4">{children}</div>
         {footer && (
-          <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-gray-200">
+          <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-gray-200 bg-sunken/50 rounded-b-xl">
             {footer}
           </div>
         )}

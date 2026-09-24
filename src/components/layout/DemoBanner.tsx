@@ -6,9 +6,9 @@ export function DemoBanner() {
   return (
     <div
       role="status"
-      className="bg-amber-100 border-b border-amber-300 px-4 py-1.5 text-center text-xs font-medium text-amber-900"
+      className="bg-amber-50 border-b border-amber-200 px-4 py-1 text-center text-[11px] font-medium tracking-wide text-amber-800"
     >
-      DEMO — sample data only. Edits reset when you reload the page.
+      DEMO · sample data only — edits reset on reload
     </div>
   );
 }

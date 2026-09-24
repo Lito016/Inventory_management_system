@@ -9,10 +9,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<string, string> = {
-  primary: 'bg-primary-600 text-white hover:bg-primary-700',
-  secondary: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50',
-  danger: 'bg-error-600 text-white hover:bg-error-700',
-  ghost: 'bg-transparent text-gray-600 hover:bg-gray-100',
+  primary:
+    'bg-primary-600 text-on-accent hover:bg-primary-700 shadow-sm shadow-primary-600/20 active:translate-y-px',
+  secondary:
+    'bg-surface text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 active:translate-y-px',
+  danger: 'bg-error-600 text-on-accent hover:bg-error-700 shadow-sm shadow-error-600/20 active:translate-y-px',
+  ghost: 'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900',
 };
 
 const sizeClasses: Record<string, string> = {
@@ -32,8 +34,8 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 rounded-sm font-medium transition-colors
-        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1
+      className={`inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-all duration-150
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas
         disabled:opacity-50 disabled:cursor-not-allowed
         ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
       disabled={disabled || loading}

@@ -55,7 +55,7 @@ function ProtectedLayout({ children, requireAdmin = false }: { children: React.R
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-canvas">
         {mobileOpen && (
           <div
             className="fixed inset-0 z-30 bg-gray-900/40 lg:hidden"
@@ -83,7 +83,7 @@ function ProtectedLayout({ children, requireAdmin = false }: { children: React.R
 
 function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50">
+    <div className="min-h-screen flex items-center justify-center bg-canvas">
       {children}
     </div>
   );

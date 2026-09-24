@@ -1,10 +1,46 @@
 # Design Specification — Inventory Management System
 ## Inventory Management System
 
-> **Version:** 1.0 | **Date:** 2026-08-26 | **Status:** Approved for Build
-> **Theme:** Light only (office/business environment)
-> **Framework:** React + TypeScript + Tailwind CSS 4.x
+> **Version:** 2.0 | **Date:** 2026-09-24 | **Status:** Approved for Build
+> **Theme:** Light + Dark (semantic CSS-variable tokens, `data-theme` on `<html>`)
+> **Framework:** React + TypeScript + Tailwind CSS 3.x
 > **Icon Library:** Lucide React
+
+---
+
+## 0. v2.0 Dual-Theme Refresh (supersedes conflicting sections below)
+
+The v1.0 spec described a light-only, flat admin look. v2.0 keeps every layout,
+density and interaction rule but replaces the color/type foundation:
+
+**Token architecture.** All colors are space-separated RGB channel triplets in
+`src/index.css` (`:root` light, `[data-theme="dark"]` dark), consumed by Tailwind
+via `rgb(var(--token) / <alpha-value>)` so opacity modifiers keep working.
+Legacy hue classes (`blue`, `red`, `green`, `purple`, `indigo`, `slate`, `gray`,
+partial `amber`) are aliased to semantic variables in `tailwind.config.js`, so
+old page markup is theme-aware without per-file edits.
+
+**Semantic surfaces.** `--page` (canvas), `--surface` (cards/modals),
+`--sunken` (table headers, insets), `--on-accent` (text on accent fills),
+`rail-*` (dark navigation rail in both themes).
+
+**Accent.** Indigo ramp (`--accent-50…700`, light 600 `#4F46E5`), replacing
+default Tailwind blue. Gradients are limited to brand marks (logo tile, active
+tab underline, avatar) — `from-accent-500 to-violet-500` — an explicit exception
+to the v1.0 "no gradients" rule, used only where a mark identifies the product.
+
+**Typography.** Inter (body), Space Grotesk (`font-display`: page titles,
+section headings, dialog titles), JetBrains Mono (`font-mono` +
+`tabular-nums`: amounts, counts, pagination numbers).
+
+**Components.** Buttons `rounded-md` with soft accent shadows; cards/badges
+`rounded-xl`/`rounded-full ring-inset`; table headers sunken uppercase
+`tracking-[0.08em]`; inputs on `bg-canvas` with hairline border, accent focus
+ring `ring-primary-500/30`; modals `backdrop-blur` + `ring-gray-900/5`.
+
+**Theme switching.** No-flash boot script in `index.html` reads
+`localStorage['ims-theme']` → `prefers-color-scheme`; toggle lives in the
+header (`useTheme` hook, `src/hooks/use-theme.ts`).
 
 ---
 

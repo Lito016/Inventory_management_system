@@ -9,7 +9,7 @@ interface AmountDisplayProps {
 export function AmountDisplay({ value, showPesoSign = true, className = '' }: AmountDisplayProps) {
   const formatted = showPesoSign ? formatPHP(value) : formatPHP(value).replace('₱', '');
   return (
-    <span className={`font-mono text-sm ${className}`}>
+    <span className={`font-mono text-sm tabular-nums ${className}`}>
       {formatted}
     </span>
   );

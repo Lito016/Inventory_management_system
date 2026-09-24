@@ -14,7 +14,7 @@ const sizeClasses: Record<string, string> = {
 export function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerProps) {
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <Loader2 className={`${sizeClasses[size]} animate-spin text-primary-600`} />
+      <Loader2 className={`${sizeClasses[size]} animate-spin text-link`} />
     </div>
   );
 }

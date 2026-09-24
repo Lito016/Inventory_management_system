@@ -230,7 +230,7 @@ function ReceivableDetailModal({
               ))}
             </div>
           ) : payments && payments.length > 0 ? (
-            <div className="border border-gray-200 rounded-md overflow-hidden">
+            <div className="border border-gray-200 rounded-xl overflow-hidden">
               <table className="w-full">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200">

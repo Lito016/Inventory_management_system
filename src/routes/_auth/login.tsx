@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LogIn, ShieldCheck, UserRound } from 'lucide-react';
+import { LogIn, ShieldCheck, UserRound, Boxes } from 'lucide-react';
 import { supabase } from '@/lib/supabase/client';
 import { isDemoMode } from '@/lib/demo';
 import { loginSchema, type LoginFormData } from '@/lib/utils/validators';
@@ -90,12 +90,15 @@ export function LoginPage() {
 
   return (
     <div className="w-full max-w-sm">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-        <div className="text-center mb-6">
+      <div className="bg-surface rounded-xl shadow-lg ring-1 ring-gray-900/5 border-0 p-8">
+        <div className="text-center mb-7">
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-accent-500 to-violet-500 shadow-glow mb-3">
+            <Boxes className="h-6 w-6 text-on-accent" />
+          </div>
           <div className="inline-flex items-center gap-2">
-            <h1 className="text-2xl font-semibold text-gray-800">IMS</h1>
+            <h1 className="font-display text-2xl font-semibold text-gray-900 tracking-tight">IMS</h1>
             {demo && (
-              <span className="rounded-full bg-amber-100 border border-amber-300 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-800">
+              <span className="rounded-full bg-amber-50 border border-amber-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-800">
                 Demo
               </span>
             )}
@@ -111,14 +114,14 @@ export function LoginPage() {
                 type="button"
                 onClick={() => onDemoSignIn(email)}
                 disabled={demoAccount !== null}
-                className="flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-left transition-colors hover:border-primary-400 hover:bg-primary-50 disabled:opacity-60"
+                className="flex w-full items-center gap-3 rounded-lg border border-gray-200 bg-canvas px-4 py-3 text-left transition-all duration-150 hover:border-primary-400 hover:bg-primary-50/60 hover:shadow-sm disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
               >
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-100 text-primary-700">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-link">
                   <Icon className="h-5 w-5" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block text-sm font-semibold text-gray-800">Continue as {label}</span>
-                  <span className="block truncate text-xs text-gray-500">{description}</span>
+                  <span className="block text-sm font-semibold text-gray-900">Continue as {label}</span>
+                  <span className="block truncate text-xs text-gray-600">{description}</span>
                 </span>
                 {demoAccount === email && (
                   <span className="ml-auto text-xs text-gray-500">Signing in…</span>
@@ -127,7 +130,7 @@ export function LoginPage() {
             ))}
             <div className="flex items-center gap-3 pt-2">
               <div className="h-px flex-1 bg-gray-200" />
-              <span className="text-[10px] uppercase tracking-wide text-gray-400">or sign in manually</span>
+              <span className="text-[10px] uppercase tracking-[0.12em] text-gray-600">or sign in manually</span>
               <div className="h-px flex-1 bg-gray-200" />
             </div>
           </div>
@@ -135,7 +138,7 @@ export function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {error && (
-            <div className="p-3 rounded-sm bg-error-50 border border-error-200 text-sm text-error-700">
+            <div className="p-3 rounded-md bg-error-50 border border-error-500/30 text-sm text-error-700" role="alert">
               {error}
             </div>
           )}
@@ -162,7 +165,7 @@ export function LoginPage() {
             <button
               type="button"
               onClick={() => navigate('/forgot-password')}
-              className="text-xs text-primary-600 hover:text-primary-700"
+              className="text-xs text-link hover:text-link-hover"
             >
               Forgot password?
             </button>

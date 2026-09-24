@@ -3,62 +3,141 @@
 @tailwind utilities;
 
 @layer base {
+  /* ── Semantic dual-theme tokens (DESIGN.md v2.0) ─────────────────────
+     Channel triplets so Tailwind opacity modifiers (bg-x/50) keep working.
+     data-theme on <html>, boot script in index.html prevents flash. */
   :root {
-    --color-white: #FFFFFF;
-    --color-gray-50: #F9FAFB;
-    --color-gray-100: #F3F4F6;
-    --color-gray-200: #E5E7EB;
-    --color-gray-300: #D1D5DB;
-    --color-gray-400: #9CA3AF;
-    --color-gray-500: #6B7280;
-    --color-gray-600: #4B5563;
-    --color-gray-700: #374151;
-    --color-gray-800: #1F2937;
-    --color-gray-900: #111827;
-    --color-primary-50: #EFF6FF;
-    --color-primary-100: #DBEAFE;
-    --color-primary-500: #3B82F6;
-    --color-primary-600: #2563EB;
-    --color-primary-700: #1D4ED8;
-    --color-success-50: #F0FDF4;
-    --color-success-500: #22C55E;
-    --color-success-600: #16A34A;
-    --color-success-700: #15803D;
-    --color-warning-50: #FFFBEB;
-    --color-warning-500: #F59E0B;
-    --color-warning-600: #D97706;
-    --color-warning-700: #B45309;
-    --color-error-50: #FEF2F2;
-    --color-error-500: #EF4444;
-    --color-error-600: #DC2626;
-    --color-error-700: #B91C1C;
-    --color-info-50: #EFF6FF;
-    --color-info-500: #3B82F6;
-    --color-info-600: #2563EB;
-    --color-info-700: #1D4ED8;
+    color-scheme: light;
+
+    /* neutrals — cool refined ramp, not default Tailwind gray */
+    --gray-50: 246 247 249;  --gray-100: 241 243 246; --gray-200: 229 232 237;
+    --gray-300: 211 217 225; --gray-400: 154 164 178; --gray-500: 107 118 131;
+    --gray-600: 74 85 99;    --gray-700: 51 62 76;    --gray-800: 30 40 54;
+    --gray-900: 15 23 36;
+
+    --slate-50: 247 248 250; --slate-100: 238 241 245; --slate-200: 226 230 236;
+    --slate-300: 203 210 220; --slate-400: 148 160 176; --slate-500: 100 116 139;
+    --slate-600: 71 85 105;   --slate-700: 51 65 85;    --slate-800: 30 41 59;
+    --slate-900: 11 18 32;
+
+    /* accent — indigo, replaces default-blue #2563EB */
+    --accent-50: 238 240 255;  --accent-100: 224 227 255; --accent-400: 129 140 248;
+    --accent-500: 99 102 241;  --accent-600: 79 70 229;   --accent-700: 67 56 202;
+    --accent-200: 206 211 252;
+
+    --success-50: 236 253 243; --success-500: 22 163 74;  --success-600: 21 128 61;  --success-700: 22 101 52;
+    --warning-50: 255 247 230; --warning-500: 217 119 6;  --warning-600: 180 83 9;   --warning-700: 146 64 14;
+    --error-50: 254 242 242;   --error-500: 220 38 38;    --error-600: 185 28 28;    --error-700: 153 27 27;
+    --success-200: 197 235 206; --error-200: 252 205 205;
+
+    --amber-50: 255 251 235;   --amber-200: 253 230 138;  --amber-300: 252 211 77;
+    --amber-800: 146 64 14;    --amber-900: 120 53 15;
+
+    /* semantic surfaces */
+    --page: 244 245 248;
+    --surface: 255 255 255;
+    --sunken: 238 240 244;
+
+    /* navigation rail — dark in both themes */
+    --rail: 13 21 38;
+    --rail-border: 30 41 64;
+    --rail-text: 148 163 190;
+    --rail-muted: 130 144 172;
+    --rail-ink: 255 255 255;
+    --rail-active: 165 180 252;
+    --rail-hover: 26 36 58;
+
+    --on-accent: 255 255 255;
+    --link: 79 70 229;
+    --link-hover: 67 56 202;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+
+    --gray-50: 16 21 33;   --gray-100: 22 28 43;   --gray-200: 35 44 62;
+    --gray-300: 48 59 80;  --gray-400: 78 91 114;  --gray-500: 113 128 150;
+    --gray-600: 148 163 184; --gray-700: 176 189 208; --gray-800: 214 222 235;
+    --gray-900: 233 238 245;
+
+    --slate-50: 13 18 30;  --slate-100: 19 26 40;  --slate-200: 31 41 58;
+    --slate-300: 45 57 78; --slate-400: 71 85 110; --slate-500: 100 116 143;
+    --slate-600: 135 151 178; --slate-700: 168 181 202; --slate-800: 203 213 228;
+    --slate-900: 226 232 240;
+
+    --accent-50: 30 32 66;   --accent-100: 44 47 96;    --accent-400: 129 140 248;
+    --accent-500: 108 117 247; --accent-600: 91 98 239; --accent-700: 129 140 248;
+    --accent-200: 53 57 118;
+
+    --success-50: 18 38 30;  --success-500: 34 197 94;  --success-600: 74 222 128; --success-700: 134 239 172;
+    --warning-50: 43 33 16;  --warning-500: 245 158 11; --warning-600: 251 191 36; --warning-700: 252 211 77;
+    --error-50: 45 22 26;    --error-500: 239 68 68;    --error-600: 248 113 113;  --error-700: 252 165 165;
+    --success-200: 28 68 48; --error-200: 90 36 44;
+
+    --amber-50: 38 30 12;    --amber-200: 74 58 18;     --amber-300: 97 74 20;
+    --amber-800: 251 191 36; --amber-900: 252 211 77;
+
+    --page: 10 14 23;
+    --surface: 16 22 35;
+    --sunken: 13 18 32;
+
+    --rail: 7 10 18;
+    --rail-border: 26 34 52;
+    --rail-text: 130 146 173;
+    --rail-muted: 130 144 172;
+    --rail-ink: 240 244 250;
+    --rail-active: 165 180 252;
+    --rail-hover: 20 27 43;
+
+    --on-accent: 255 255 255;
+    --link: 129 140 248;
+    --link-hover: 165 180 252;
   }
 
   body {
+    background: rgb(var(--page));
+    color: rgb(var(--gray-900));
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  ::selection {
+    background: rgb(var(--accent-600) / 0.85);
+    color: rgb(var(--on-accent));
+  }
+
+  /* thin scrollbars that follow the theme */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--gray-300)) transparent;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary-600 text-white px-4 py-2 rounded-sm text-sm font-medium
-           hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-100
+    @apply bg-primary-600 text-on-accent px-4 py-2 rounded-md text-sm font-medium
+           shadow-sm hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500
            disabled:opacity-50 disabled:cursor-not-allowed transition-colors;
   }
 
   .btn-secondary {
-    @apply bg-white text-gray-700 px-4 py-2 rounded-sm text-sm font-medium
-           border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2
-           focus:ring-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors;
+    @apply bg-surface text-gray-700 px-4 py-2 rounded-md text-sm font-medium
+           border border-gray-300 hover:bg-gray-50 focus:outline-none focus-visible:ring-2
+           focus-visible:ring-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-colors;
   }
 
   .btn-danger {
-    @apply bg-error-600 text-white px-4 py-2 rounded-sm text-sm font-medium
-           hover:bg-error-700 focus:outline-none focus:ring-2 focus:ring-error-50
+    @apply bg-error-600 text-on-accent px-4 py-2 rounded-md text-sm font-medium
+           shadow-sm hover:bg-error-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-error-500
            disabled:opacity-50 disabled:cursor-not-allowed transition-colors;
+  }
+
+  /* card primitive: hairline surface with soft hover lift */
+  .card {
+    @apply bg-surface border border-gray-200 rounded-xl shadow-sm transition-all duration-200;
+  }
+
+  .kbd {
+    @apply hidden md:inline-flex items-center px-1.5 h-5 rounded border border-gray-300 bg-gray-50 text-[10px] font-mono text-gray-500;
   }
 }
