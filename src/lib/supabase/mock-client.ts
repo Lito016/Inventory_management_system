@@ -4,6 +4,7 @@
  * that mimics the Supabase JS client API.
  */
 import * as seed from './seed-data';
+import { isDemoMode } from '../demo';
 
 // ── In-memory data store ─────────────────────────────────────
 const store: Record<string, Record<string, unknown>[]> = {
@@ -38,9 +39,12 @@ let currentUser: { id: string; email: string } | null = null;
 let currentSession: { user: { id: string; email: string } | null; access_token: string } | null = null;
 const authListeners: Array<(event: string, session: typeof currentSession) => void> = [];
 
-// Auto-login as admin on init
-currentUser = { id: seed.IDS.profiles[0], email: 'admin@ims.local' };
-currentSession = { user: currentUser, access_token: 'mock-token' };
+// Auto-login as admin on init — skipped in demo mode so visitors start signed-out
+// and reach the role-picker login screen.
+if (!isDemoMode()) {
+  currentUser = { id: seed.IDS.profiles[0], email: 'admin@ims.local' };
+  currentSession = { user: currentUser, access_token: 'mock-token' };
+}
 
 // ── Helpers ──────────────────────────────────────────────────
 function uuid(): string {
@@ -218,7 +222,9 @@ class MockQueryBuilder {
     return this;
   }
 
-  async insert(data: Record<string, unknown> | Record<string, unknown>[]) {
+  // Synchronous on purpose: real Supabase builders chain (.insert().select().single()),
+  // so these must return the builder, not a Promise.
+  insert(data: Record<string, unknown> | Record<string, unknown>[]) {
     const rows = Array.isArray(data) ? data : [data];
     const now = new Date().toISOString();
     const table = getTable(this._table);
@@ -233,7 +239,7 @@ class MockQueryBuilder {
     return this;
   }
 
-  async update(data: Record<string, unknown>) {
+  update(data: Record<string, unknown>) {
     const table = getTable(this._table);
     const updated: Record<string, unknown>[] = [];
     for (const row of table) {

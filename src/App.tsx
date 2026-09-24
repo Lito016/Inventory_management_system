@@ -5,6 +5,7 @@ import { ProtectedRoute } from '@/components/layout/ProtectedRoute';
 import { AdminRoute } from '@/components/layout/AdminRoute';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
+import { DemoBanner } from '@/components/layout/DemoBanner';
 
 // Auth pages
 import { LoginPage } from '@/routes/_auth/login';
@@ -38,6 +39,7 @@ function ProtectedLayout({ children }: { children: React.ReactNode }) {
       <div className="flex min-h-screen bg-slate-50">
         <Sidebar />
         <div className="flex-1 ml-60 transition-[margin] duration-200">
+          <DemoBanner />
           <Header />
           <main className="p-6">
             {children}

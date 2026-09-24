@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "npx tsc --noEmit && npx vite build",
     "lint": "eslint .",
-    "test": "node --test tests/inventory-logic.test.ts tests/inventory-view-contract.test.ts",
+    "test": "node --test tests/demo-mode.test.ts tests/inventory-logic.test.ts tests/inventory-view-contract.test.ts",
     "preview": "vite preview"
   },
   "dependencies": {
