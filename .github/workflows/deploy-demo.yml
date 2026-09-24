@@ -29,6 +29,12 @@ jobs:
         env:
           VITE_DEMO: "true"
 
+      - name: Create Pages project (idempotent)
+        run: pnpm exec wrangler pages project create inventory-management-system --production-branch main || true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
